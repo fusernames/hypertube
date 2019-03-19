@@ -1,6 +1,7 @@
 import React from 'react'
 import { TextField, Button } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
+import { connect } from "react-redux"
 
 class Login extends React.Component {
 
@@ -52,4 +53,11 @@ const styles = theme => ({
   },
 })
 
-export default withStyles(styles)(Login)
+const mapStateToProps = state => ({
+  ...state
+});
+const mapDispatchToProps = dispatch => ({
+  : () => dispatch(startAction)
+});
+
+export default connect()(withStyles(styles)(Login))
