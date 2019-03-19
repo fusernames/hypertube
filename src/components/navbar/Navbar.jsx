@@ -45,7 +45,7 @@ class Navbar extends React.Component {
                 <MenuIcon />
               </IconButton>
               <Typography className={classes.grow} variant="h6" color="inherit">
-                News
+                Hypertube
               </Typography>
               <Button color="inherit">Register</Button>
               <Button color="inherit">Login</Button>
