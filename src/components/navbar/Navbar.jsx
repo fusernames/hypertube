@@ -39,7 +39,7 @@ class Navbar extends React.Component {
     return (
       <div>
         <div className={classes.root}>
-          <AppBar>
+          <AppBar position="static">
             <Toolbar>
               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleSideNav}>
                 <MenuIcon />
@@ -52,7 +52,7 @@ class Navbar extends React.Component {
             </Toolbar>
           </AppBar>
         </div>
-        <SideNav open={this.state.sideNav} toggleSideNav={this.toggleSideNav}/>
+        <SideNav open={this.state.sideNav} toggleSideNav={this.toggleSideNav} />
       </div>
     )
   }

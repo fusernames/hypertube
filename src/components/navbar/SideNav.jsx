@@ -14,7 +14,7 @@ class SideNav extends React.Component {
     const sideList = (
       <div>
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, i) => (
+          {['Register', 'Login'].map((text, i) => (
             <ListItem button key={i}>
               <ListItemText primary={text} />
             </ListItem>
