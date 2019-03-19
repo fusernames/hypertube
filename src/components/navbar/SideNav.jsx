@@ -41,7 +41,7 @@ class SideNav extends React.Component {
   }
 }
 
-export default withStyles(styles)(SideNav)
-
 const styles = {
 }
+
+export default withStyles(styles)(SideNav)

@@ -1,3 +1,4 @@
-export function login(payload) {
-    return {type: 'LOGIN', payload}
+export const login = (data) => {
+    let payload = data.username;
+    return {type: 'LOGIN',  payload}
 }

@@ -1,12 +1,15 @@
 const initialState = {
-  currentUser: {}
+  currentUser: undefined
 };
 
 function rootReducer(state = initialState, action) {
-  if (action == 'LOGIN') {
+  if (action.type === 'LOGIN') {
     return Object.assign({}, state, {
       currentUser: action.payload
     });
+  }
+  else {
+    return state;
   }
 }
 

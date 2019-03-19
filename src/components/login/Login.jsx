@@ -1,7 +1,8 @@
 import React from 'react'
 import { TextField, Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
+import { login } from '../../js/actions/index.js'
 
 class Login extends React.Component {
 
@@ -10,16 +11,19 @@ class Login extends React.Component {
     password: '',
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-  }
-
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
 
+  handleSubmit = (e) => {
+    const { dispatch } = this.props
+    dispatch(login(this.state))
+    console.log(this.props)
+    e.preventDefault()
+  }
+
   render () {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
       <form onSubmit={this.handleSubmit}>
         <TextField
@@ -39,7 +43,11 @@ class Login extends React.Component {
           margin="normal"
           fullWidth
         />
-        <Button variant="contained" color="primary" className={classes.button}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          className={classes.button}>
           Log in
         </Button>
       </form>
@@ -47,17 +55,18 @@ class Login extends React.Component {
   }
 }
 
-const styles = theme => ({
+const styles = {
   button: {
+    marginTop: '5px'
+  }
+}
 
-  },
-})
+const mapStateToProps = state => {
+  return state
+}
 
-const mapStateToProps = state => ({
-  ...state
-});
-const mapDispatchToProps = dispatch => ({
-  : () => dispatch(startAction)
-});
+let LoginExport = Login
+LoginExport = withStyles(styles)(LoginExport)
+LoginExport = connect(mapStateToProps)(LoginExport)
 
-export default connect()(withStyles(styles)(Login))
+export default LoginExport
