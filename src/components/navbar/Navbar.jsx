@@ -1,12 +1,11 @@
 import React from 'react'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import { connect } from 'react-redux'
 import MenuIcon from '@material-ui/icons/Menu'
 import { withStyles } from '@material-ui/core/styles'
 import SideNav from './SideNav'
+import UnloggedNav from './UnloggedNav'
+import { Link as RouterLink } from 'react-router-dom'
+import { Link, Button, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
 
 const styles = {
   root: {
@@ -19,7 +18,7 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
-};
+}
 
 class Navbar extends React.Component {
 
@@ -34,21 +33,22 @@ class Navbar extends React.Component {
   }
 
   render () {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div>
         <div className={classes.root}>
-          <AppBar position="static">
+          <AppBar position="static" color="default">
             <Toolbar>
               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleSideNav}>
                 <MenuIcon />
               </IconButton>
               <Typography className={classes.grow} variant="h6" color="inherit">
-                Hypertube
+                <Link component={RouterLink} to="/" color="textPrimary">
+                  Hypertube
+                </Link>
               </Typography>
-              <Button color="inherit">Register</Button>
-              <Button color="inherit">Login</Button>
+              {!this.props.auth.logged && <UnloggedNav />}
             </Toolbar>
           </AppBar>
         </div>
@@ -58,4 +58,11 @@ class Navbar extends React.Component {
   }
 }
 
-export default withStyles(styles)(Navbar);
+function mapStateToProps(state) {
+  return state
+}
+
+let NavbarExport = Navbar
+NavbarExport = withStyles(styles)(NavbarExport)
+NavbarExport = connect(mapStateToProps)(NavbarExport)
+export default NavbarExport

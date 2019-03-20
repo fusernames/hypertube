@@ -1,8 +1,8 @@
 import React from 'react'
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { login } from '../../js/actions/index.js'
+import { login } from '../../js/auth/auth.actions'
 
 class Login extends React.Component {
 
@@ -18,7 +18,7 @@ class Login extends React.Component {
   handleSubmit = (e) => {
     const { dispatch } = this.props
     dispatch(login(this.state))
-    console.log(this.props)
+    console.log(this.props.auth)
     e.preventDefault()
   }
 
@@ -26,27 +26,33 @@ class Login extends React.Component {
     const { classes } = this.props
     return (
       <form onSubmit={this.handleSubmit}>
-        <TextField
-          name="username"
-          label="Username"
-          value={this.state.username}
-          onChange={this.onChange}
-          margin="normal"
-          fullWidth
-        />
-        <TextField
-          type="password"
-          name="password"
-          label="Password"
-          value={this.state.password}
-          onChange={this.onChange}
-          margin="normal"
-          fullWidth
-        />
+        <Grid container spacing={16}>
+          <Grid item xs={12}>
+            <TextField
+              name="username"
+              label="Username"
+              value={this.state.username}
+              onChange={this.onChange}
+              margin="normal"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              type="password"
+              name="password"
+              label="Password"
+              value={this.state.password}
+              onChange={this.onChange}
+              margin="normal"
+              fullWidth
+            />
+          </Grid>
+        </Grid>
         <Button
           type="submit"
           variant="contained"
-          color="secondary"
+          color="primary"
           className={classes.button}>
           Log in
         </Button>
