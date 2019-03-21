@@ -10,7 +10,7 @@ function getLocale(code) {
   return locale
 }
 
-const EN = 1, FR = 0
+const EN = 0, FR = 1
 const en = getLocale(EN)
 const fr = getLocale(FR)
 
