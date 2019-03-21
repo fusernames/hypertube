@@ -15,7 +15,10 @@ const theme = createMuiTheme({
   palette: {
     secondary : grey,
     type: 'dark'
-  }
+  },
+  typography: {
+    useNextVariants: true,
+  },
 })
 
 class App extends Component {

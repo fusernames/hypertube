@@ -6,15 +6,13 @@ import { NotificationsTwoTone as NotificationsIcon } from '@material-ui/icons'
 import { CancelTwoTone as CancelIcon } from '@material-ui/icons'
 import { PersonTwoTone as PersonIcon } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles'
+import { logout } from '../../redux/auth/actions'
 
 class LoggedNav extends React.Component {
 
-  handleLogout = () => {
-
-  }
-
   render () {
     const { locale } = this.props.locales
+    const { dispatch } = this.props;
     return (
       <div>
         <Tooltip title={locale.navbar.notifications} placement="bottom">
@@ -28,7 +26,7 @@ class LoggedNav extends React.Component {
           <PersonIcon/>
         </IconButton>
         <Tooltip title={locale.navbar.logout} placement="bottom">
-          <IconButton color="inherit" onClick={this.handleLogout}>
+          <IconButton color="inherit" onClick={() => { dispatch(logout()) }}>
             <CancelIcon/>
           </IconButton>
         </Tooltip>
