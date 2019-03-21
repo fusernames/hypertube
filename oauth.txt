@@ -1,0 +1,51 @@
+OAUTH 42 ->
+App id = 410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9
+App secret = 0e156668ef0c973c8fa8526fc683f26ce42801788756de614a307eee406ce1b8
+Redirect uri (can add more) = http://localhost:3000/
+
+To get token =>
+    Send user to ->
+        https://api.intra.42.fr/oauth/authorize?client_id=410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&response_type=code
+        (can change redirect_uri)
+        -> Redirects to redirect_uri with code in get
+
+    curl -F grant_type=authorization_code \
+    -F client_id=410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9 \
+    -F client_secret=0e156668ef0c973c8fa8526fc683f26ce42801788756de614a307eee406ce1b8 \
+    -F code=USERS_CODE \
+    -F redirect_uri=http://localhost:3000/ \
+    -X POST https://api.intra.42.fr/oauth/token
+
+        => Access token
+
+Then => 
+    curl -H "Authorization: Bearer USERS_TOKEN" https://api.intra.42.fr/v2/me
+    email: 'user_mail'
+    login: 'username'
+    first_name: 'users_first_name'
+    last_name: 'users_last_name'
+
+OAUTH Github ->
+App id = 419e2d89b672ff004243
+App secret = 92199f0bad146feada6328e12e14021dd91a4ea9
+Redirect uri (can add more) = http://localhost:3000/
+
+To get token =>
+    Send user to ->
+        https://github.com/login/oauth/authorize?client_id=419e2d89b672ff004243
+        (can change redirect_uri)
+        -> Redirects to redirect_uri with code in get
+
+    curl -F client_id=419e2d89b672ff004243 \
+    -F client_secret=92199f0bad146feada6328e12e14021dd91a4ea9 \
+    -F code=USERS_CODE \
+    -F redirect_uri=http://localhost:3000/ \
+    -X POST https://github.com/login/oauth/access_token
+
+        => Access token
+
+Then => 
+    curl -H "Authorization: Token USERS_TOKEN" https://api.github.com/user
+    email: 'user_mail'
+    login: 'username'
+    name: 'users_name'
