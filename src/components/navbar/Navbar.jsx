@@ -6,6 +6,7 @@ import SideNav from './SideNav'
 import UnloggedNav from './UnloggedNav'
 import { Link as RouterLink } from 'react-router-dom'
 import { Link, Button, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
+import { toggleLanguage } from '../../store/locales/locales.actions'
 
 const styles = {
   root: {
@@ -32,8 +33,13 @@ class Navbar extends React.Component {
     })
   }
 
+  toggleLanguage = () => {
+    this.props.dispatch(toggleLanguage(this.props.locales.code));
+  }
+
   render () {
-    const { classes } = this.props
+    const { classes, auth, locales } = this.props
+    const { locale } = locales
 
     return (
       <div>
@@ -48,7 +54,8 @@ class Navbar extends React.Component {
                   Hypertube
                 </Link>
               </Typography>
-              {!this.props.auth.logged && <UnloggedNav />}
+              {!auth.logged && <UnloggedNav />}
+              <Button color="inherit" onClick={this.toggleLanguage}>{locales.code}</Button>
             </Toolbar>
           </AppBar>
         </div>

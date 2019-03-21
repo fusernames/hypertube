@@ -25,13 +25,15 @@ class Register extends React.Component {
 
   render () {
     const { classes } = this.props
+    const { locale } = this.props.locales
+
     return (
       <form onSubmit={this.handleSubmit}>
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <TextField
               name="username"
-              label="Username"
+              label={locale.global.username}
               onChange={this.onChange}
               margin="normal"
               fullWidth
@@ -40,7 +42,7 @@ class Register extends React.Component {
           <Grid item xs={12} sm={6}>
             <TextField
               name="firstname"
-              label="Firstname"
+              label={locale.global.firstname}
               onChange={this.onChange}
               margin="normal"
               fullWidth
@@ -49,7 +51,7 @@ class Register extends React.Component {
           <Grid item xs={12} sm={6}>
             <TextField
               name="lastname"
-              label="Lastname"
+              label={locale.global.lastname}
               onChange={this.onChange}
               margin="normal"
               fullWidth
@@ -59,7 +61,7 @@ class Register extends React.Component {
             <TextField
               type="email"
               name="email"
-              label="Email"
+              label={locale.global.email}
               onChange={this.onChange}
               margin="normal"
               fullWidth
@@ -69,8 +71,7 @@ class Register extends React.Component {
             <TextField
               type="password"
               name="password"
-              label="Password"
-              value={this.state.password}
+              label={locale.global.password}
               onChange={this.onChange}
               margin="normal"
               fullWidth
@@ -80,8 +81,7 @@ class Register extends React.Component {
             <TextField
               type="password"
               name="repassword"
-              label="Repeat password"
-              value={this.state.password}
+              label={locale.global.repassword}
               onChange={this.onChange}
               margin="normal"
               fullWidth
@@ -93,7 +93,7 @@ class Register extends React.Component {
           variant="contained"
           color="primary"
           className={classes.button}>
-          Log in
+          {locale.register.btn}
         </Button>
       </form>
     )
@@ -106,12 +106,11 @@ const styles = {
   }
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   return state
 }
 
 let RegisterExport = Register
 RegisterExport = withStyles(styles)(RegisterExport)
 RegisterExport = connect(mapStateToProps)(RegisterExport)
-
 export default RegisterExport

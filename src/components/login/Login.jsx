@@ -2,7 +2,7 @@ import React from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { login } from '../../js/auth/auth.actions'
+import { login } from '../../store/auth/auth.actions'
 
 class Login extends React.Component {
 
@@ -17,6 +17,7 @@ class Login extends React.Component {
 
   handleSubmit = (e) => {
     const { dispatch } = this.props
+
     dispatch(login(this.state))
     console.log(this.props.auth)
     e.preventDefault()
@@ -24,13 +25,15 @@ class Login extends React.Component {
 
   render () {
     const { classes } = this.props
+    const { locale } = this.props.locales
+
     return (
       <form onSubmit={this.handleSubmit}>
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <TextField
               name="username"
-              label="Username"
+              label={locale.global.username}
               value={this.state.username}
               onChange={this.onChange}
               margin="normal"
@@ -41,7 +44,7 @@ class Login extends React.Component {
             <TextField
               type="password"
               name="password"
-              label="Password"
+              label={locale.global.password}
               value={this.state.password}
               onChange={this.onChange}
               margin="normal"
@@ -54,7 +57,7 @@ class Login extends React.Component {
           variant="contained"
           color="primary"
           className={classes.button}>
-          Log in
+          {locale.login.btn}
         </Button>
       </form>
     )
