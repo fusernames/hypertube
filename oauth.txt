@@ -57,17 +57,19 @@ OAUTH Facebook ->
 App id = 915807418753565
 App secret = bd4d7dc40ecbabdb08f7d5df4557acdb
 
-AQA6WaTGqnnl7iN8r-dENaRvIdigKMkElUB2OpWtdcPAOgOivzTTFkD9tC_WRgyswxVsyhnuH_SKTdohS1LjaMMxLgJ-VkWMOj-zZmoPusd6p9-BljVBwDQaFh6VD4ZfuOUY-VHqeAcjn2Ok6upEIG33owwK3FXiIsx_KpZYIxWncgq5bR0nLxRyKbDWxulL1iRlnWMU84wGP8Ry8BKToW1RRjb-t6wFD4LkqLvQw2LnyZFnh4BEZpU0Nrcc2tPIz1nJZ6rtLm48RgtpKusaqp10MDZzCXB_Mf6O28EvA9fXwLfv656mj2OTJn1BsdXomY-sKO8cDL3-giKEFBFAQ6bz#_=_
-
 To get token =>
     Send user to ->
-        https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=http://localhost:3000/
+        https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=http://localhost:3000/&display=popup&response_type=token
         (can change redirect_uri)
         -> Redirects to redirect_uri with code in get
 
-    https://graph.facebook.com/v3.2/oauth/access_token\?
+    curl -X GET https://graph.facebook.com/v3.2/oauth/access_token?
     client_id=915807418753565
     &client_secret=bd4d7dc40ecbabdb08f7d5df4557acdb
     &code=USERS_CODE
+    &redirect_uri=http://localhost:3000/
 
         => Access token
+
+Then => 
+    PAS TROUVÉ FB C DLA MERDE
