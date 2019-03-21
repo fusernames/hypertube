@@ -1,0 +1,10 @@
+{
+    "require": {
+        "symfony/translation": "^4.2",
+        "friendsofsymfony/user-bundle": "~2.0",
+        "symfony/swiftmailer-bundle": "^3.2"
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.11"
+    }
+}
