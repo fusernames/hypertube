@@ -1,4 +1,4 @@
-import { enqueueSnackbar } from '../snackbars/snackbars.actions'
+import { enqueueSnackbar } from '../snackbars/actions'
 
 export function login(data) {
   let username = data.username
@@ -6,7 +6,7 @@ export function login(data) {
   return dispatch => {
     dispatch(success(dispatch))
   }
-  
+
   function success(dispatch) {
     dispatch(enqueueSnackbar('test', 'success'))
     return {type: 'LOGIN_SUCCESS', user: data}

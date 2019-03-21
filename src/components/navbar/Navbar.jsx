@@ -7,7 +7,8 @@ import UnloggedNav from './UnloggedNav'
 import LoggedNav from './LoggedNav'
 import { Link } from 'react-router-dom'
 import { Button, AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core'
-import { toggleLanguage } from '../../redux/locales/locales.actions'
+import { toggleLanguage } from '../../redux/locales/actions'
+import { logout } from '../../redux/auth/actions'
 
 class Navbar extends React.Component {
 
@@ -21,12 +22,8 @@ class Navbar extends React.Component {
     })
   }
 
-  toggleLanguage = () => {
-    this.props.dispatch(toggleLanguage(this.props.locales.code));
-  }
-
   render () {
-    const { classes, auth, locales } = this.props
+    const { classes, auth, locales, dispatch } = this.props
     const { locale } = locales
     console.log(auth.logged)
 
@@ -43,11 +40,16 @@ class Navbar extends React.Component {
               </Typography>
               <div className={classes.sectionDesktop}>
                 {auth.logged
-                  ? <LoggedNav />
+                  ? <LoggedNav handleLogout={this.handleLogout} />
                   : <UnloggedNav />
                 }
               </div>
-              <Button color="inherit" onClick={this.toggleLanguage}>{locales.code}</Button>
+              <Button
+                color="inherit"
+                onClick={() => { dispatch(toggleLanguage(locales.code)) }}
+              >
+                {locales.code}
+              </Button>
             </Toolbar>
           </AppBar>
         </div>

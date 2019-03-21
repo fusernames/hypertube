@@ -11,11 +11,12 @@ import { NotificationsTwoTone as NotificationsIcon } from '@material-ui/icons'
 import { CancelTwoTone as CancelIcon } from '@material-ui/icons'
 import { PersonTwoTone as PersonIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
+import { logout } from '../../redux/auth/actions'
 
 class SideNav extends React.Component {
 
   render () {
-    const { classes, auth } = this.props;
+    const { classes, auth, dispatch } = this.props;
     const { locale } = this.props.locales
 
     function LoggedSide() {
@@ -27,7 +28,7 @@ class SideNav extends React.Component {
               <ListItemIcon><NotificationsIcon/></ListItemIcon>
               <ListItemText className={classes.itemText} primary={locale.navbar.notifications} />
             </ListItem>
-            <ListItem button key={i++}>
+            <ListItem button key={i++} onClick={() => { dispatch(logout()) }}>
               <ListItemIcon><CancelIcon/></ListItemIcon>
               <ListItemText primary={locale.navbar.logout} />
             </ListItem>

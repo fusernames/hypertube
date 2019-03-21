@@ -87,6 +87,15 @@ class Register extends React.Component {
               fullWidth
             />
           </Grid>
+          <Grid item xs={12}>
+            <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}}
+            />
+            <label htmlFor="contained-button-file">
+              <Button variant="contained" color="primary" component="span">
+                Upload avatar
+              </Button>
+            </label>
+          </Grid>
         </Grid>
         <Button
           type="submit"
