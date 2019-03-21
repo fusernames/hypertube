@@ -18,13 +18,17 @@ const theme = createMuiTheme({
 })
 
 class App extends Component {
+  componentDidMount() {
+    document.title = 'Hypertube'
+  }
+
   render() {
     return (
       <BrowserRouter>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <Navbar />
-          <Grid container justify="center" style={{flexGrow: 1}}>
+          <Grid container justify="center" style={{marginTop: '80px'}}>
             <Grid item xs={11} md={10} lg={8}>
               <Route path="/" component={Home} />
               <Route path="/login" component={Login} />
@@ -36,6 +40,7 @@ class App extends Component {
     )
   }
 }
+
 
 const mapStateToProps = state => {
   return state;

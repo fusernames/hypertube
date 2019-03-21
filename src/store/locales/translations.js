@@ -10,6 +10,8 @@ const translations = {
   navbar: {
     login: ["Login", "Connexion"],
     register: ["Register", "S'enregister"],
+    logout: ["Logout", "Deconnexion"],
+    notifications: ["Notifications", "Notifications"],
   },
   login: {
     btn: ["Log In", "Se connecter"],
@@ -17,6 +19,9 @@ const translations = {
   register: {
     btn: ["Register", "S'enregister"],
   },
+  alerts: {
+    ALERT_EXAMPLE: ['Example', 'Exemple']
+  }
 }
 
 export default translations
