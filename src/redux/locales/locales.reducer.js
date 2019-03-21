@@ -4,13 +4,13 @@ function getLocale(code) {
   let locale = JSON.parse(JSON.stringify(translations));
   for (let key in locale) {
     for (let i in locale[key]) {
-      locale[key][i].splice(code, 1)
+      locale[key][i] = locale[key][i][code]
     }
   }
   return locale
 }
 
-const EN = 1, FR = 0
+const EN = 0, FR = 1
 const en = getLocale(EN)
 const fr = getLocale(FR)
 
