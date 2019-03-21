@@ -9,6 +9,7 @@ import Navbar from './components/navbar/Navbar'
 import Login from './components/login/Login'
 import Register from './components/register/Register'
 import Home from './components/home/Home'
+import Notifier from './imported/Notifier'
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +28,7 @@ class App extends Component {
       <BrowserRouter>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
+          <Notifier />
           <Navbar />
           <Grid container justify="center" style={{marginTop: '80px'}}>
             <Grid item xs={11} md={10} lg={8}>

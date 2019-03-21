@@ -2,7 +2,7 @@ import React from 'react'
 import { TextField, Button, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { login } from '../../store/auth/auth.actions'
+import { login } from '../../redux/auth/auth.actions'
 
 class Login extends React.Component {
 

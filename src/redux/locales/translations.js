@@ -1,3 +1,4 @@
+// ["en", "fr"]
 const translations = {
   global: {
     username: ["Username", "Nom d'utilisateur"],
@@ -20,7 +21,7 @@ const translations = {
     btn: ["Register", "S'enregister"],
   },
   alerts: {
-    ALERT_EXAMPLE: ['Example', 'Exemple']
+    ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple']
   }
 }
 

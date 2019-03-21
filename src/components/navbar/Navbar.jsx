@@ -7,7 +7,7 @@ import UnloggedNav from './UnloggedNav'
 import LoggedNav from './LoggedNav'
 import { Link } from 'react-router-dom'
 import { Button, AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core'
-import { toggleLanguage } from '../../store/locales/locales.actions'
+import { toggleLanguage } from '../../redux/locales/locales.actions'
 
 class Navbar extends React.Component {
 
@@ -57,13 +57,6 @@ class Navbar extends React.Component {
   }
 }
 
-let NavbarExport = Navbar
-
-function mapStateToProps(state) {
-  return state
-}
-NavbarExport = connect(mapStateToProps)(NavbarExport)
-
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -88,6 +81,11 @@ const styles = theme => ({
     },
   },
 })
+function mapStateToProps(state) {
+  return state
+}
+let NavbarExport = Navbar
 NavbarExport = withStyles(styles)(NavbarExport)
+NavbarExport = connect(mapStateToProps)(NavbarExport)
 
 export default NavbarExport

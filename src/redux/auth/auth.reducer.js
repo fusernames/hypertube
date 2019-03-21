@@ -4,7 +4,7 @@ const initialState = {
 }
 
 function authReducer(state = initialState, action) {
-  if (action.type === 'LOGIN') {
+  if (action.type === 'LOGIN_SUCCESS') {
     return {
       user: action.user,
       logged: true
