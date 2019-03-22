@@ -13,6 +13,7 @@ const translations = {
     register: ["Register", "S'enregister"],
     logout: ["Logout", "Deconnexion"],
     notifications: ["Notifications", "Notifications"],
+    search: ["Search...", "Rechercher..."],
   },
   login: {
     btn: ["Log In", "Se connecter"],
