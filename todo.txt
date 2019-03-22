@@ -1,0 +1,9 @@
+FRONT:
+x. page edit infos user courrant
+x. page profile utilisateur
+x. page film
+x. notifications
+...
+
+BACK:
+...

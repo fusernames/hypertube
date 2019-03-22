@@ -8,10 +8,12 @@ import { Button } from '@material-ui/core'
 import { Router } from 'react-router'
 import history from './utils/history'
 
+let i = 0;
+
 ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider action={[
-        <Button color="inherit" size="small">{'OK'}</Button>
+        <Button key={i++} color="inherit" size="small">{'OK'}</Button>
     ]}>
       <Router history={history}>
         <App />

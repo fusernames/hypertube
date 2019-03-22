@@ -14,6 +14,8 @@ const translations = {
     logout: ["Logout", "Deconnexion"],
     notifications: ["Notifications", "Notifications"],
     search: ["Search...", "Rechercher..."],
+    profile: ["Profile", "Profil"],
+    my_account: ["My account", "Mon compte"]
   },
   login: {
     btn: ["Log In", "Se connecter"],
@@ -22,7 +24,9 @@ const translations = {
     btn: ["Register", "S'enregister"],
   },
   alerts: {
-    ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple']
+    ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],
+    // login
+    LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"]
   }
 }
 

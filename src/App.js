@@ -22,6 +22,7 @@ const theme = createMuiTheme({
 })
 
 class App extends Component {
+  
   componentDidMount() {
     document.title = 'Hypertube'
   }

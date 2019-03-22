@@ -83,13 +83,13 @@ const styles = theme => ({
   },
   sectionDesktop: {
     display: 'none',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
   },
   sectionMobile: {
     display: 'flex',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
@@ -99,7 +99,7 @@ const styles = theme => ({
     borderRadius:'3px',
     paddingLeft:'40px',
     position:'relative',
-    margin:'0 10px'
+    marginRight:'10px'
   },
   searchIcon: {
     position:'absolute',
