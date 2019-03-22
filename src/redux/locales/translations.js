@@ -19,9 +19,12 @@ const translations = {
   },
   login: {
     btn: ["Log In", "Se connecter"],
+    title: ["Sign up", "Connexion"],
   },
   register: {
     btn: ["Register", "S'enregister"],
+    title: ["Register", "Creer un compte"],
+    upload: ["Upload avatar", "Importer un avatar"]
   },
   alerts: {
     ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],

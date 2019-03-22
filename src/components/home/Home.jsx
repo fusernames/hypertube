@@ -1,9 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Join from '../join/Join'
 
 class Home extends React.Component {
   render() {
-    return null;
+    const { auth } = this.props
+    return (
+      auth.logged ? null :  <Join />
+    )
   }
 }
 

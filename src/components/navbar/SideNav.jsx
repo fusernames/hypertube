@@ -10,6 +10,7 @@ import { Divider } from '@material-ui/core'
 import { NotificationsTwoTone as NotificationsIcon } from '@material-ui/icons'
 import { CancelTwoTone as CancelIcon } from '@material-ui/icons'
 import { PersonTwoTone as PersonIcon } from '@material-ui/icons'
+import { SettingsTwoTone as SettingsIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { logout } from '../../redux/auth/actions'
 
@@ -24,29 +25,21 @@ class SideNav extends React.Component {
       return (
         <div className={classes.list}>
           <List>
-            <ListItem button key={i++}>
+            <ListItem button key={locale.navbar.notifications}>
               <ListItemIcon><NotificationsIcon/></ListItemIcon>
               <ListItemText className={classes.itemText} primary={locale.navbar.notifications} />
             </ListItem>
-            <ListItem button key={i++} onClick={() => { dispatch(logout()) }}>
+            <ListItem button key={locale.navbar.logout} onClick={() => { dispatch(logout()) }}>
               <ListItemIcon><CancelIcon/></ListItemIcon>
               <ListItemText primary={locale.navbar.logout} />
             </ListItem>
-          </List>
-        </div>
-      )
-    }
-
-    function UnloggedSide() {
-      let i = 0;
-      return (
-        <div className={classes.list}>
-          <List>
-            <ListItem component={Link} to="/register" button key={i++}>
-              <ListItemText primary={locale.navbar.register} />
+            <ListItem button key={locale.navbar.profile}>
+              <ListItemIcon><PersonIcon/></ListItemIcon>
+              <ListItemText primary={locale.navbar.profile} />
             </ListItem>
-            <ListItem component={Link} to="/login" button key={i++}>
-              <ListItemText primary={locale.navbar.login} />
+            <ListItem button key={locale.navbar.my_account}>
+              <ListItemIcon><SettingsIcon/></ListItemIcon>
+              <ListItemText primary={locale.navbar.my_account} />
             </ListItem>
           </List>
         </div>
@@ -62,7 +55,7 @@ class SideNav extends React.Component {
             onClick={this.props.toggleSideNav}
             onKeyDown={this.props.toggleSideNav}
           >
-          {auth.logged ? <LoggedSide/> : <UnloggedSide/>}
+          {auth.logged && <LoggedSide/>}
           </div>
         </Drawer>
       </div>

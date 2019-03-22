@@ -3,17 +3,24 @@ import { Route } from "react-router-dom";
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import grey from '@material-ui/core/colors/grey';
-import red from '@material-ui/core/colors/red';
+import { grey, indigo, red } from '@material-ui/core/colors';
 import Navbar from './components/navbar/Navbar'
-import Login from './components/login/Login'
-import Register from './components/register/Register'
+import Join from './components/join/Join'
 import Home from './components/home/Home'
 import Notifier from './imported/Notifier'
 
 const theme = createMuiTheme({
   palette: {
-    secondary : grey,
+    primary: {
+      light: red[300],
+      main: red[400],
+      dark: red[500]
+    },
+    secondary: {
+      light: grey[700],
+      main: grey[800],
+      dark: grey[900],
+    },
     type: 'dark'
   },
   typography: {
@@ -22,7 +29,7 @@ const theme = createMuiTheme({
 })
 
 class App extends Component {
-  
+
   componentDidMount() {
     document.title = 'Hypertube'
   }
@@ -33,11 +40,10 @@ class App extends Component {
         <CssBaseline />
         <Notifier />
         <Navbar />
-        <Grid container justify="center" style={{marginTop: '80px'}}>
+        <Grid container justify="center" style={{marginTop: '90px'}}>
           <Grid item xs={11} md={10} lg={8}>
             <Route path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
+            <Route path="/join" component={Join} />
           </Grid>
         </Grid>
       </MuiThemeProvider>

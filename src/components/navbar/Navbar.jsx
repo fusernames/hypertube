@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import MenuIcon from '@material-ui/icons/Menu'
 import { withStyles } from '@material-ui/core/styles'
 import SideNav from './SideNav'
-import UnloggedNav from './UnloggedNav'
 import LoggedNav from './LoggedNav'
 import { Link } from 'react-router-dom'
 import { Button, AppBar, Toolbar, IconButton, Typography, Badge, InputBase, Paper } from '@material-ui/core'
@@ -31,14 +30,16 @@ class Navbar extends React.Component {
     return (
       <div>
         <div className={classes.root}>
-          <AppBar position="fixed">
+          <AppBar position="fixed" color="secondary">
             <Toolbar>
-              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleSideNav}>
-                <MenuIcon />
-              </IconButton>
+              {auth.logged &&
+                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleSideNav}>
+                  <MenuIcon />
+                </IconButton>
+              }
               <Typography component={Link} to="/" className={classes.grow} variant="h6" style={{textDecoration: 'none'}}>
                 <div className={classes.sectionDesktop}>
-                HyperTube
+                  HyperTube
                 </div>
               </Typography>
               {auth.logged &&
@@ -50,10 +51,7 @@ class Navbar extends React.Component {
                 </div>
               }
               <div className={classes.sectionDesktop}>
-                {auth.logged
-                  ? <LoggedNav handleLogout={this.handleLogout} />
-                  : <UnloggedNav />
-                }
+                {auth.logged && <LoggedNav handleLogout={this.handleLogout} />}
               </div>
               <Button
                 color="inherit"

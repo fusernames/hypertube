@@ -2,9 +2,9 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Link, Button, IconButton, Badge, Tooltip, Menu, MenuItem, Paper, Popper, Typography } from '@material-ui/core'
-import { NotificationsTwoTone as NotificationsIcon } from '@material-ui/icons'
-import { CancelTwoTone as CancelIcon } from '@material-ui/icons'
-import { PersonTwoTone as PersonIcon } from '@material-ui/icons'
+import { Notifications as NotificationsIcon } from '@material-ui/icons'
+import { Cancel as CancelIcon } from '@material-ui/icons'
+import { Person as PersonIcon } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles'
 import { logout } from '../../redux/auth/actions'
 import Notifications from './Notifications'
@@ -56,7 +56,7 @@ class LoggedNav extends React.Component {
 
     return (
       <div>
-        <IconButton color="inherit" onClick={this.togglePopper}>
+        <IconButton color="primary" onClick={this.togglePopper}>
           <Badge badgeContent={17} color="secondary">
             <NotificationsIcon/>
           </Badge>
@@ -66,16 +66,13 @@ class LoggedNav extends React.Component {
             <Typography>Notifs here</Typography>
           </Paper>
         </Popper>
-        <IconButton
-          color="inherit"
-          onClick={this.openSubMenu}
-        >
+        <IconButton color="primary" onClick={this.openSubMenu}>
           <PersonIcon/>
         </IconButton>
         <SubMenu />
         <Notifications />
         <Tooltip title={locale.navbar.logout} placement="bottom">
-          <IconButton color="inherit" onClick={() => { dispatch(logout()) }}>
+          <IconButton color="primary" onClick={() => { dispatch(logout()) }}>
             <CancelIcon/>
           </IconButton>
         </Tooltip>
