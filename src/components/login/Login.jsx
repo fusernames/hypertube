@@ -19,7 +19,6 @@ class Login extends React.Component {
     const { dispatch } = this.props
 
     dispatch(login(this.state))
-    console.log(this.props.auth)
     e.preventDefault()
   }
 

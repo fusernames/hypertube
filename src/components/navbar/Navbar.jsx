@@ -6,9 +6,10 @@ import SideNav from './SideNav'
 import UnloggedNav from './UnloggedNav'
 import LoggedNav from './LoggedNav'
 import { Link } from 'react-router-dom'
-import { Button, AppBar, Toolbar, IconButton, Typography, Badge } from '@material-ui/core'
+import { Button, AppBar, Toolbar, IconButton, Typography, Badge, InputBase, Paper } from '@material-ui/core'
 import { toggleLanguage } from '../../redux/locales/actions'
 import { logout } from '../../redux/auth/actions'
+import { SearchTwoTone as SearchIcon } from '@material-ui/icons'
 
 class Navbar extends React.Component {
 
@@ -36,8 +37,18 @@ class Navbar extends React.Component {
                 <MenuIcon />
               </IconButton>
               <Typography component={Link} to="/" className={classes.grow} variant="h6" style={{textDecoration: 'none'}}>
+                <div className={classes.sectionDesktop}>
                 HyperTube
+                </div>
               </Typography>
+              {auth.logged &&
+                <div className={classes.searchBox}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase placeholder={locale.navbar.search} />
+                </div>
+              }
               <div className={classes.sectionDesktop}>
                 {auth.logged
                   ? <LoggedNav handleLogout={this.handleLogout} />
@@ -72,16 +83,29 @@ const styles = theme => ({
   },
   sectionDesktop: {
     display: 'none',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
   },
   sectionMobile: {
     display: 'flex',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
   },
+  searchBox: {
+    background:'rgba(255,255,255,0.15)',
+    padding:'0 10px',
+    borderRadius:'3px',
+    paddingLeft:'40px',
+    position:'relative',
+    marginRight:'10px'
+  },
+  searchIcon: {
+    position:'absolute',
+    left:'10px',
+    top:'4px'
+  }
 })
 function mapStateToProps(state) {
   return state
