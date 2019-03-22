@@ -12,7 +12,10 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\ChangePasswordController;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\ResettingPasswordTokenController;
+use App\Controller\ResettingPasswordSendEmailController;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -64,6 +67,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              },
  *              "controller"=ChangePasswordController::class
  *          },
+ *          "rest-password-send-email"={
+ *              "method"="POST",
+ *              "path"="/users/me/reset-password/send-email",
+ *              "controller"=ResettingPasswordSendEmailController::class,
+ *              "denormalization_context"={
+ *                  "groups"={"rest-password-send-email"}
+ *              }
+ *          },
+ *          "reset-password"={
+ *              "path"="/users/me/reset-password/{token}",
+ *              "method"="POST",
+ *              "controller"=ResettingPasswordTokenController::class
+ *          },
  *          "post",
  *          "get"
  *      }
@@ -91,7 +107,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "id": "ASC",
  *          "lastLogin": "ASC",
  *          "createdAt": "ASC",
- *          "createdAt": "ASC"
+ *          "updatedAt": "ASC"
  *      },
  *      arguments={"orderParameterName"="order"}
  * )
@@ -117,7 +133,7 @@ class User extends BaseUser
     protected $new_password;
 
     /**
-     * @Groups({"user", "me"})
+     * @Groups({"me", "rest-password-send-email"})
      */
     protected $email;
 
@@ -190,6 +206,17 @@ class User extends BaseUser
      * @Groups({"me"})
      */
     private $lang;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="owner", orphanRemoval=true)
+     */
+    private $messages;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->messages = new ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist
@@ -278,6 +305,37 @@ class User extends BaseUser
     public function setLang(?string $lang): self
     {
         $this->lang = $lang;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getOwner() === $this) {
+                $message->setOwner(null);
+            }
+        }
 
         return $this;
     }

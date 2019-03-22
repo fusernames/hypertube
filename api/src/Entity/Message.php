@@ -2,20 +2,25 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource(
- *      attributes={"access_control"="is_granted('ROLE_USER')"}
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={
+ *          "id": "exact",
+ *          "owner": "exact"
+ *      }
  * )
- * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
  * @ApiFilter(
  *      DateFilter::class,
  *      properties={
@@ -28,13 +33,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *      properties={
  *          "id": "ASC",
  *          "createdAt": "ASC",
- *          "createdAt": "ASC"
+ *          "updatedAt": "ASC"
  *      },
  *      arguments={"orderParameterName"="order"}
  * )
- * @ORM\HasLifecycleCallbacks()
  */
-class Movie
+class Message
 {
     /**
      * @ORM\Id()
@@ -44,9 +48,10 @@ class Movie
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
+    private $owner;
 
     /**
      * @ORM\Column(type="datetime")
@@ -59,19 +64,15 @@ class Movie
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    private $message;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="movie", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $messages;
-
-    public function __construct()
-    {
-        $this->messages = new ArrayCollection();
-    }
+    private $movie;
 
     /**
      * @ORM\PrePersist
@@ -93,14 +94,14 @@ class Movie
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getOwner(): ?User
     {
-        return $this->name;
+        return $this->owner;
     }
 
-    public function setName(string $name): self
+    public function setOwner(?User $owner): self
     {
-        $this->name = $name;
+        $this->owner = $owner;
 
         return $this;
     }
@@ -129,45 +130,26 @@ class Movie
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getMessage(): ?string
     {
-        return $this->description;
+        return $this->message;
     }
 
-    public function setDescription(?string $description): self
+    public function setMessage(string $message): self
     {
-        $this->description = $description;
+        $this->message = $message;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessages(): Collection
+    public function getMovie(): ?Movie
     {
-        return $this->messages;
+        return $this->movie;
     }
 
-    public function addMessage(Message $message): self
+    public function setMovie(?Movie $movie): self
     {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setMovie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->contains($message)) {
-            $this->messages->removeElement($message);
-            // set the owning side to null (unless already changed)
-            if ($message->getMovie() === $this) {
-                $message->setMovie(null);
-            }
-        }
+        $this->movie = $movie;
 
         return $this;
     }
