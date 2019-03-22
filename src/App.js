@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -28,20 +28,18 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <Notifier />
-          <Navbar />
-          <Grid container justify="center" style={{marginTop: '80px'}}>
-            <Grid item xs={11} md={10} lg={8}>
-              <Route path="/" component={Home} />
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-            </Grid>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <Notifier />
+        <Navbar />
+        <Grid container justify="center" style={{marginTop: '80px'}}>
+          <Grid item xs={11} md={10} lg={8}>
+            <Route path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
           </Grid>
-        </MuiThemeProvider>
-      </BrowserRouter>
+        </Grid>
+      </MuiThemeProvider>
     )
   }
 }

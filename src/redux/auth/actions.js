@@ -1,4 +1,5 @@
 import { enqueueSnackbar } from '../snackbars/actions'
+import history from '../../utils/history'
 
 export function login(data) {
   let username = data.username
@@ -9,6 +10,7 @@ export function login(data) {
 
   function success(dispatch) {
     dispatch(enqueueSnackbar('test', 'success'))
+    history.push('/');
     return {type: 'LOGIN_SUCCESS', user: data}
   }
 }
