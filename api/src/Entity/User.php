@@ -133,7 +133,7 @@ class User extends BaseUser
     protected $new_password;
 
     /**
-     * @Groups({"me", "rest-password-send-email"})
+     * @Groups({"user","me", "rest-password-send-email"})
      */
     protected $email;
 

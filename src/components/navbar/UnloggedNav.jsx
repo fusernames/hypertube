@@ -8,10 +8,10 @@ function UnloggedNav(props) {
 
   return (
     <React.Fragment>
-      <Link component={RouterLink} to="/register" color="textPrimary">
+      <Link component={RouterLink} to="/register" color="textPrimary" style={{textDecoration: 'none'}}>
         <Button color="inherit">{locale.navbar.register}</Button>
       </Link>
-      <Link component={RouterLink} to="/login" color="textPrimary">
+      <Link component={RouterLink} to="/login" color="textPrimary" style={{textDecoration: 'none'}}>
         <Button color="inherit">{locale.navbar.login}</Button>
       </Link>
     </React.Fragment>
