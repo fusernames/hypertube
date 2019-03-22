@@ -186,6 +186,12 @@ class User extends BaseUser
     private $lastname;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"me"})
+     */
+    private $lang;
+
+    /**
      * @ORM\PrePersist
      */
     public function onCreate() {
@@ -260,6 +266,18 @@ class User extends BaseUser
     public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getLang(): ?string
+    {
+        return $this->lang;
+    }
+
+    public function setLang(?string $lang): self
+    {
+        $this->lang = $lang;
 
         return $this;
     }
