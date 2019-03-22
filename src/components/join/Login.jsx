@@ -33,7 +33,7 @@ class Login extends React.Component {
 
     return (
       <div>
-        <Typography variant="h5">{locale.login.title}</Typography>
+        <Typography color="primary" variant="h5">{locale.login.title}</Typography>
         <form onSubmit={this.handleSubmit}>
           <Grid container spacing={16}>
             <Grid item xs={12}>

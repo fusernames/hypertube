@@ -12,9 +12,9 @@ import Notifier from './imported/Notifier'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: red[300],
+      light: red[400],
       main: red[400],
-      dark: red[500]
+      dark: red[400]
     },
     secondary: {
       light: grey[700],
