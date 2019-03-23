@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Link, Button, IconButton, Badge, Tooltip, Menu, MenuItem, Paper, Popper, Typography } from '@material-ui/core'
+import { Button, IconButton, Badge, Tooltip, Menu, MenuItem, Paper, Popper, Typography } from '@material-ui/core'
 import { Notifications as NotificationsIcon } from '@material-ui/icons'
 import { Cancel as CancelIcon } from '@material-ui/icons'
 import { Person as PersonIcon } from '@material-ui/icons'
@@ -49,7 +49,7 @@ class LoggedNav extends React.Component {
           onClose={this.closeSubMenu}
         >
           <MenuItem onClick={this.closeSubMenu}>{locale.navbar.profile}</MenuItem>
-          <MenuItem onClick={this.closeSubMenu}>{locale.navbar.my_account}</MenuItem>
+          <MenuItem onClick={this.closeSubMenu} component={Link} to="/account">{locale.navbar.my_account}</MenuItem>
         </Menu>
       )
     }

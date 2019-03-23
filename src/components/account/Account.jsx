@@ -3,14 +3,14 @@ import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
-class Register extends React.Component {
+class Update extends React.Component {
 
   state = {
     username: '',
     firstname: '',
     lastname: '',
     email: '',
-    password: '',
+    newpassword: '',
     repassword: ''
   }
 
@@ -29,7 +29,7 @@ class Register extends React.Component {
 
     return (
       <div>
-        <Typography color="primary" variant="h5">{locale.register.title}</Typography>
+        <Typography color="primary" variant="h5">{locale.navbar.my_account}</Typography>
         <form onSubmit={this.handleSubmit}>
           <Grid container spacing={16}>
             <Grid item xs={12}>
@@ -80,8 +80,8 @@ class Register extends React.Component {
             <Grid item xs={12} md={6}>
               <TextField
                 type="password"
-                name="password"
-                label={locale.global.password}
+                name="newpassword"
+                label={locale.global.new_password}
                 onChange={this.onChange}
                 margin="normal"
                 fullWidth
@@ -105,7 +105,7 @@ class Register extends React.Component {
             className={classes.button}
             fullWidth
           >
-            {locale.register.btn}
+            {locale.account.btn}
           </Button>
         </form>
       </div>
@@ -123,7 +123,7 @@ function mapStateToProps(state) {
   return state
 }
 
-let RegisterExport = Register
-RegisterExport = withStyles(styles)(RegisterExport)
-RegisterExport = connect(mapStateToProps)(RegisterExport)
-export default RegisterExport
+let UpdateExport = Update
+UpdateExport = withStyles(styles)(UpdateExport)
+UpdateExport = connect(mapStateToProps)(UpdateExport)
+export default UpdateExport

@@ -33,11 +33,11 @@ class SideNav extends React.Component {
               <ListItemIcon><CancelIcon/></ListItemIcon>
               <ListItemText primary={locale.navbar.logout} />
             </ListItem>
-            <ListItem button key={locale.navbar.profile}>
+            <ListItem button key={locale.navbar.profile} component={Link} to="/">
               <ListItemIcon><PersonIcon/></ListItemIcon>
               <ListItemText primary={locale.navbar.profile} />
             </ListItem>
-            <ListItem button key={locale.navbar.my_account}>
+            <ListItem button key={locale.navbar.my_account} component={Link} to="/account">
               <ListItemIcon><SettingsIcon/></ListItemIcon>
               <ListItemText primary={locale.navbar.my_account} />
             </ListItem>

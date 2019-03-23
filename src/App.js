@@ -8,13 +8,14 @@ import Navbar from './components/navbar/Navbar'
 import Join from './components/join/Join'
 import Home from './components/home/Home'
 import Notifier from './imported/Notifier'
+import Account from './components/account/Account'
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       light: red[400],
       main: red[400],
-      dark: red[400]
+      dark: red[500]
     },
     secondary: {
       light: grey[700],
@@ -42,8 +43,9 @@ class App extends Component {
         <Navbar />
         <Grid container justify="center" style={{marginTop: '90px'}}>
           <Grid item xs={11} md={10} lg={8}>
-            <Route path="/" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route path="/join" component={Join} />
+            <Route path="/account" component={Account} />
           </Grid>
         </Grid>
       </MuiThemeProvider>

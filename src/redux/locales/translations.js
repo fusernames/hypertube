@@ -7,6 +7,7 @@ const translations = {
     lastname: ["Last name", "Nom de famille"],
     firstname: ["First name", "Prénom"],
     repassword: ["Repeat password", "Repetez votre mot de passe"],
+    new_password: ["New password", "Nouveau mot de passe"]
   },
   navbar: {
     login: ["Login", "Connexion"],
@@ -25,6 +26,9 @@ const translations = {
     btn: ["Register", "S'enregister"],
     title: ["Register", "Creer un compte"],
     upload: ["Upload avatar", "Importer un avatar"]
+  },
+  account: {
+    btn: ["Update", "Mettre à jour"],
   },
   alerts: {
     ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],

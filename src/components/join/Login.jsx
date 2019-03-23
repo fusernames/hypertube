@@ -4,10 +4,11 @@ import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { login } from '../../redux/auth/actions'
-import { indigo, red, blue } from '@material-ui/core/colors'
+import { indigo, red, blue, grey } from '@material-ui/core/colors'
 
 const twitter = createMuiTheme({palette: {primary:blue}})
 const facebook = createMuiTheme({palette: {primary: { main: indigo['A200'] }}})
+const ft = createMuiTheme({palette: {primary: {light: grey[700], main: grey[900], dark: grey[900]}}})
 
 class Login extends React.Component {
 
@@ -68,7 +69,14 @@ class Login extends React.Component {
             {locale.login.btn}
           </Button>
         </form>
-        <Grid container spacing={8}>
+        <Grid container spacing={8} justify="center">
+          <Grid item xs={12} sm={6}>
+            <MuiThemeProvider theme={ft}>
+              <Button variant="contained" color="primary" fullWidth>
+                42
+              </Button>
+            </MuiThemeProvider>
+          </Grid>
           <Grid item xs={12} sm={6}>
             <MuiThemeProvider theme={twitter}>
               <Button variant="contained" color="primary" fullWidth>
