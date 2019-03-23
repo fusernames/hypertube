@@ -9,6 +9,7 @@ import Join from './components/join/Join'
 import Home from './components/home/Home'
 import Notifier from './imported/Notifier'
 import Account from './components/account/Account'
+import LoggedRoute from './utils/routes/LoggedRoute'
 
 const theme = createMuiTheme({
   palette: {
@@ -45,7 +46,7 @@ class App extends Component {
           <Grid item xs={11} md={10} lg={8}>
             <Route exact path="/" component={Home} />
             <Route path="/join" component={Join} />
-            <Route path="/account" component={Account} />
+            <LoggedRoute path="/account" component={Account} />
           </Grid>
         </Grid>
       </MuiThemeProvider>

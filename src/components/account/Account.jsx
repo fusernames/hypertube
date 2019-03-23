@@ -118,8 +118,7 @@ const styles = {
     marginTop: '10px'
   }
 }
-
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return state
 }
 
