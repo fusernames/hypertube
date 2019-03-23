@@ -19,3 +19,7 @@ export function login(data) {
 export function logout() {
   return {type: 'LOGOUT'}
 }
+
+export function fetchCurrentUser(id) {
+  
+}

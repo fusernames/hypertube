@@ -33,11 +33,11 @@ class Navbar extends React.Component {
           <AppBar position="fixed" color="secondary">
             <Toolbar>
               {auth.logged &&
-                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleSideNav}>
+                <IconButton className={classes.menuButton} color="primary" aria-label="Menu" onClick={this.toggleSideNav}>
                   <MenuIcon />
                 </IconButton>
               }
-              <Typography component={Link} to="/" className={classes.grow} variant="h6" style={{textDecoration: 'none'}}>
+              <Typography color="inherit" component={Link} to="/" className={classes.grow} variant="h6" style={{textDecoration: 'none'}}>
                 <div className={classes.sectionDesktop}>
                   HyperTube
                 </div>
