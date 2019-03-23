@@ -48,7 +48,7 @@ class LoggedNav extends React.Component {
           open={isMenuOpen}
           onClose={this.closeSubMenu}
         >
-          <MenuItem onClick={this.closeSubMenu}>{locale.navbar.profile}</MenuItem>
+          <MenuItem onClick={this.closeSubMenu} component={Link} to="/user/me">{locale.navbar.profile}</MenuItem>
           <MenuItem onClick={this.closeSubMenu} component={Link} to="/account">{locale.navbar.my_account}</MenuItem>
         </Menu>
       )

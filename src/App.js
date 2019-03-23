@@ -47,7 +47,7 @@ class App extends Component {
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
             <Route path="/join" component={Join} />
-            <Route path="/user/:id" component={Profile} />
+            <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />
           </Grid>
         </Grid>

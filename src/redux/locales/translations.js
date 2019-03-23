@@ -20,7 +20,7 @@ const translations = {
   },
   login: {
     btn: ["Log In", "Se connecter"],
-    title: ["Sign up", "Connexion"],
+    title: ["Sign in", "Connexion"],
   },
   register: {
     btn: ["Register", "S'enregister"],
