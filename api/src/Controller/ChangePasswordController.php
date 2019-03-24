@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class ChangePasswordController extends AbstractController
 {
@@ -25,6 +24,7 @@ class ChangePasswordController extends AbstractController
     public function __invoke(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager)
     {
         $user = $this->getUser();
+
         $requestContent = json_decode($request->getContent());
 
         /**
