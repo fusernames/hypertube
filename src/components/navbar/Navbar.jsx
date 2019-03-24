@@ -35,7 +35,6 @@ class Navbar extends React.Component {
   render () {
     const { classes, auth, locales, dispatch } = this.props
     const { locale } = locales
-    console.log(auth.logged)
 
     return (
       <div>
