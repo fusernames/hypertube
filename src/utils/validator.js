@@ -27,8 +27,15 @@ class Validator {
     return this
   }
 
+  isEmail() {
+    let regex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/
+    if (!this._value.match(regex))
+      this.addError('INVALID_EMAIL')
+    return this
+  }
+
   minLen(n) {
-    if (this._value.length < n)
+    if (this._value.length > 0 && this._value.length < n)
       this.addError('TOO_SHORT')
     return this
   }

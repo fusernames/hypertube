@@ -17,7 +17,6 @@ class SideNav extends React.Component {
     const { locale } = this.props.locales
 
     function LoggedSide() {
-      let i = 0;
       return (
         <div className={classes.list}>
           <List>
