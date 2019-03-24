@@ -13,10 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 
-// Using Icicle to do async stuff
-use Icicle\Awaitable;
-use Icicle\Coroutine\Coroutine;
-use Icicle\Loop;
+// Async stuff
+use Spatie\Async\Pool;
 
 class IndexController extends AbstractController
 {
@@ -32,25 +30,31 @@ class IndexController extends AbstractController
      * @Route("/test", name="test")
      */
     public function test(Request $request) {
-        $encode = function() {
+        $encode = function (string $filename) {
             try {
                 $ffmpeg =  FFMpeg::create([
                     'timeout' => 0
                 ]);
                 $videosDirectory = $this->getParameter('kernel.project_dir');
-                $video = $ffmpeg->open($videosDirectory . '/Video.avi');
+                $video = $ffmpeg->open($videosDirectory . '/' . $filename);
                 $mp4Format = new X264();
                 $mp4Format->setAudioCodec("libmp3lame");
+                // CHANGER LE NOM DE SAVE WOLA.
                 $video->save($mp4Format, $videosDirectory . '/Video.mp4');
-                yield Awaitable\resolve("Encoding complete.");
+                return "file encoded successfoullie";
             } catch (\Exception $e) {
-                yield Awaitable\reject($e);
+                throw $e;
             }
         };
-        $coroutine = new Coroutine($encode);
-        $coroutine->done(function ($data) {
-            echo $data, "\n";
+        $pool = Pool::create();
+        $pool->add($encode("Video.avi"))
+        ->then(function (string $resp) {
+            $response .= $resp;
+        })
+        ->catch(function (\Exception $e) {
+            throw $e;
         });
-        Loop\run();
+        $response = "test sa mère<br/>";
+        return new Response($response);
     }
 }
