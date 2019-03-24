@@ -63,9 +63,9 @@ class IndexController extends AbstractController
      */
     public function dlTorrent() {
         $torrentDir = $this->getParameter('kernel.project_dir') . '/public/torrents';
-        $this->transmission = $transmission = new Transmission($this->config);
-        $torrent = $transmission->add(base64encode(file_get_contents($this->getParameter('kernel.project_dir') . '/torrent.torrent')), true);
-        $transmission->start($torrent);
+        $this->transmission  = new Transmission($this->config);
+        $torrent = $this->transmission->add(base64encode(file_get_contents($this->getParameter('kernel.project_dir') . '/torrent.torrent')), true);
+        $this->transmission->start($torrent);
     }
 
     /**
