@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ChangePasswordController extends AbstractController
 {
@@ -22,8 +23,8 @@ class ChangePasswordController extends AbstractController
             $manager->persist($user);
             $manager->flush();
         }else{
-            return new Response('Mismatch current password', 400);
+            return new  JsonResponse(['message'=>'Mismatch current password'], 400);
         }
-        return new Response('Successfully changed password', 200);
+        return new JsonResponse(['message'=>'Successfully changed password'], 200);
     }
 }
