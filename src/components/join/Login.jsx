@@ -8,6 +8,7 @@ import { indigo, red, blue, grey } from '@material-ui/core/colors'
 
 const twitter = createMuiTheme({palette: {primary:blue}})
 const facebook = createMuiTheme({palette: {primary: { main: indigo['A200'] }}})
+const google = createMuiTheme({palette: {primary: { main: red[400] }}})
 const ft = createMuiTheme({palette: {primary: {light: grey[700], main: grey[900], dark: grey[900]}}})
 
 class Login extends React.Component {
@@ -96,11 +97,13 @@ class Login extends React.Component {
               Github
             </Button>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Button variant="contained" color="primary" fullWidth>
-              Gmail
-            </Button>
-          </Grid>
+            <Grid item xs={12} sm={6}>
+              <MuiThemeProvider theme={google}>
+                <Button variant="contained" color="primary" fullWidth>
+                  Gmail
+                </Button>
+              </MuiThemeProvider>
+            </Grid>
         </Grid>
       </div>
     )

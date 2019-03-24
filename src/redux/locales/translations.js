@@ -34,6 +34,13 @@ const translations = {
     ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],
     // login
     LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"]
+  },
+  validator: {
+    TOO_SHORT: ["Too short", "Trop court"],
+    TOO_LONG: ["Too long", "Trop long"],
+    DIFFERENT: ["Not the same", "Ne correspond pas"],
+    IS_NULL: ["Can't be null", "Ne peut pas être nul"],
+    INVALID_EMAIL: ["Invalid email", "Email invalide"],
   }
 }
 

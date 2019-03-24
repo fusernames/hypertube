@@ -69,7 +69,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          },
  *          "rest-password-send-email"={
  *              "method"="POST",
- *              "path"="/users/me/reset-password/send-email",
+ *              "path"="/users/reset-password/send-email",
  *              "controller"=ResettingPasswordSendEmailController::class,
  *              "denormalization_context"={
  *                  "groups"={"rest-password-send-email"}
@@ -133,7 +133,7 @@ class User extends BaseUser
     protected $new_password;
 
     /**
-     * @Groups({"user","me", "rest-password-send-email"})
+     * @Groups({"user:write", "me", "rest-password-send-email"})
      */
     protected $email;
 

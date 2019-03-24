@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Route } from "react-router-dom";
+import { Route } from "react-router-dom"
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { grey, indigo, red } from '@material-ui/core/colors';
+import { grey, indigo, red, blue } from '@material-ui/core/colors';
 import Navbar from './components/navbar/Navbar'
 import Join from './components/join/Join'
 import Home from './components/home/Home'
@@ -15,9 +15,9 @@ import LoggedRoute from './utils/routes/LoggedRoute'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: red[400],
-      main: red[400],
-      dark: red[500]
+      light: blue[400],
+      main: blue[400],
+      dark: blue[500]
     },
     secondary: {
       light: grey[700],
@@ -46,7 +46,6 @@ class App extends Component {
         <Grid container justify="center" style={{marginTop: '90px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
-            <Route path="/join" component={Join} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />
           </Grid>

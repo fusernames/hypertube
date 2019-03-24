@@ -31,14 +31,14 @@ class Profile extends Component {
             <Grid container spacing={8}>
               <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
-                  <Typography color="textPrimary" inline>{locale.global.firstname}</Typography>
-                  <Typography color="textPrimary" align="right" inline style={{float:'right'}}>{firstname}</Typography>
+                  <Typography variant="caption" color="textPrimary" inline>{locale.global.firstname}</Typography>
+                  <Typography variant="caption" color="textPrimary" align="right" inline style={{float:'right'}}>{firstname}</Typography>
                 </Paper>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
-                  <Typography color="textPrimary" inline>{locale.global.lastname}</Typography>
-                  <Typography color="textPrimary" align="right" inline style={{float:'right'}}>{lastname}</Typography>
+                  <Typography variant="caption" color="textPrimary" inline>{locale.global.lastname}</Typography>
+                  <Typography variant="caption" color="textPrimary" align="right" inline style={{float:'right'}}>{lastname}</Typography>
                 </Paper>
               </Grid>
             </Grid>

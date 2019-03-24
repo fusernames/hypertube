@@ -1,4 +1,5 @@
 import store from '../redux/store'
+import { enqueueSnackbar } from '../redux/snackbars/actions'
 
 const req = (url, body) => {
   let params = {}
@@ -26,7 +27,6 @@ const req = (url, body) => {
       }
     })
     .catch(err => {
-      console.error(response.statusText)
       reject()
     })
   })
