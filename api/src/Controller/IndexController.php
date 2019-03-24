@@ -56,7 +56,7 @@ class IndexController extends AbstractController
      */
     public function dlTorrent() {
         $config = array(
-            'host'     => 'http://127.0.0.1',
+            'host'     => 'http://127.0.0.1:9091',
             'endpoint' => '/transmission/rpc',
             'username' => 'transmission',
             'password' => '12345678'
@@ -71,7 +71,7 @@ class IndexController extends AbstractController
      */
     public function status() {
         $config = array(
-            'host'     => 'http://127.0.0.1',
+            'host'     => 'http://127.0.0.1:9091',
             'endpoint' => '/transmission/rpc',
             'username' => 'transmission',
             'password' => '12345678'
