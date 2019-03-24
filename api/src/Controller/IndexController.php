@@ -62,8 +62,8 @@ class IndexController extends AbstractController
      */
     public function dlTorrent() {
         $transmission = new Transmission($this->transmissionConfig);
-        $transmission->add('magnet:?xt=urn:btih:11A2AC68A11634E980F265CB1433C599D017A759&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337');
-        return new JsonResponse($transmission->getStats());
+	$transmission->add(base64_encode(file_get_contents("https://yts.am/torrent/download/DCAED080216E8495EADFA2D72EB16E2E9B9A7172")), true);
+	return new JsonResponse($transmission->getStats());
     }
 
     /**
