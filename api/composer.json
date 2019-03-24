@@ -8,7 +8,7 @@
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "friendsofsymfony/user-bundle": "~2.0",
-        "kleiram/transmission-php": "^1.0",
+        "kleiram/transmission-php": "dev-master",
         "lexik/jwt-authentication-bundle": "^2.6",
         "php-ffmpeg/php-ffmpeg": "^0.13.0",
         "symfony/console": "4.2.*",
