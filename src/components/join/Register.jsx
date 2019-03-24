@@ -25,15 +25,17 @@ class Register extends React.Component {
     let errors = []
     validator.value = value
 
-    if (name == 'username')
+    if (name === 'username')
       errors = validator.notNull().minLen(3).maxLen(20).errors
-    else if (name == 'firstname')
+    else if (name === 'firstname')
       errors = validator.notNull().maxLen(40).errors
-    else if (name == 'lastname')
+    else if (name === 'lastname')
       errors = validator.notNull().maxLen(40).errors
-    else if (name == 'password')
+    else if (name === 'email')
+      errors = validator.isEmail().errors
+    else if (name === 'password')
       errors = validator.notNull().minLen(5).errors
-    else if (name == 'repassword')
+    else if (name === 'repassword')
       errors = validator.sameAs(this.state.register.password).errors
     return errors
   }
@@ -126,7 +128,8 @@ class Register extends React.Component {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                type="email"
+                error={formErrors.email.length ? true : false}
+                helperText={locale.validator[formErrors.email[0]]}
                 name="email"
                 label={locale.global.email}
                 onChange={this.onChange}

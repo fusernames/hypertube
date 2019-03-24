@@ -2,38 +2,92 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
+import validator from '../../utils/validator'
 
 class Update extends React.Component {
 
   state = {
-    username: '',
-    firstname: '',
-    lastname: '',
-    email: '',
-    newpassword: '',
-    repassword: ''
+    user: {
+      username: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      newpassword: '',
+      repassword: ''
+    },
+    formErrors: {
+      username: [], firstname: [], lastname: [], email: [], newpassword: [], repassword: []
+    }
+  }
+
+  validate = (name) => {
+    const value = this.state.user[name]
+    let errors = []
+    validator.value = value
+
+    if (name === 'username')
+      errors = validator.notNull().minLen(3).maxLen(20).errors
+    else if (name === 'firstname')
+      errors = validator.notNull().maxLen(40).errors
+    else if (name === 'lastname')
+      errors = validator.notNull().maxLen(40).errors
+    else if (name === 'email')
+      errors = validator.isEmail().errors
+    else if (name === 'newpassword')
+      errors = validator.minLen(5).errors
+    else if (name === 'repassword')
+      errors = validator.sameAs(this.state.user.newpassword).errors
+    return errors
+  }
+
+  checkForm = (callback) => {
+    let errors = {}
+    for (let k in this.state.user) {
+      errors[k] = this.validate(k)
+    }
+    this.setState({
+      ...this.state,
+      formErrors: errors
+    })
   }
 
   onChange = (e) => {
-    this.setState({[e.target.name]: e.target.value})
+    let name = e.target.name
+    this.setState({
+      ...this.state,
+      user: {
+        ...this.state.user,
+        [name]: e.target.value
+      }
+    }, () => {
+      this.setState({
+        formErrors: {
+          ...this.state.formErrors,
+          [name]: this.validate(name)
+        }
+      })
+    })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { dispatch } = this.props
+    this.checkForm();
   }
 
   render () {
     const { classes } = this.props
     const { locale } = this.props.locales
+    const { formErrors } = this.state
 
     return (
       <div>
-        <Typography color="primary" variant="h5">{locale.navbar.my_account}</Typography>
+        <Typography color="primary" variant="h5">{locale.navbar.my_account }</Typography>
         <form onSubmit={this.handleSubmit}>
           <Grid container spacing={16}>
             <Grid item xs={12}>
               <TextField
+                error={formErrors.username.length ? true : false}
+                helperText={locale.validator[formErrors.username[0]]}
                 name="username"
                 label={locale.global.username}
                 onChange={this.onChange}
@@ -43,6 +97,8 @@ class Update extends React.Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
+                error={formErrors.firstname.length ? true : false}
+                helperText={locale.validator[formErrors.firstname[0]]}
                 name="firstname"
                 label={locale.global.firstname}
                 onChange={this.onChange}
@@ -52,6 +108,8 @@ class Update extends React.Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
+                error={formErrors.lastname.length ? true : false}
+                helperText={locale.validator[formErrors.lastname[0]]}
                 name="lastname"
                 label={locale.global.lastname}
                 onChange={this.onChange}
@@ -69,7 +127,8 @@ class Update extends React.Component {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                type="email"
+                error={formErrors.email.length ? true : false}
+                helperText={locale.validator[formErrors.email[0]]}
                 name="email"
                 label={locale.global.email}
                 onChange={this.onChange}
@@ -79,6 +138,8 @@ class Update extends React.Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
+                error={formErrors.newpassword.length ? true : false}
+                helperText={locale.validator[formErrors.newpassword[0]]}
                 type="password"
                 name="newpassword"
                 label={locale.global.new_password}
@@ -89,6 +150,8 @@ class Update extends React.Component {
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
+                error={formErrors.repassword.length ? true : false}
+                helperText={locale.validator[formErrors.repassword[0]]}
                 type="password"
                 name="repassword"
                 label={locale.global.repassword}
@@ -105,7 +168,7 @@ class Update extends React.Component {
             className={classes.button}
             fullWidth
           >
-            {locale.account.btn}
+            {locale.register.btn}
           </Button>
         </form>
       </div>

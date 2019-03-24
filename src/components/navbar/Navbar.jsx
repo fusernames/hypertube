@@ -9,6 +9,7 @@ import { Button, AppBar, Toolbar, IconButton, Typography, Badge, InputBase, Pape
 import { toggleLanguage } from '../../redux/locales/actions'
 import { logout } from '../../redux/auth/actions'
 import { SearchTwoTone as SearchIcon } from '@material-ui/icons'
+import { fetchMovies } from '../../redux/search/actions'
 
 class Navbar extends React.Component {
 
@@ -16,10 +17,19 @@ class Navbar extends React.Component {
     sideNav: false
   }
 
+  searchChange = (e) => {
+    console.log('test')
+    this.props.dispatch(fetchMovies(e.target.value))
+  }
+
   toggleSideNav = () => {
     this.setState({
       sideNav: !this.state.sideNav
     })
+  }
+
+  componentWillMount() {
+
   }
 
   render () {
@@ -47,7 +57,7 @@ class Navbar extends React.Component {
                   <div className={classes.searchIcon}>
                     <SearchIcon />
                   </div>
-                  <InputBase placeholder={locale.navbar.search} />
+                  <InputBase placeholder={locale.navbar.search} onChange={this.searchChange} />
                 </div>
               }
               <div className={classes.sectionDesktop}>

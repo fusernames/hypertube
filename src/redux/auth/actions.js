@@ -1,5 +1,4 @@
 import { enqueueSnackbar } from '../snackbars/actions'
-import history from '../../utils/history'
 
 export function login(data) {
   let username = data.username
@@ -21,5 +20,5 @@ export function logout() {
 }
 
 export function fetchCurrentUser(id) {
-  
+
 }
