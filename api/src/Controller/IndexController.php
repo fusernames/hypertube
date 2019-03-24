@@ -14,10 +14,19 @@ use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 
 // Transmission tests
-use Transmission\Transmission;
+use Vohof\Transmission;
 
 class IndexController extends AbstractController
 {
+    public $config = [
+        'host'     => 'http://127.0.0.1',
+        'endpoint' => '/transmission/rpc',
+        'username' => 'foo', // Optional
+        'password' => 'bar' // Optional
+    ];
+
+    public $transmission;
+
     /**
      * @Route("/", name="index")
      */
@@ -54,15 +63,8 @@ class IndexController extends AbstractController
      */
     public function dlTorrent() {
         $torrentDir = $this->getParameter('kernel.project_dir') . '/public/torrents';
-        $transmission = new Transmission();
-        $session = $transmission->getSession();
-        
-        $session->setDownloadDir($torrentDir . '/complete');
-        $session->setIncompleteDir($torrentDir . '/incomplete');
-        $session->setIncompleteDirEnabled(true);
-        $session->save();
-
-        $torrent = $transmission->add($this->getParameter('kernel.project_dir') . '/torrent.torrent');
+        $this->transmission = $transmission = new Transmission($this->config);
+        $torrent = $transmission->add(base64encode(file_get_contents($this->getParameter('kernel.project_dir') . '/torrent.torrent')), true);
         $transmission->start($torrent);
     }
 
@@ -70,7 +72,6 @@ class IndexController extends AbstractController
      * @Route("/status", name="test3")
      */
     public function status() {
-        $transmission = new Transmission();
-        return new Response($transmission->all());
+        return new Response($this->transmission->getStats());
     }
 }
