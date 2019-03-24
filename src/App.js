@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from "react-router-dom";
+import { Route } from "react-router-dom"
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
