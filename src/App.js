@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Route } from "react-router-dom";
+import { Route } from "react-router-dom"
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { grey, indigo, red } from '@material-ui/core/colors';
+import { grey, indigo, red } from '@material-ui/core/colors'
+import Player from './components/player/Player'
 import Navbar from './components/navbar/Navbar'
 import Join from './components/join/Join'
 import Home from './components/home/Home'
@@ -46,7 +47,6 @@ class App extends Component {
         <Grid container justify="center" style={{marginTop: '90px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
-            <Route path="/join" component={Join} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />
           </Grid>
