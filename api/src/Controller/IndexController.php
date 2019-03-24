@@ -13,9 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 
-// Async stuff
-use Spatie\Async\Pool;
-
 class IndexController extends AbstractController
 {
     /**
@@ -46,15 +43,6 @@ class IndexController extends AbstractController
                 throw $e;
             }
         };
-        $pool = Pool::create();
-        $pool->add($encode("Video.avi"))
-        ->then(function (string $resp) {
-            $response .= $resp;
-        })
-        ->catch(function (\Exception $e) {
-            throw $e;
-        });
-        $response = "test sa mère<br/>";
-        return new Response($response);
+        return new Response($encode("Video.avi"));
     }
 }
