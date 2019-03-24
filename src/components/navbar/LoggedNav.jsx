@@ -25,7 +25,6 @@ class LoggedNav extends React.Component {
   }
 
   openSubMenu = e => {
-    console.log(e.currentTarget)
     this.setState({ anchorSubMenu: e.currentTarget })
   }
 
