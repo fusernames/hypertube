@@ -1,6 +1,6 @@
 FRONT:
-x. page edit infos user courrant
-x. page profile utilisateur
+FRONT OK. page edit infos user courrant
+FRONT OK. page profile utilisateur
 x. page film
 x. notifications
 ...

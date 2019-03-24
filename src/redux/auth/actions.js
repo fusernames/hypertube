@@ -12,11 +12,14 @@ export function login(data) {
 
   function success(dispatch) {
     dispatch(enqueueSnackbar(locale.alerts.LOGIN_SUCCESS, 'success'))
-    history.push('/');
     return {type: 'LOGIN_SUCCESS', user: data}
   }
 }
 
 export function logout() {
   return {type: 'LOGOUT'}
+}
+
+export function fetchCurrentUser(id) {
+  
 }

@@ -13,7 +13,7 @@ let i = 0;
 ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider action={[
-        <Button key={i++} color="inherit" size="small">{'OK'}</Button>
+        <Button key={'OK' + i++} color="inherit" size="small">{'OK'}</Button>
     ]}>
       <Router history={history}>
         <App />

@@ -1,4 +1,7 @@
 {
+    "alchemy/binary-driver": {
+        "version": "v2.0.0"
+    },
     "api-platform/api-pack": {
         "version": "v1.2.0"
     },
@@ -98,8 +101,17 @@
     "egulias/email-validator": {
         "version": "2.1.7"
     },
+    "evenement/evenement": {
+        "version": "v2.1.0"
+    },
+    "fig/link-util": {
+        "version": "1.0.0"
+    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
+    },
+    "guzzle/guzzle": {
+        "version": "v3.7.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -119,6 +131,9 @@
             "config/packages/lexik_jwt_authentication.yaml"
         ]
     },
+    "monolog/monolog": {
+        "version": "1.24.0"
+    },
     "namshi/jose": {
         "version": "7.2.3"
     },
@@ -134,6 +149,9 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+    "neutron/temporary-filesystem": {
+        "version": "2.3.0"
+    },
     "nikic/php-parser": {
         "version": "v4.2.1"
     },
@@ -142,6 +160,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.2"
+    },
+    "php-ffmpeg/php-ffmpeg": {
+        "version": "v0.13"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -156,6 +177,9 @@
         "version": "1.0.1"
     },
     "psr/container": {
+        "version": "1.0.0"
+    },
+    "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
@@ -408,6 +432,9 @@
     "symfony/var-exporter": {
         "version": "v4.2.4"
     },
+    "symfony/web-link": {
+        "version": "v4.2.4"
+    },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
         "recipe": {
@@ -436,6 +463,9 @@
     },
     "twig/twig": {
         "version": "v2.7.3"
+    },
+    "vohof/transmission": {
+        "version": "v1.0.3"
     },
     "webmozart/assert": {
         "version": "1.4.0"
