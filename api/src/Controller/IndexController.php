@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 // Temp
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 // Use the FFMpeg tool
 use FFMpeg\FFMpeg;
@@ -18,7 +19,12 @@ use Vohof\Transmission;
 
 class IndexController extends AbstractController
 {
-    public $transmission;
+    public $transmissionConfig = [
+        'host'     => 'http://127.0.0.1:9091',
+        'endpoint' => '/transmission/rpc',
+        'username' => 'transmission',
+        'password' => '12345678'
+    ];
 
     /**
      * @Route("/", name="index")
@@ -55,28 +61,16 @@ class IndexController extends AbstractController
      * @Route("/torrent", name="test2")
      */
     public function dlTorrent() {
-        $config = array(
-            'host'     => 'http://127.0.0.1:9091',
-            'endpoint' => '/transmission/rpc',
-            'username' => 'transmission',
-            'password' => '12345678'
-        );
-        $this->transmission = new Transmission($config);
-        $this->transmission->add('magnet:?xt=urn:btih:11A2AC68A11634E980F265CB1433C599D017A759&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337');
-        return new Response($this->transmission->getStats());
+        $transmission = new Transmission($this->config);
+        $transmission->add('magnet:?xt=urn:btih:11A2AC68A11634E980F265CB1433C599D017A759&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337');
+        return new JsonResponse($transmission->getStats());
     }
 
     /**
      * @Route("/status", name="test3")
      */
     public function status() {
-        $config = array(
-            'host'     => 'http://127.0.0.1:9091',
-            'endpoint' => '/transmission/rpc',
-            'username' => 'transmission',
-            'password' => '12345678'
-        );
-        $this->transmission = new Transmission($config);
-        return new Response($this->transmission->getStats());
+        $transmission = new Transmission($this->config);
+        return new JsonResponse($transmission->getStats());
     }
 }
