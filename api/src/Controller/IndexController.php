@@ -34,10 +34,7 @@ class IndexController extends AbstractController
         return $this->render('base.html.twig');
     }
 
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test(string $filename) {
+    public function encode(string $filename) {
         try {
             $ffmpeg =  FFMpeg::create([
                 'timeout' => 0
@@ -48,11 +45,10 @@ class IndexController extends AbstractController
             $mp4Format->setAudioCodec("libmp3lame");
             // CHANGER LE NOM DE SAVE WOLA.
             $video->save($mp4Format, $videosDirectory . '/Video.mp4');
-            return "file encoded successfoullie";
+            return "File successfully encoded.";
         } catch (\Exception $e) {
             throw $e;
         }
-        return new Response($encode("Video.avi"));
     }
 
     /**
@@ -60,15 +56,8 @@ class IndexController extends AbstractController
      */
     public function dlTorrent() {
         $transmission = new Transmission($this->transmissionConfig);
+        // $transmission->add(base64_encode(file_get_contents("file.torrent")), true);
         $transmission->add('magnet:?xt=urn:btih:11A2AC68A11634E980F265CB1433C599D017A759&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337');
-        return new JsonResponse($transmission->getStats());
-    }
-
-    /**
-     * @Route("/status", name="test3")
-     */
-    public function status() {
-        $transmission = new Transmission($this->transmissionConfig);
         return new JsonResponse($transmission->getStats());
     }
 }
