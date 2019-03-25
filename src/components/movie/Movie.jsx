@@ -131,7 +131,8 @@ const styles = theme => ({
   frame: {
     margin: '0 -20px',
     width: 'calc(100% + 40px)',
-    height: '300px'
+    height: '20vw',
+    minHeight: '250px'
   }
 })
 export default withStyles(styles)(Movie)
