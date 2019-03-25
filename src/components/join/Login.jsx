@@ -29,6 +29,48 @@ class Login extends React.Component {
     e.preventDefault()
   }
 
+  openWindow = (name) => {
+    let openedWindow = undefined
+    if (name === "42") {
+      openedWindow = window.open('https://api.intra.42.fr/oauth/authorize?client_id=410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&response_type=code', '42', 'status=1')
+      openedWindow.addEventListener('load', () => {
+        console.log(openedWindow.location.href)
+        openedWindow.close();
+        // Pue sa mère faut que je bosse ici
+      });
+    } else if (name === "Twitter" && false) {
+      openedWindow = window.open('Manque url twitter', 'Twitter', 'status=1')
+      openedWindow.addEventListener('load', () => {
+        console.log(openedWindow.location.href)
+        openedWindow.close();
+        // Pue sa mère faut que je bosse ici
+      });
+    } else if (name === "Facebook") {
+      openedWindow = window.open('https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=http://localhost:3000/&display=popup&response_type=token', 'Facebook', 'status=1')
+      openedWindow.addEventListener('load', () => {
+        console.log(openedWindow.location.href)
+        openedWindow.close();
+        // Pue sa mère faut que je bosse ici
+      });
+    } else if (name === "Github") {
+      openedWindow = window.open('https://github.com/login/oauth/authorize?client_id=419e2d89b672ff004243', 'Github', 'status=1')
+      openedWindow.addEventListener('load', () => {
+        console.log(openedWindow.location.href)
+        openedWindow.close();
+        // Pue sa mère faut que je bosse ici
+      });
+    } else if (name === "Gmail" && false) {
+      openedWindow = window.open('Manque url gmail', 'Gmail', 'status=1')
+      openedWindow.addEventListener('load', () => {
+        console.log(openedWindow.location.href)
+        openedWindow.close();
+        // Pue sa mère faut que je bosse ici
+      });
+    } else {
+      console.log("Error opening OAuth for", name)
+    }
+  }
+
   render () {
     const { classes } = this.props
     const { locale } = this.props.locales
@@ -73,33 +115,33 @@ class Login extends React.Component {
         <Grid container spacing={8} justify="center">
           <Grid item xs={12} sm={6}>
             <MuiThemeProvider theme={ft}>
-              <Button variant="contained" color="primary" fullWidth>
+              <Button variant="contained" color="primary" onClick={() => this.openWindow("42")} fullWidth>
                 42
               </Button>
             </MuiThemeProvider>
           </Grid>
           <Grid item xs={12} sm={6}>
             <MuiThemeProvider theme={twitter}>
-              <Button variant="contained" color="primary" fullWidth>
+              <Button variant="contained" color="primary" onClick={() => this.openWindow("Twitter")} fullWidth>
                 Twitter
               </Button>
             </MuiThemeProvider>
           </Grid>
           <Grid item xs={12} sm={6}>
             <MuiThemeProvider theme={facebook}>
-              <Button variant="contained" color="primary" fullWidth>
+              <Button variant="contained" color="primary" onClick={() => this.openWindow("Facebook")} fullWidth>
                 Facebook
               </Button>
             </MuiThemeProvider>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button variant="contained" color="default" fullWidth>
+            <Button variant="contained" color="default" onClick={() => this.openWindow("Github")} fullWidth>
               Github
             </Button>
           </Grid>
             <Grid item xs={12} sm={6}>
               <MuiThemeProvider theme={google}>
-                <Button variant="contained" color="primary" fullWidth>
+                <Button variant="contained" color="primary" onClick={() => this.openWindow("Gmail")} fullWidth>
                   Gmail
                 </Button>
               </MuiThemeProvider>
