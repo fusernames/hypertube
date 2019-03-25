@@ -18,13 +18,13 @@ security:
             pattern:    ^/api/login
             stateless:  true
             anonymous:  true
-            provider:   fos_userbundle
             json_login:
                 check_path:         /api/login_check
                 username_path:      email
                 password_path:      password
                 success_handler:    lexik_jwt_authentication.handler.authentication_success
                 failure_handler:    lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
         api:
             pattern:    ^/
             provider:   fos_userbundle

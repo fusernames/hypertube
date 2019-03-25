@@ -74,7 +74,7 @@ class ResettingPasswordSendEmailController extends AbstractController
         $message = $rendered;
         $headers[] = 'To: ' . $user->getUsername() . ' <' . $user->getEmail() . '>';
         $headers[] = 'From: Hypertube-Security <security@hypertube.com>';
-        dump($to, $subject, $message);
+        // dump($to, $subject, $message);
         mail($to, $subject, $message,  implode("\r\n", $headers));
     }
 }
