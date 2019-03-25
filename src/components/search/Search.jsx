@@ -14,7 +14,7 @@ class Search extends Component {
   componentDidMount() {
     const { search, dispatch } = this.props
     window.onscroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 500)
+      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight * 0.85)
         dispatch(fetchAddMovies())
     }
   }
