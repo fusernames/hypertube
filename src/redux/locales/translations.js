@@ -16,7 +16,8 @@ const translations = {
     notifications: ["Notifications", "Notifications"],
     search: ["Search...", "Rechercher..."],
     profile: ["Profile", "Profil"],
-    my_account: ["My account", "Mon compte"]
+    my_account: ["My account", "Mon compte"],
+    home: ["Home", "Accueil"],
   },
   login: {
     btn: ["Log In", "Se connecter"],

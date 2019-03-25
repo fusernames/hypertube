@@ -7,16 +7,27 @@ import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
 
 class Search extends Component {
 
+  _isMounted = false
+
   componentWillMount() {
-    this.props.dispatch(fetchMovies())
+    const { search, dispatch } = this.props
+    if (search.movies.length === 0 && search.word === '')
+      dispatch(fetchMovies())
   }
 
   componentDidMount() {
     const { search, dispatch } = this.props
+    this._isMounted = true
     window.onscroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 500)
-        dispatch(fetchAddMovies())
+      if (this._isMounted) {
+        if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 500)
+          dispatch(fetchAddMovies())
+      }
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {
@@ -25,11 +36,10 @@ class Search extends Component {
     return (
       <Grid container spacing={8}>
         {movies.map((movie, i) => {
-          if (!movie.image) return null
           return (
             <Grid key={'movie' + i} item xs={6} sm={3} md={2}>
               <div className={classes.movie}>
-                <img src={movie.image} width="100%"/>
+                <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
               </div>
             </Grid>
           )
@@ -48,7 +58,14 @@ const styles = {
     borderRadius: '3px',
     overflow: 'hidden',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    '@global' : {
+      'img' : {
+        fontFamily: 'Roboto, Arial',
+        textTransform: '',
+        color: 'rgba(255,255,255,0.9)'
+      }
+    }
   }
 }
 let SearchExport = Search

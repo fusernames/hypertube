@@ -23,8 +23,8 @@ export function formatMovies(list, callback) {
     if (list[i].images && list[i].images.banner) {
       image = list[i].images.banner
       title = list[i].title
-    } else if (list[i].large_cover_image) {
-      image = list[i].large_cover_image
+    } else if (list[i].medium_cover_image) {
+      image = list[i].medium_cover_image
       title = list[i].title
     } else {
       title = ''

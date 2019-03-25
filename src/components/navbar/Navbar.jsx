@@ -10,6 +10,7 @@ import { toggleLanguage } from '../../redux/locales/actions'
 import { logout } from '../../redux/auth/actions'
 import { SearchTwoTone as SearchIcon } from '@material-ui/icons'
 import { fetchMovies } from '../../redux/search/actions'
+import history from '../../utils/history'
 
 class Navbar extends React.Component {
 
@@ -18,7 +19,8 @@ class Navbar extends React.Component {
   }
 
   searchChange = (e) => {
-    console.log('test')
+    if (history.location.pathname != '/')
+      history.push('/')
     this.props.dispatch(fetchMovies(e.target.value))
   }
 
