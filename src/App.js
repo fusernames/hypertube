@@ -3,7 +3,7 @@ import { Route } from "react-router-dom"
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { grey, indigo, red, blue } from '@material-ui/core/colors';
+import { grey, indigo, red, blue, deepOrange } from '@material-ui/core/colors';
 import Navbar from './components/navbar/Navbar'
 import Join from './components/join/Join'
 import Home from './components/home/Home'
@@ -16,9 +16,9 @@ import LoggedRoute from './utils/routes/LoggedRoute'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: red[400],
-      main: red[400],
-      dark: red[500]
+      light: deepOrange[400],
+      main: deepOrange[400],
+      dark: deepOrange[500]
     },
     secondary: {
       light: grey[700],
