@@ -5,10 +5,10 @@
         <title>Reset your password</title>
     </head>
     <body>
-        <h1 style="text-align: center;">Bonjour {{ user.username }}</h1>
-        <h3>Une demande de reinitialisation de mot de passe a été effecutée</h3>
-        <p>Afin de valider cette demande, veuillez cliquer <a href="{{ confirmationUrl }}">ici</a></p>
-        <p>ou recopiez ce lien dans votre navigtuer: {{ confirmationUrl }}</p>
-        <h4 style="color: red">Si cette demande ne vient pas de vous, nous vous demanderons de ne pas en tenir compte</h4>
+        <h1 style="text-align: center;">Reset Password</h1>
+        <h3>Hello {{ user.username }}</h3>
+        <p>To reset your password - please visit <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a></p>
+        <p>Regards,</p>
+        <p>the Team.</p>
     </body>
 </html>

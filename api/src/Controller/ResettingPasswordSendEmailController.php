@@ -49,9 +49,9 @@ class ResettingPasswordSendEmailController extends AbstractController
         if ($user === null) {
             return new JsonResponse(['message'=>'User not found'], 403);
         }
-        // if ($user->isPasswordRequestNonExpired(7200)) {
-        //     return new JsonResponse(['message' => 'A request already in progress is less than 2 hours old'], 200);
-        // }
+        if ($user->isPasswordRequestNonExpired(7200)) {
+            return new JsonResponse(['message' => 'A request already in progress is less than 2 hours old'], 200);
+        }
         if (null === $user->getConfirmationToken()) {
             $user->setConfirmationToken($this->tokenGenerator->generateToken());
         }
@@ -65,32 +65,30 @@ class ResettingPasswordSendEmailController extends AbstractController
     {
         $newLine = $this->getNewLine($user->getEmail());
         $boundary = $this->getBoundary();
-
-        $template = '@FOSUser/Resetting/email.txt.twig';
         $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
-        $msgTextRendered = $this->templating->render($template, ['user' => $user, 'confirmationUrl' => $url]);
-        $msgHTMLRenderer = $this->templating->render('email/resettingSendEmail.html.twig', ['user' => $user, 'confirmationUrl' => $url]);
+        $msgTextRendered = $this->templating->render('@FOSUser/Resetting/email.txt.twig', [
+            'user' => $user,
+            'confirmationUrl' => $url
+        ]);
+        $msgHTMLRenderer = $this->templating->render('email/resettingSendEmail.html.twig', [
+            'user' => $user,
+            'confirmationUrl' => $url
+        ]);
         $to = $user->getEmail();
         $subject = "Password resetting";
-        
         $headers = $this->getHeaders($newLine, $boundary);
-
         $message = $this->getMessage($msgTextRendered, $msgHTMLRenderer, $boundary, $newLine);
-        dump($headers, $message);die;
-        
+
         mail($to, $subject, $message, $headers);
     }
 
     private function getMessage($msgTextRendered, $msgHTMLRenderer, $boundary, $newLine): string
     {
-        //=====Création du message.
         return $newLine . "--" . $boundary . $newLine
-            //=====Ajout du message au format texte.
             . "Content-Type: text/plain; charset=\"ISO-8859-1\"$newLine"
             . "Content-Transfer-Encoding: 8bit$newLine"
             . $newLine . $msgTextRendered . $newLine
             . "$newLine--$boundary" . $newLine
-            //=====Ajout du message au format HTML
             . "Content-Type: text/html; charset=\"ISO-8859-1\"$newLine"
             . "Content-Transfer-Encoding: 8bit$newLine"
             . $newLine . $msgHTMLRenderer . $newLine
@@ -100,8 +98,8 @@ class ResettingPasswordSendEmailController extends AbstractController
 
     private function getHeaders(string $newLine, string $boundary): string
     {
-        return "From: \"Hypertube-Security\"<dlavaury@e3r6p15.42.fr>$newLine"
-            . "Reply-to: \"Hypertube-Security\"<dlavaury@e3r6p15.42.fr>$newLine"
+        return "From: \"Hypertube-Security\"<security@hypertube.fr>$newLine"
+            . "Reply-to: \"Hypertube-Security\"<security@hypertube.fr>$newLine"
             . "MIME-Version: 1.0$newLine"
             . "Content-Type: multipart/alternative;$newLine"
             . " boundary=\"$boundary\"$newLine";
