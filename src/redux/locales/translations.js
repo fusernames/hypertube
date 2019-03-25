@@ -31,6 +31,14 @@ const translations = {
   account: {
     btn: ["Update", "Mettre à jour"],
   },
+  movie: {
+    synopsis: ["Synopsis", "Synopsis"],
+    production: ["Production", "Production"],
+    time: ["Run time (min)", "Durée (min)"],
+    genres: ["Genres", "Genres"],
+    trailer: ["Trailer", "Bande annonce"],
+    download: ["Download", "Télécharger"],
+  },
   alerts: {
     ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],
     // login

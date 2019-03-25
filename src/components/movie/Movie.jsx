@@ -1,13 +1,14 @@
 import React from 'react'
 import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
 
 class Movie extends React.Component {
 
   state = {
     movie: {
-      genders: []
+      genres: []
     }
   }
 
@@ -27,7 +28,7 @@ class Movie extends React.Component {
           image: json.images.poster,
           title: json.title,
           synopsis: json.synopsis,
-          genders: json.genres,
+          genres: json.genres,
           year: json.year,
           time: json.runtime,
           trailer: this.parseYtLink(json.trailer)
@@ -43,7 +44,7 @@ class Movie extends React.Component {
           image: json.large_cover_image,
           title: json.title,
           synopsis: json.description_intro,
-          genders: json.genres,
+          genres: json.genres,
           year: json.year,
           time: json.runtime,
           trailer: this.parseYtLink(json.yt_trailer_code)
@@ -61,6 +62,7 @@ class Movie extends React.Component {
   render() {
     const { movie } = this.state
     const { classes } = this.props
+    const { locale } = this.props.locales
     return (
       <div>
         <Typography variant="h5" color="primary" style={{marginBottom:'15px'}}>{movie.title}</Typography>
@@ -73,30 +75,30 @@ class Movie extends React.Component {
               <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>format_align_left</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>Synopsis</Typography>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.synopsis}</Typography>
                   <Typography variant="caption" color="textPrimary">{movie.synopsis}</Typography>
                 </div>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>movie_creation</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>Production</Typography>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.production}</Typography>
                   <Typography variant="caption" color="textPrimary">{movie.year}</Typography>
                 </div>
               </Grid>
               <Grid item xs={12} md={6}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>timer</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>Time</Typography>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.time}</Typography>
                   <Typography variant="caption" color="textPrimary">{movie.time}</Typography>
                 </div>
               </Grid>
               <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>local_movies</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>Genders</Typography>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.genres}</Typography>
                   <Typography variant="caption" color="textPrimary">
-                    {movie.genders.map(gender => {
+                    {movie.genres.map(gender => {
                       return <div key={gender}>{gender}</div>
                     })}
                   </Typography>
@@ -105,7 +107,7 @@ class Movie extends React.Component {
               <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>Trailer</Typography>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
                   <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
                 </div>
               </Grid>
@@ -135,4 +137,8 @@ const styles = theme => ({
     minHeight: '250px'
   }
 })
-export default withStyles(styles)(Movie)
+const mapStateToProps = state => { return state }
+let MovieExport = Movie
+MovieExport = withStyles(styles)(MovieExport)
+MovieExport = connect(mapStateToProps)(MovieExport)
+export default MovieExport
