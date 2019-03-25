@@ -106,7 +106,7 @@ class Movie extends React.Component {
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>Trailer</Typography>
-                  <iframe id="ytplayer" type="text/html" width="100%" height="300" src={movie.trailer} frameBorder="0"/>
+                  <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
                 </div>
               </Grid>
             </Grid>
@@ -127,6 +127,11 @@ const styles = theme => ({
     height:'100%',
     borderRadius: '5px',
     padding:'15px 20px'
+  },
+  frame: {
+    margin: '0 -20px',
+    width: 'calc(100% + 40px)',
+    height: '300px'
   }
 })
 export default withStyles(styles)(Movie)
