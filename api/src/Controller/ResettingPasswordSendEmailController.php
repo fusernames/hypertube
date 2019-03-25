@@ -49,9 +49,9 @@ class ResettingPasswordSendEmailController extends AbstractController
         if ($user === null) {
             return new JsonResponse(['message'=>'User not found'], 403);
         }
-        if ($user->isPasswordRequestNonExpired(7200)) {
-            return new JsonResponse(['message' => 'A request already in progress is less than 2 hours old'], 200);
-        }
+        // if ($user->isPasswordRequestNonExpired(7200)) {
+        //     return new JsonResponse(['message' => 'A request already in progress is less than 2 hours old'], 200);
+        // }
         if (null === $user->getConfirmationToken()) {
             $user->setConfirmationToken($this->tokenGenerator->generateToken());
         }
@@ -63,18 +63,57 @@ class ResettingPasswordSendEmailController extends AbstractController
 
     private function sendResettingEmailMessage($user)
     {
+        $newLine = $this->getNewLine($user->getEmail());
+        $boundary = $this->getBoundary();
+
         $template = '@FOSUser/Resetting/email.txt.twig';
         $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
-        $rendered = $this->templating->render($template, array(
-            'user' => $user,
-            'confirmationUrl' => $url,
-        ));
+        $msgTextRendered = $this->templating->render($template, ['user' => $user, 'confirmationUrl' => $url]);
+        $msgHTMLRenderer = $this->templating->render('email/resettingSendEmail.html.twig', ['user' => $user, 'confirmationUrl' => $url]);
         $to = $user->getEmail();
         $subject = "Password resetting";
-        $message = $rendered;
-        $headers[] = 'To: ' . $user->getUsername() . ' <' . $user->getEmail() . '>';
-        $headers[] = 'From: Hypertube-Security <security@hypertube.com>';
-        // dump($to, $subject, $message);
-        mail($to, $subject, $message,  implode("\r\n", $headers));
+        
+        $headers = $this->getHeaders($newLine, $boundary);
+
+        $message = $this->getMessage($msgTextRendered, $msgHTMLRenderer, $boundary, $newLine);
+        dump($headers, $message);die;
+        
+        mail($to, $subject, $message, $headers);
+    }
+
+    private function getMessage($msgTextRendered, $msgHTMLRenderer, $boundary, $newLine): string
+    {
+        //=====Création du message.
+        return $newLine . "--" . $boundary . $newLine
+            //=====Ajout du message au format texte.
+            . "Content-Type: text/plain; charset=\"ISO-8859-1\"$newLine"
+            . "Content-Transfer-Encoding: 8bit$newLine"
+            . $newLine . $msgTextRendered . $newLine
+            . "$newLine--$boundary" . $newLine
+            //=====Ajout du message au format HTML
+            . "Content-Type: text/html; charset=\"ISO-8859-1\"$newLine"
+            . "Content-Transfer-Encoding: 8bit$newLine"
+            . $newLine . $msgHTMLRenderer . $newLine
+            . "$newLine--$boundary--$newLine"
+            . "$newLine--$boundary--$newLine";
+    }
+
+    private function getHeaders(string $newLine, string $boundary): string
+    {
+        return "From: \"Hypertube-Security\"<dlavaury@e3r6p15.42.fr>$newLine"
+            . "Reply-to: \"Hypertube-Security\"<dlavaury@e3r6p15.42.fr>$newLine"
+            . "MIME-Version: 1.0$newLine"
+            . "Content-Type: multipart/alternative;$newLine"
+            . " boundary=\"$boundary\"$newLine";
+    }
+
+    private function getBoundary(): string
+    {
+        return "-----=" . md5(rand());
+    }
+
+    private function getNewLine(string $email): string
+    {
+        return preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $email) ? "\n": "\r\n";
     }
 }
