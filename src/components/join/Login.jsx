@@ -6,10 +6,10 @@ import { connect } from 'react-redux'
 import { login } from '../../redux/auth/actions'
 import { indigo, red, blue, grey } from '@material-ui/core/colors'
 
-const twitter = createMuiTheme({palette: {primary:blue}})
-const facebook = createMuiTheme({palette: {primary: { main: indigo['A200'] }}})
-const google = createMuiTheme({palette: {primary: { main: red[400] }}})
-const ft = createMuiTheme({palette: {primary: {light: grey[700], main: grey[900], dark: grey[900]}}})
+const twitter = createMuiTheme({typography: {useNextVariants: true}, palette: {primary:blue}})
+const facebook = createMuiTheme({typography: {useNextVariants: true}, palette: {primary: { main: indigo['A200'] }}})
+const google = createMuiTheme({typography: {useNextVariants: true}, palette: {primary: { main: red[400] }}})
+const ft = createMuiTheme({typography: {useNextVariants: true}, palette: {primary: {light: grey[700], main: grey[900], dark: grey[900]}}})
 
 class Login extends React.Component {
 

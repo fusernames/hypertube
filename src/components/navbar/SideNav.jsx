@@ -7,6 +7,7 @@ import { NotificationsTwoTone as NotificationsIcon } from '@material-ui/icons'
 import { CancelTwoTone as CancelIcon } from '@material-ui/icons'
 import { PersonTwoTone as PersonIcon } from '@material-ui/icons'
 import { SettingsTwoTone as SettingsIcon } from '@material-ui/icons'
+import { HomeTwoTone as HomeIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { logout } from '../../redux/auth/actions'
 
@@ -20,6 +21,11 @@ class SideNav extends React.Component {
       return (
         <div className={classes.list}>
           <List>
+            <ListItem button key={locale.navbar.home} component={Link} to="/">
+              <ListItemIcon><HomeIcon/></ListItemIcon>
+              <ListItemText primary={locale.navbar.home} />
+            </ListItem>
+            <Divider />
             <ListItem button key={locale.navbar.notifications}>
               <ListItemIcon><NotificationsIcon/></ListItemIcon>
               <ListItemText className={classes.itemText} primary={locale.navbar.notifications} />
@@ -64,7 +70,7 @@ const styles = {
     width: 250,
   },
   itemText:{
-    fontWeight: 'bold'
+    fontWeight: '500'
   }
 }
 function mapStateToProps(state) {
