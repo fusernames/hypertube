@@ -27,3 +27,5 @@ yarn-error.log*
 
 # API
 *vendor*
+api/*avi
+api/*mp4

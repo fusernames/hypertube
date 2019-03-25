@@ -14,7 +14,7 @@ class Search extends Component {
   componentDidMount() {
     const { search, dispatch } = this.props
     window.onscroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 50)
+      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 500)
         dispatch(fetchAddMovies())
     }
   }
@@ -24,12 +24,12 @@ class Search extends Component {
     const { classes } = this.props
     return (
       <Grid container spacing={8}>
-        {movies.map(movie => {
-          if (!movie.images || !movie.images.banner) return null
+        {movies.map((movie, i) => {
+          if (!movie.image) return null
           return (
-            <Grid key={movie._id} item xs={6} sm={3} md={2}>
+            <Grid key={'movie' + i} item xs={6} sm={3} md={2}>
               <div className={classes.movie}>
-                <img src={movie.images.banner} width="100%"/>
+                <img src={movie.image} width="100%"/>
               </div>
             </Grid>
           )
