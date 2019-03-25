@@ -1,14 +1,14 @@
 import store from '../store'
 
-export function exists(title, list) {
+export function exists(code, list) {
   for (let i in list) {
-    if (list[i].title == title)
+    if (list[i].code == code)
       return true
   }
   const { movies } = store.getState().search
-  for (let i in title) {
+  for (let i in movies) {
     if (movies[i]) {
-      if (movies[i].title == title)
+      if (movies[i].code == code)
         return true
     }
   }
@@ -19,19 +19,26 @@ export function formatMovies(list, callback) {
   let movies = []
   let title = ''
   let image = ''
+  let id = ''
+  let code = ''
   for(let i in list) {
     if (list[i].images && list[i].images.banner) {
       image = list[i].images.banner
       title = list[i].title
+      id = list[i].imdb_id
+      code = list[i].imdb_id
     } else if (list[i].medium_cover_image) {
       image = list[i].medium_cover_image
       title = list[i].title
+      code = list[i].imdb_code
+      id = list[i].id
     } else {
-      title = ''
-      image = ''
+      id = ''
     }
-    if (title && image && !exists(title, movies)) {
+    if (id && !exists(code, movies)) {
       movies.push({
+        id: id,
+        code: code,
         image: image,
         title: title
       })

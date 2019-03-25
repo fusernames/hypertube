@@ -4,6 +4,7 @@ import { Typography, Grid } from '@material-ui/core'
 import req from '../../utils/req'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
+import { Link } from 'react-router-dom'
 
 class Search extends Component {
 
@@ -33,12 +34,14 @@ class Search extends Component {
     const { classes } = this.props
     return (
       <Grid container spacing={8}>
-        {movies.map((movie, i) => {
+        {movies.map(movie => {
           return (
-            <Grid key={'movie' + i} item xs={6} sm={3} md={2}>
-              <div className={classes.movie}>
-                <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
-              </div>
+            <Grid key={movie.id} item xs={6} sm={3} md={2}>
+              <Link to={'/movie/' + movie.id} style={{textDecoration: 'none'}}>
+                <div className={classes.movie}>
+                  <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
+                </div>
+              </Link>
             </Grid>
           )
         })}
@@ -60,8 +63,7 @@ const styles = {
     '@global' : {
       'img' : {
         fontFamily: 'Roboto, Arial',
-        textTransform: '',
-        color: 'rgba(255,255,255,0.9)'
+        color: 'rgba(255,255,255,0.9)',
       }
     }
   }

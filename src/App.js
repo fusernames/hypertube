@@ -8,6 +8,7 @@ import Navbar from './components/navbar/Navbar'
 import Join from './components/join/Join'
 import Home from './components/home/Home'
 import Notifier from './imported/Notifier'
+import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
 import LoggedRoute from './utils/routes/LoggedRoute'
@@ -46,6 +47,7 @@ class App extends Component {
         <Grid container justify="center" style={{marginTop: '90px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
+            <Route path="/movie/:id" component={Movie} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />
           </Grid>
