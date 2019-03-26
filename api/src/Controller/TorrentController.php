@@ -57,6 +57,7 @@ class TorrentController extends AbstractController
             $movie
                 ->setName($torrent['name'])
                 ->setTorrentLink($torrentLink)
+                ->setTorrentId($torrent['id'])
             ;
             $entityManager->persist($movie);
             $entityManager->flush();
@@ -95,7 +96,10 @@ class TorrentController extends AbstractController
      */
     public function statusTorrent($id) {
         $transmission = new Transmission($this->transmissionConfig);
-        $infos = $transmission->get(intval($id))['torrents'];
+        $repository = $this->getDoctrine()->getRepository(Movie::class);
+        $searched = $repository->find($id);
+        if (!$searched) return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
+        $infos = $transmission->get($searched->getTorrentId())['torrents'];
         if (sizeof($infos) === 1) {
             $infos = $infos[0];
             return new JsonResponse(['success' => ($infos['downloadedEver'] / $infos['totalSize'])]);            

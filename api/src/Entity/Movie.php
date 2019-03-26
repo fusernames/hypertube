@@ -68,6 +68,11 @@ class Movie
      */
     private $messages;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $torrentId;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -168,6 +173,18 @@ class Movie
                 $message->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTorrentId(): ?int
+    {
+        return $this->torrentId;
+    }
+
+    public function setTorrentId(int $torrentId): self
+    {
+        $this->torrentId = $torrentId;
 
         return $this;
     }
