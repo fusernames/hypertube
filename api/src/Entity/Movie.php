@@ -2,18 +2,43 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Controller\StatusTorrentController;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\DownloadTorrentController;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={"access_control"="is_granted('ROLE_USER')"}
+ *      attributes={
+ *          "access_control"="is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')",
+ *          "access_control_message"="Sorry, you are not authorized to access this service."
+ *      },
+ *      itemOperations={
+ *          "get",
+ *          "put",
+ *          "delete"
+ *      },
+ *      collectionOperations={
+ *          "download-torrent"={
+ *              "method"="POST",
+ *              "path"="/movies/torrent/download",
+ *              "controller"=DownloadTorrentController::class
+ *          },
+ *          "torrent-status"={
+ *              "method"="POST",
+ *              "path"="/movies/torrent/status",
+ *              "controller"=StatusTorrentController::class
+ *          },
+ *          "post",
+ *          "get"
+ *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
  * @ApiFilter(
@@ -31,6 +56,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          "createdAt": "ASC"
  *      },
  *      arguments={"orderParameterName"="order"}
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={
+ *          "id": "exact",
+ *          "name": "ipartial",
+ *          "finished": "exact"
+ *      }
  * )
  * @ORM\HasLifecycleCallbacks()
  */
