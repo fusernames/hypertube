@@ -59,9 +59,9 @@ class Movie
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
-    private $description;
+    private $torrentLink;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="movie", orphanRemoval=true)
@@ -129,14 +129,14 @@ class Movie
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getTorrentLink(): ?string
     {
-        return $this->description;
+        return $this->torrentLink;
     }
 
-    public function setDescription(?string $description): self
+    public function setTorrentLink(string $torrentLink): self
     {
-        $this->description = $description;
+        $this->torrentLink = $torrentLink;
 
         return $this;
     }

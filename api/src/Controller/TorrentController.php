@@ -4,9 +4,10 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+use App\Entity\Movie;
 
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
@@ -46,6 +47,17 @@ class TorrentController extends AbstractController
         }
     }
 
+    public function addMovie($torrent, $torrentLink) {
+        $transmission = new Transmission($this->transmissionConfig);
+        $entityManager = $this->getDoctrine()->getManager();
+        $searched = $entityManager->getRepository(Movie::class)->findOneBy(['torrentLink' => $torrentLink]);
+        if (!$searched) {
+            return $transmission->get($torrent['id']);
+            $movie = new Movie();
+            $movie->setName("gg");
+        }
+    }
+
     /**
      * @Route("/torrent/download", name="download_torrent", methods={"POST"})
      */
@@ -55,13 +67,16 @@ class TorrentController extends AbstractController
         $transmission = new Transmission($this->transmissionConfig);
         if ($data['torrent_magnet'] !== null) {
             $torrent = $transmission->add($data['torrent_magnet']);
+            $data = addMovie($torrent['torrent-duplicate'], $data['torrent_magnet']);
         } else if ($data['torrent_url'] !== null) {
             $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_url'])), true);
+            $data = addMovie($torrent['torrent-duplicate'], $data['torrent_url']);
         } else {
+            // Torrent might be already downloaded
             return new JsonResponse(['error' => 'POST_ERROR']);
         }
         // Id is temporary since idk how entity works
-        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS', 'id' => $torrent['torrent-duplicate']['id']]);
+        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS', $data]);
     }
 
     /**
