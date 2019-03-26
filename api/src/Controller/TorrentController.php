@@ -94,14 +94,19 @@ class TorrentController extends AbstractController
     }
 
     /**
-     * @Route("/torrent/status/{id}", name="status_torrent", requirements={"id"="\d+"})
+     * @Route("/torrent/status", name="status_torrent", methods={"POST"})
      */
-    public function statusTorrent($id) {
+    public function statusTorrent(Request $request) {
         $transmission = new Transmission($this->transmissionConfig);
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
+        // Decodes post json
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'NOT_DOWNLOADED_TORRENT']);
+        $torrentLink = $data['torrent_link'];
         // Loads the asked movie
-        $movie = $repository->find($id);
+        $movie = $repository->findOneBy(['torrentLink' => $torrentLink]);
         // If unknown id, returns
         if (!$movie) return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
         $infos = $transmission->get($movie->getTorrentId())['torrents'];
