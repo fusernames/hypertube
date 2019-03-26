@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use FFMpeg\FFMpeg;
@@ -61,6 +60,22 @@ class TorrentController extends AbstractController
         } else {
             return new JsonResponse(['error' => 'POST_ERROR']);
         }
-        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS', $torrent]);
+        // Id is temporary since idk how entity works
+        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS', 'id' => $torrent['torrent-duplicate']['id']]);
+    }
+
+    /**
+     * @Route("/torrent/status/{id}", name="status_torrent", requirements={"page"="\d+"})
+     */
+    public function statusTorrent(Request $request) {
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+        $transmission = new Transmission($this->transmissionConfig);
+        if ($data['id'] !== null) {
+            $infos = $transmission->get($data['id'])['torrents'][0];
+            return new JsonResponse(['success' => ($infos['downloadedEver'] / $infos['totalSize'])]);            
+        } else {
+            return new JsonResponse(['error' => 'POST_ERROR']);
+        }
     }
 }
