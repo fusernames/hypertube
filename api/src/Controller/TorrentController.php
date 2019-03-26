@@ -69,7 +69,7 @@ class TorrentController extends AbstractController
      */
     public function statusTorrent($id) {
         $transmission = new Transmission($this->transmissionConfig);
-        $infos = $transmission->get($id)['torrents'];
+        $infos = $transmission->get(intval($id))['torrents'];
         if (sizeof($infos) === 1) {
             $infos = $infos[0];
             return new JsonResponse(['success' => ($infos['downloadedEver'] / $infos['totalSize'])]);            
