@@ -106,8 +106,8 @@ class Movie extends React.Component {
                   <Icon color="primary" style={{float:'right'}}>local_movies</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.genres}</Typography>
                   <Typography color="textPrimary">
-                    {movie.genres.map(gender => {
-                      return <div key={gender}>{gender}</div>
+                    {movie.genres.map(genre => {
+                      return <div key={genre}>{locale.genres[genre.toLowerCase()]}</div>
                     })}
                   </Typography>
                 </div>

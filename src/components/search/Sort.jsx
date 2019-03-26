@@ -20,18 +20,22 @@ class Sort extends Component {
   }
 
   selectGenre = (genre) => {
+    const { dispatch, search } = this.props
     this.closeGenres()
-    this.props.dispatch(fetchMovies({genre}))
+    if (genre === 'none')
+      genre = ''
+    if (genre !== search.genre)
+      dispatch(fetchMovies({genre}))
   }
 
   render() {
-    const genres = ['action', 'adventure', 'animation', 'comedy', 'crime', 'disaster',
-      'documentary', 'drama', 'eastern', 'family', 'fan-film', 'fantasy', 'film-noir',
-      'history', 'holiday', 'horror', 'indie', 'music', 'mystery', 'none', 'road',
-      'romance', 'science-fiction', 'short', 'sporting-event', 'suspense', 'thriller',
-      'tv-movie', 'war', 'western']
+    const genres = ['none', 'action', 'adventure', 'animation', 'comedy', 'crime',
+      'documentary', 'drama', 'family', 'fantasy', 'film-noir', 'history', 'horror',
+      'music', 'mystery', 'sports', 'romance', 'science-fiction', 'thriller',
+      'war', 'western', 'biography', 'musical']
     const { anchorGenres } = this.state
     const { locale } = this.props.locales
+    const { search } = this.props
     return (
       <div>
         <Button
@@ -39,7 +43,7 @@ class Sort extends Component {
            aria-haspopup="true"
            onClick={this.openGenres}
          >
-           Genres
+           {search.genre ? locale.genres[search.genre] : 'Genres'}
          </Button>
          <Menu
            id="simple-menu"
