@@ -30,7 +30,7 @@ class Movie extends React.Component {
           synopsis: json.synopsis,
           genres: json.genres,
           year: json.year,
-          time: json.runtime,
+          time: parseInt(json.runtime / 60) + 'h' + json.runtime % 60,
           trailer: this.parseYtLink(json.trailer)
         }})
         console.log(json)
@@ -46,7 +46,7 @@ class Movie extends React.Component {
           synopsis: json.description_intro,
           genres: json.genres,
           year: json.year,
-          time: json.runtime,
+          time: parseInt(json.runtime / 60) + 'h' + json.runtime % 60,
           trailer: this.parseYtLink(json.yt_trailer_code)
         }})
         console.log(json)
