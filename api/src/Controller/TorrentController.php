@@ -13,7 +13,7 @@ use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 use Vohof\Transmission;
 
-class IndexController extends AbstractController
+class TorrentController extends AbstractController
 {
     /**
      * Transmission configuration.
