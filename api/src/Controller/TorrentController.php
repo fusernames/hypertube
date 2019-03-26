@@ -54,10 +54,10 @@ class TorrentController extends AbstractController
         $data = $request->getContent();
         $data = json_decode($data);
         $transmission = new Transmission($this->transmissionConfig);
-        if ($data->torrent_magnet !== null) {
-            $torrent = $transmission->add($data->torrent_magnet);
-        } else if ($data->torrent_url !== null) {
-            $torrent = $transmission->add(base64_encode(file_get_contents($data->torrent_url)), true);
+        if ($data['torrent_magnet'] !== null) {
+            $torrent = $transmission->add($data['torrent_magnet']);
+        } else if ($data['torrent_magnet'] !== null) {
+            $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_magnet'])), true);
         } else {
             return new JsonResponse(['error' => 'POST_ERROR']);
         }
