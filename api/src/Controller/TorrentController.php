@@ -67,15 +67,9 @@ class TorrentController extends AbstractController
     /**
      * @Route("/torrent/status/{id}", name="status_torrent", requirements={"page"="\d+"})
      */
-    public function statusTorrent(Request $request) {
-        $data = $request->getContent();
-        $data = json_decode($data, true);
+    public function statusTorrent($id) {
         $transmission = new Transmission($this->transmissionConfig);
-        if ($data['id'] !== null) {
-            $infos = $transmission->get($data['id'])['torrents'][0];
-            return new JsonResponse(['success' => ($infos['downloadedEver'] / $infos['totalSize'])]);            
-        } else {
-            return new JsonResponse(['error' => 'POST_ERROR']);
-        }
+        $infos = $transmission->get($id)['torrents'][0];
+        return new JsonResponse(['success' => ($infos['downloadedEver'] / $infos['totalSize'])]);            
     }
 }
