@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+use App\Entity\Movie;
 
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
@@ -47,13 +47,84 @@ class TorrentController extends AbstractController
         }
     }
 
+    public function addMovie($torrent, $torrentLink) {
+        $transmission = new Transmission($this->transmissionConfig);
+        $entityManager = $this->getDoctrine()->getManager();
+        $searched = $entityManager->getRepository(Movie::class)->findOneBy(['torrentLink' => $torrentLink]);
+        if (!$searched) {
+            $data = $transmission->get($torrent['id']);
+            $movie = new Movie();
+            $movie
+                ->setName($torrent['name'])
+                ->setTorrentLink($torrentLink)
+                ->setTorrentId($torrent['id'])
+                ->setFinished(false)
+            ;
+            $entityManager->persist($movie);
+            $entityManager->flush();
+        }
+    }
+
     /**
      * @Route("/torrent/download", name="download_torrent", methods={"POST"})
      */
-    public function dlTorrent() {
+    public function dlTorrent(Request $request) {
         $transmission = new Transmission($this->transmissionConfig);
-        $torrent = $transmission->add(base64_encode(file_get_contents("https://yts.am/torrent/download/DCAED080216E8495EADFA2D72EB16E2E9B9A7172")), true);
-        // $torrent = $transmission->add('magnet:?xt=urn:btih:11A2AC68A11634E980F265CB1433C599D017A759&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337');
-        return new JsonResponse($transmission->getStats());
+        // Decodes post json
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+        if (isset($data['torrent_magnet'])) {
+            $torrent = $transmission->add($data['torrent_magnet']);
+            $this->addMovie(
+                isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
+                $data['torrent_magnet']
+            );
+        } else if (isset($data['torrent_url'])) {
+            $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_url'])), true);
+            $this->addMovie(
+                isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
+                $data['torrent_url']
+            );
+        } else {
+            // Torrent might be already downloaded
+            return new JsonResponse(['error' => 'POST_ERROR']);
+        }
+        // Id is temporary since idk how entity works
+        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS']);
+    }
+
+    /**
+     * @Route("/torrent/status", name="status_torrent", methods={"POST"})
+     */
+    public function statusTorrent(Request $request) {
+        $transmission = new Transmission($this->transmissionConfig);
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository(Movie::class);
+        // Decodes post json
+        $data = $request->getContent();
+        $data = json_decode($data, true);
+        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'NOT_DOWNLOADED_TORRENT']);
+        $torrentLink = $data['torrent_link'];
+        // Loads the asked movie
+        $movie = $repository->findOneBy(['torrentLink' => $torrentLink]);
+        // If unknown id, returns
+        if (!$movie) return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
+        $infos = $transmission->get($movie->getTorrentId())['torrents'];
+        if (sizeof($infos) === 1) {
+            $infos = $infos[0];
+            $percentDone = $infos['percentDone'];
+            // If download is finished, put movie as finished.
+            if (($percentDone === 1 || $infos['isFinished'] === true || $infos['leftUntilDone'] === 0) && $infos['status'] !== 4) {
+                $transmission->remove($movie->getTorrentId());
+                $movie->setFinished(true);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 'DOWNLOAD_ENDED']);
+            }
+            // Download percentage
+            return new JsonResponse(['success' => $percentDone]);
+        } else {
+            // Film might be download then
+            return new JsonResponse(['error' => 'UNKNOWN_TORRENT']);
+        }
     }
 }

@@ -59,14 +59,24 @@ class Movie
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
-    private $description;
+    private $torrentLink;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="movie", orphanRemoval=true)
      */
     private $messages;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $torrentId;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $finished = false;
 
     public function __construct()
     {
@@ -129,14 +139,14 @@ class Movie
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getTorrentLink(): ?string
     {
-        return $this->description;
+        return $this->torrentLink;
     }
 
-    public function setDescription(?string $description): self
+    public function setTorrentLink(string $torrentLink): self
     {
-        $this->description = $description;
+        $this->torrentLink = $torrentLink;
 
         return $this;
     }
@@ -168,6 +178,30 @@ class Movie
                 $message->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTorrentId(): ?int
+    {
+        return $this->torrentId;
+    }
+
+    public function setTorrentId(int $torrentId): self
+    {
+        $this->torrentId = $torrentId;
+
+        return $this;
+    }
+
+    public function getFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(bool $finished): self
+    {
+        $this->finished = $finished;
 
         return $this;
     }
