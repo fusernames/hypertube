@@ -34,7 +34,7 @@ const translations = {
   movie: {
     synopsis: ["Synopsis", "Synopsis"],
     production: ["Production", "Production"],
-    time: ["Run time (min)", "Durée (min)"],
+    time: ["Duration", "Durée"],
     genres: ["Genres", "Genres"],
     trailer: ["Trailer", "Bande annonce"],
     download: ["Download", "Télécharger"],
