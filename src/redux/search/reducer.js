@@ -4,6 +4,7 @@ const initialState = {
   page: '',
   genre: '',
   sort: '',
+  api: 'yts',
   isFetching: false
 }
 
@@ -15,12 +16,18 @@ function searchReducer(state = initialState, action) {
     }
   } else if (action.type === 'SET_MOVIES') {
     return {
-      word: action.word,
+      ...state,
       movies: action.movies,
-      page: 1,
       isFetching: false,
+    }
+  } else if (action.type === 'SET_OPTIONS') {
+    return {
+      ...state,
+      page: 1,
+      word: action.word,
       genre: action.genre,
-      sort: action.sort
+      sort: action.sort,
+      api: action.api
     }
   } else if (action.type === 'ADD_MOVIES') {
     console.log(action.movies)

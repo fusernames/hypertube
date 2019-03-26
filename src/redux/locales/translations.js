@@ -35,7 +35,7 @@ const translations = {
     sort: ["Sort by", "Trier par"],
     rating: ["Rating", "Note"],
     title: ["Title", "Titre"],
-    year: ["Year", "Year"],
+    year: ["Production year", "Annee de production"],
     none: ["None", "Aucun"]
   },
   movie: {

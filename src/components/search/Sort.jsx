@@ -9,29 +9,30 @@ class Sort extends Component {
 
   state = {
     anchorGenres: null,
-    anchorSorts: null
+    anchorSorts: null,
+    anchorAPIs: null,
   }
 
   openGenres = (e) => {
-    this.setState({ anchorGenres: e.currentTarget });
+    this.setState({ ...this.state, anchorGenres: e.currentTarget });
   }
 
   openSorts = (e) => {
-    this.setState({ anchorSorts: e.currentTarget });
+    this.setState({ ...this.state, anchorSorts: e.currentTarget });
   }
 
-  closeGenres = () => {
-    this.setState({ anchorGenres: null });
+  openAPIs = (e) => {
+    this.setState({ ...this.state, anchorAPIs: e.currentTarget });
   }
 
-  closeSorts = () => {
-    this.setState({ anchorSorts: null });
+  closeMenu = () => {
+    this.setState({ anchorGenres: null, anchorSorts: null, anchorAPIs: null });
   }
 
   selectGenre = (genre) => {
     const { dispatch, search } = this.props
 
-    this.closeGenres()
+    this.closeMenu()
     if (genre === 'none')
       genre = ''
     if (genre !== search.genre)
@@ -41,11 +42,19 @@ class Sort extends Component {
   selectSort = (sort) => {
     const { dispatch, search } = this.props
 
-    this.closeSorts()
+    this.closeMenu()
     if (sort === 'none')
       sort = ''
     if (sort !== search.sort)
       dispatch(fetchMovies({sort}))
+  }
+
+  selectAPI = (api) => {
+    const { dispatch, search } = this.props
+
+    this.closeMenu()
+    if (api !== search.api)
+      dispatch(fetchMovies({api}))
   }
 
   render() {
@@ -54,7 +63,7 @@ class Sort extends Component {
       'music', 'mystery', 'sports', 'romance', 'science-fiction', 'thriller',
       'war', 'western', 'biography', 'musical']
     const sorts = ['none', 'rating', 'year', 'title']
-    const { anchorGenres, anchorSorts } = this.state
+    const { anchorGenres, anchorSorts, anchorAPIs } = this.state
     const { locale } = this.props.locales
     const { search } = this.props
     return (
@@ -68,7 +77,7 @@ class Sort extends Component {
         <Menu
           anchorEl={anchorGenres}
           open={Boolean(anchorGenres)}
-          onClose={this.closeGenres}
+          onClose={this.closeMenu}
         >
          {genres.map(genre => {
            return <MenuItem key={genre} onClick={() => this.selectGenre(genre)}>{locale.genres[genre]}</MenuItem>
@@ -83,11 +92,25 @@ class Sort extends Component {
         <Menu
           anchorEl={anchorSorts}
           open={Boolean(anchorSorts)}
-          onClose={this.closeSorts}
+          onClose={this.closeMenu}
         >
          {sorts.map(sort => {
            return <MenuItem key={sort} onClick={() => this.selectSort(sort)}>{locale.sort[sort]}</MenuItem>
          })}
+        </Menu>
+        <Button
+          color="primary"
+          onClick={this.openAPIs}
+        >
+          {'API : ' + search.api}
+        </Button>
+        <Menu
+          anchorEl={anchorAPIs}
+          open={Boolean(anchorAPIs)}
+          onClose={this.closeMenu}
+        >
+          <MenuItem onClick={() => this.selectAPI('yts')}>YTS</MenuItem>
+          <MenuItem onClick={() => this.selectAPI('popcorntime')}>popcorntime</MenuItem>
         </Menu>
       </div>
     )
