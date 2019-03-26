@@ -19,6 +19,10 @@ class Movie extends React.Component {
     return 'https://www.youtube.com/embed/' + res
   }
 
+  pad = nbr => {
+    return nbr > 0 && nbr < 10 ? '0' + nbr : nbr;
+  }
+
   fetchMovie = (id) => {
     if (id[0] == 't') {
       fetch('https://tv-v2.api-fetch.website/movie/' + id)
@@ -30,7 +34,7 @@ class Movie extends React.Component {
           synopsis: json.synopsis,
           genres: json.genres,
           year: json.year,
-          time: parseInt(json.runtime / 60) + 'h' + json.runtime % 60,
+          time: parseInt(json.runtime / 60) + 'h' + this.pad(json.runtime % 60),
           trailer: this.parseYtLink(json.trailer)
         }})
         console.log(json)
@@ -46,7 +50,7 @@ class Movie extends React.Component {
           synopsis: json.description_intro,
           genres: json.genres,
           year: json.year,
-          time: parseInt(json.runtime / 60) + 'h' + json.runtime % 60,
+          time: parseInt(json.runtime / 60) + 'h' + this.pad(json.runtime % 60),
           trailer: this.parseYtLink(json.yt_trailer_code)
         }})
         console.log(json)
@@ -71,39 +75,39 @@ class Movie extends React.Component {
       <div>
         <Typography variant="h5" color="primary" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
-          <Grid item xs={12} sm={6} md={5}>
+          <Grid item xs={12} sm={5} md={5}>
             <img className={classes.img} src={movie.image} width="100%"/>
           </Grid>
-          <Grid item xs={12} sm={6} md={7}>
+          <Grid item xs={12} sm={7} md={7}>
             <Grid container spacing={8}>
               <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>format_align_left</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.synopsis}</Typography>
-                  <Typography variant="caption" color="textPrimary">{movie.synopsis}</Typography>
+                  <Typography color="textPrimary">{movie.synopsis}</Typography>
                 </div>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>movie_creation</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.production}</Typography>
-                  <Typography variant="caption" color="textPrimary">{movie.year}</Typography>
+                  <Typography color="textPrimary">{movie.year}</Typography>
                 </div>
               </Grid>
               <Grid item xs={12} md={6}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>timer</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.time}</Typography>
-                  <Typography variant="caption" color="textPrimary">{movie.time}</Typography>
+                  <Typography color="textPrimary">{movie.time}</Typography>
                 </div>
               </Grid>
               <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>local_movies</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.genres}</Typography>
-                  <Typography variant="caption" color="textPrimary">
-                    {movie.genres.map(gender => {
-                      return <div key={gender}>{gender}</div>
+                  <Typography color="textPrimary">
+                    {movie.genres.map(genre => {
+                      return <div key={genre}>{locale.genres[genre.toLowerCase()]}</div>
                     })}
                   </Typography>
                 </div>
@@ -135,6 +139,7 @@ const styles = theme => ({
     padding:'15px 20px'
   },
   frame: {
+    padding: '0 10px',
     margin: '0 -20px',
     width: 'calc(100% + 40px)',
     height: '20vw',

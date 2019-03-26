@@ -21,7 +21,7 @@ class Navbar extends React.Component {
   searchChange = (e) => {
     if (history.location.pathname != '/')
       history.push('/')
-    this.props.dispatch(fetchMovies(e.target.value))
+    this.props.dispatch(fetchMovies({word: e.target.value}))
   }
 
   toggleSideNav = () => {

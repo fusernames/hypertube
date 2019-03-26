@@ -2,6 +2,7 @@ const initialState = {
   word: '',
   movies: [],
   page: '',
+  genre: '',
   isFetching: false
 }
 
@@ -17,6 +18,7 @@ function searchReducer(state = initialState, action) {
       movies: action.movies,
       page: 1,
       isFetching: false,
+      genre: action.genre
     }
   } else if (action.type === 'ADD_MOVIES') {
     console.log(action.movies)

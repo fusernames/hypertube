@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Typography, Grid } from '@material-ui/core'
-import req from '../../utils/req'
+import { Typography, Grid, Button, Menu, MenuItem } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
 import { Link } from 'react-router-dom'
+import Sort from './Sort'
 
 class Search extends Component {
 
@@ -34,6 +34,9 @@ class Search extends Component {
     const { classes } = this.props
     return (
       <Grid container spacing={8}>
+        <Grid item xs={12}>
+          <Sort />
+        </Grid>
         {movies.map(movie => {
           return (
             <Grid key={movie.id} item xs={6} sm={3} md={2}>
