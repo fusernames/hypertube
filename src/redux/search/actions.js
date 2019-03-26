@@ -23,7 +23,7 @@ export function formatMovies(list, callback) {
   let code = ''
   for(let i in list) {
     if (list[i].images && list[i].images.banner) {
-      image = list[i].images.banner
+      image = list[i].images.poster
       title = list[i].title
       id = list[i].imdb_id
       code = list[i].imdb_id
@@ -54,12 +54,12 @@ export function fetchMovies(word) {
     if (word) url += '?keywords=' + word
     dispatch(fetching())
     fetch(url).then(res => res.json()).then(json => {
-      list.push(...json)
+      list = [...json]
       url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
       if (word) url += '&query_term=' + word
       fetch(url).then(res => res.json()).then(json => {
         if (json.data.movies)
-          list.push(...json.data.movies)
+          list = [...json.data.movies, ...list]
         formatMovies(list, (movies) => {
           dispatch(setMovies(movies, word))
         })
@@ -79,12 +79,12 @@ export function fetchAddMovies() {
       dispatch(fetching())
     }
     fetch(url).then(res => res.json()).then(json => {
-      list.push(...json)
+      list = [...json]
       url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30&page=' + search.page
       if (search.word) url += '&query_term=' + search.word
       fetch(url).then(res => res.json()).then(json => {
         if (json.data.movies)
-          list.push(...json.data.movies)
+          list = [...json.data.movies, ...list]
         formatMovies(list, (movies) => {
           dispatch(addMovies(movies))
         })

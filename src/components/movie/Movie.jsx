@@ -57,6 +57,10 @@ class Movie extends React.Component {
   componentWillMount() {
     const id = this.props.match.params.id
     this.fetchMovie(id)
+    var ifr = document.getElementById('ytplayer')
+    if (ifr) {
+      ifr.contentWindow.location.replace('http://google.com')
+    }
   }
 
   render() {
@@ -67,10 +71,10 @@ class Movie extends React.Component {
       <div>
         <Typography variant="h5" color="primary" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
-          <Grid item xs={12} sm={6} md={5} lg={5}>
+          <Grid item xs={12} sm={6} md={5}>
             <img className={classes.img} src={movie.image} width="100%"/>
           </Grid>
-          <Grid item xs={12} sm={6} md={7} lg={7}>
+          <Grid item xs={12} sm={6} md={7}>
             <Grid container spacing={8}>
               <Grid item xs={12}>
                 <div className={classes.paper}>
