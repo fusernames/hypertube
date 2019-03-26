@@ -52,9 +52,14 @@ class TorrentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $searched = $entityManager->getRepository(Movie::class)->findOneBy(['torrentLink' => $torrentLink]);
         if (!$searched) {
-            return $transmission->get($torrent['id']);
+            $data = $transmission->get($torrent['id']);
             $movie = new Movie();
-            $movie->setName("gg");
+            $movie
+                ->setName($torrent['name'])
+                ->setTorrentLink($torrentLink)
+            ;
+            $entityManager->presist($movie);
+            $entityManager->flush();
         }
     }
 
@@ -67,13 +72,13 @@ class TorrentController extends AbstractController
         $transmission = new Transmission($this->transmissionConfig);
         if (isset($data['torrent_magnet'])) {
             $torrent = $transmission->add($data['torrent_magnet']);
-            $data = $this->addMovie(
+            $this->addMovie(
                 isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
                 $data['torrent_magnet']
             );
         } else if (isset($data['torrent_url'])) {
             $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_url'])), true);
-            $data = $this->addMovie(
+            $this->addMovie(
                 isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
                 $data['torrent_url']
             );
@@ -82,7 +87,7 @@ class TorrentController extends AbstractController
             return new JsonResponse(['error' => 'POST_ERROR']);
         }
         // Id is temporary since idk how entity works
-        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS', $data]);
+        return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS']);
     }
 
     /**
