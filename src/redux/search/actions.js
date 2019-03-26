@@ -64,26 +64,29 @@ export function formatMovies(list, callback, set = false) {
 export function fetchMovies(options = {}) {
   return (dispatch, getState) => {
 
-    let { word, genre } = options
+    let { word, genre, sort } = options
     let search = getState().search
     if (word === undefined) word = search.word
     if (genre === undefined) genre = search.genre
+    if (sort === undefined) sort = search.sort
 
     let list = []
     let url = 'https://tv-v2.api-fetch.website/movies/1?'
     if (word) url += '&keywords=' + word
     if (genre) url += '&genre=' + genre
+    if (sort) url += '&sort=' + sort
     dispatch(fetching())
     fetch(url).then(res => res.json()).then(json => {
       list = [...json]
       url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
       if (word) url += '&query_term=' + word
       if (genre) url += '&genre=' + translateGenre(genre)
+      if (sort) url += '&sort_by=' + sort
       fetch(url).then(res => res.json()).then(json => {
         if (json.data.movies)
           list = [...json.data.movies, ...list]
         formatMovies(list, (movies) => {
-          dispatch(setMovies(movies, word, genre))
+          dispatch(setMovies(movies, word, genre, sort))
         }, true)
       })
     })
@@ -98,6 +101,7 @@ export function fetchAddMovies() {
     let url = 'https://tv-v2.api-fetch.website/movies/' + search.page + 1 + '?'
     if (search.word) url += '&keywords=' + search.word
     if (search.genre) url += '&genre=' + search.genre
+    if (search.sort) url += '&sort=' + search.sort
     if (search.isFetching) return
     else {
       dispatch(fetching())
@@ -107,6 +111,7 @@ export function fetchAddMovies() {
       url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page
       if (search.word) url += '&query_term=' + search.word
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
+      if (search.sort) url += '&sort_by=' + search.sort
       fetch(url).then(res => res.json()).then(json => {
         if (json.data.movies)
           list = [...json.data.movies, ...list]
@@ -125,12 +130,13 @@ export function addMovies(res) {
   }
 }
 
-export function setMovies(res, word, genre) {
+export function setMovies(res, word, genre, sort) {
   return {
     type: 'SET_MOVIES',
     word: word,
     movies: res,
-    genre: genre
+    genre: genre,
+    sort: sort
   }
 }
 
