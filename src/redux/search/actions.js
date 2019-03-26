@@ -47,8 +47,14 @@ export function formatMovies(list, callback) {
   callback(movies)
 }
 
-export function fetchMovies(word) {
-  return (dispatch) => {
+export function fetchMovies(options = {}) {
+  return (dispatch, getState) => {
+
+    let { word, genre } = options
+    let search = getState().search
+    if (word === undefined) word = search.word
+    if (genre === undefined) genre = search.genre
+
     let list = []
     let url = 'https://tv-v2.api-fetch.website/movies/1'
     if (word) url += '?keywords=' + word
