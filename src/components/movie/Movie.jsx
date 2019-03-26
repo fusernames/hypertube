@@ -105,11 +105,11 @@ class Movie extends React.Component {
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>local_movies</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.genres}</Typography>
-                  <Typography color="textPrimary">
-                    {movie.genres.map(genre => {
-                      return <div key={genre}>{locale.genres[genre.toLowerCase()]}</div>
-                    })}
-                  </Typography>
+                  {movie.genres.map(genre => {
+                    return <Typography color="textPrimary" key={genre}>
+                      {locale.genres[genre.toLowerCase()]}
+                    </Typography>
+                  })}
                 </div>
               </Grid>
               <Grid item xs={12}>
@@ -136,11 +136,11 @@ const styles = theme => ({
     background: theme.palette.secondary.dark,
     height:'100%',
     borderRadius: '5px',
-    padding:'15px 20px'
+    padding:'15px 20px',
+    overflow:'hidden'
   },
   frame: {
-    padding: '0 10px',
-    margin: '0 -20px',
+    margin: '0 -20px -19px -20px',
     width: 'calc(100% + 40px)',
     height: '20vw',
     minHeight: '250px'
