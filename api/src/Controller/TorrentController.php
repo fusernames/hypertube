@@ -53,7 +53,6 @@ class TorrentController extends AbstractController
     public function dlTorrent(Request $request) {
         $data = $request->getContent();
         $data = json_decode($data);
-        return new JsonResponse($data);
         $transmission = new Transmission($this->transmissionConfig);
         if ($data->torrent_magnet !== null) {
             $torrent = $transmission->add($data->torrent_magnet);
