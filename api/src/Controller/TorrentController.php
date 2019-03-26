@@ -65,10 +65,10 @@ class TorrentController extends AbstractController
         $data = $request->getContent();
         $data = json_decode($data, true);
         $transmission = new Transmission($this->transmissionConfig);
-        if ($data['torrent_magnet'] !== null) {
+        if (isset($data['torrent_magnet'])) {
             $torrent = $transmission->add($data['torrent_magnet']);
             $data = $this->addMovie($torrent['torrent-duplicate'], $data['torrent_magnet']);
-        } else if ($data['torrent_url'] !== null) {
+        } else if (isset($data['torrent_url'])) {
             $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_url'])), true);
             $data = $this->addMovie($torrent['torrent-duplicate'], $data['torrent_url']);
         } else {
