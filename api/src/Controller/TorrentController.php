@@ -58,7 +58,7 @@ class TorrentController extends AbstractController
                 ->setName($torrent['name'])
                 ->setTorrentLink($torrentLink)
             ;
-            $entityManager->presist($movie);
+            $entityManager->persist($movie);
             $entityManager->flush();
         }
     }
