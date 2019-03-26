@@ -58,6 +58,7 @@ class TorrentController extends AbstractController
                 ->setName($torrent['name'])
                 ->setTorrentLink($torrentLink)
                 ->setTorrentId($torrent['id'])
+                ->setFinished(false)
             ;
             $entityManager->persist($movie);
             $entityManager->flush();
@@ -68,9 +69,10 @@ class TorrentController extends AbstractController
      * @Route("/torrent/download", name="download_torrent", methods={"POST"})
      */
     public function dlTorrent(Request $request) {
+        $transmission = new Transmission($this->transmissionConfig);
+        // Decodes post json
         $data = $request->getContent();
         $data = json_decode($data, true);
-        $transmission = new Transmission($this->transmissionConfig);
         if (isset($data['torrent_magnet'])) {
             $torrent = $transmission->add($data['torrent_magnet']);
             $this->addMovie(
@@ -96,14 +98,27 @@ class TorrentController extends AbstractController
      */
     public function statusTorrent($id) {
         $transmission = new Transmission($this->transmissionConfig);
-        $repository = $this->getDoctrine()->getRepository(Movie::class);
-        $searched = $repository->find($id);
-        if (!$searched) return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
-        $infos = $transmission->get($searched->getTorrentId())['torrents'];
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository(Movie::class);
+        // Loads the asked movie
+        $movie = $repository->find($id);
+        // If unknown id, returns
+        if (!$movie) return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
+        $infos = $transmission->get($movie->getTorrentId())['torrents'];
         if (sizeof($infos) === 1) {
             $infos = $infos[0];
-            return new JsonResponse(['success' => ($infos['downloadedEver'] / $infos['totalSize'])]);            
+            $percentDone = $infos['percentDone'];
+            // If download is finished, put movie as finished.
+            if (($percentDone === 1 || $infos['isFinished'] === true || $infos['leftUntilDone'] === 0) && $infos['status'] !== 4) {
+                $transmission->remove($movie->getTorrentId());
+                $movie->setFinished(true);
+                $entityManager->flush();
+                return new JsonResponse(['success' => 'DOWNLOAD_ENDED']);
+            }
+            // Download percentage
+            return new JsonResponse(['success' => $percentDone]);
         } else {
+            // Film might be download then
             return new JsonResponse(['error' => 'UNKNOWN_TORRENT']);
         }
     }

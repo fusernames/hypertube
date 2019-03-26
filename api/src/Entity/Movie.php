@@ -73,6 +73,11 @@ class Movie
      */
     private $torrentId;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $finished = false;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -185,6 +190,18 @@ class Movie
     public function setTorrentId(int $torrentId): self
     {
         $this->torrentId = $torrentId;
+
+        return $this;
+    }
+
+    public function getFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(bool $finished): self
+    {
+        $this->finished = $finished;
 
         return $this;
     }
