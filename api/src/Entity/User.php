@@ -75,11 +75,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *                  "groups"={"rest-password-send-email"}
  *              }
  *          },
- *          "reset-password"={
- *              "path"="/users/me/reset-password/{token}",
- *              "method"="POST",
- *              "controller"=ResettingPasswordTokenController::class
- *          },
  *          "post",
  *          "get"
  *      }
