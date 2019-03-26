@@ -135,6 +135,7 @@ const styles = theme => ({
     padding:'15px 20px'
   },
   frame: {
+    padding: '0 10px',
     margin: '0 -20px',
     width: 'calc(100% + 40px)',
     height: '20vw',
