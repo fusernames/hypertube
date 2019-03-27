@@ -21,6 +21,7 @@ use App\Controller\ResettingPasswordSendEmailController;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -133,6 +134,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      arguments={"orderParameterName"="order"}
  * )
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class User extends BaseUser
 {
