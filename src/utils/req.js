@@ -14,19 +14,17 @@ const req = (url, body) => {
     .then(response => {
       if (response.ok) {
         response.json().then(json => {
-          if (json.success !== undefined)
-            resolve(json.success)
-          else {
-            store.dispatch(enqueueSnackbar(json.error))
-            reject()
-          }
+          resolve(json)
         })
       } else {
         console.error(response.statusText)
+        store.dispatch(enqueueSnackbar('error', response.statusText))
         reject()
       }
     })
     .catch(err => {
+      store.dispatch(enqueueSnackbar('error', err))
+      console.error(err)
       reject()
     })
   })

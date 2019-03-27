@@ -3,6 +3,7 @@ import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
+import req from '../../utils/req'
 
 class Movie extends React.Component {
 
@@ -25,35 +26,31 @@ class Movie extends React.Component {
 
   fetchMovie = (id) => {
     if (id[0] == 't') {
-      fetch('https://tv-v2.api-fetch.website/movie/' + id)
-      .then(res => res.json())
-      .then(json => {
+      req('https://tv-v2.api-fetch.website/movie/' + id)
+      .then(res => {
         this.setState({movie: {
-          image: json.images.poster,
-          title: json.title,
-          synopsis: json.synopsis,
-          genres: json.genres,
-          year: json.year,
-          time: parseInt(json.runtime / 60) + 'h' + this.pad(json.runtime % 60),
-          trailer: this.parseYtLink(json.trailer)
+          image: res.images.poster,
+          title: res.title,
+          synopsis: res.synopsis,
+          genres: res.genres,
+          year: res.year,
+          time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
+          trailer: this.parseYtLink(res.trailer)
         }})
-        console.log(json)
       })
     } else {
-      fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
-      .then(res => res.json())
-      .then(json => {
-        json = json.data.movie
+      req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
+      .then(res => {
+        res = res.data.movie
         this.setState({movie: {
-          image: json.large_cover_image,
-          title: json.title,
-          synopsis: json.description_intro,
-          genres: json.genres,
-          year: json.year,
-          time: parseInt(json.runtime / 60) + 'h' + this.pad(json.runtime % 60),
-          trailer: this.parseYtLink(json.yt_trailer_code)
+          image: res.large_cover_image,
+          title: res.title,
+          synopsis: res.description_intro,
+          genres: res.genres,
+          year: res.year,
+          time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
+          trailer: this.parseYtLink(res.yt_trailer_code)
         }})
-        console.log(json)
       })
     }
   }
