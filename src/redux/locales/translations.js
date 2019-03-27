@@ -31,6 +31,9 @@ const translations = {
   account: {
     btn: ["Update", "Mettre à jour"],
   },
+  search : {
+    no_results: ["There is no results for you research", "Il n'y a aucun résultat pour votre recherche"]
+  },
   sort: {
     sort: ["Sort by", "Trier par"],
     rating: ["Rating", "Note"],
@@ -45,6 +48,7 @@ const translations = {
     genres: ["Genres", "Genres"],
     trailer: ["Trailer", "Bande annonce"],
     download: ["Download", "Télécharger"],
+    rating: ["Rating", "Note"]
   },
   alerts: {
     ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],

@@ -13,10 +13,6 @@ function translateGenre(genre) {
 }
 
 export function exists(code, list, set = false) {
-  for (let i in list) {
-    if (list[i].code == code)
-      return true
-  }
   const { movies } = store.getState().search
   if (!set) {
     for (let i in movies) {

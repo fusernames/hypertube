@@ -69,7 +69,7 @@ class Sort extends Component {
     return (
       <div>
         <Button
-           color={search.genre ? 'primary' : 'textPrimary'}
+           color={search.genre ? 'primary' : 'default'}
            onClick={this.openGenres}
          >
            {search.genre ? locale.genres[search.genre] : 'Genre'}
@@ -84,7 +84,7 @@ class Sort extends Component {
          })}
         </Menu>
         <Button
-          color={search.sort ? 'primary' : 'textPrimary'}
+          color={search.sort ? 'primary' : 'default'}
           onClick={this.openSorts}
         >
           {search.sort ? locale.sort[search.sort] : locale.sort.sort}

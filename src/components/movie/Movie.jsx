@@ -14,10 +14,12 @@ class Movie extends React.Component {
   }
 
   parseYtLink(link) {
-    let res = link.split('?v=')
-    if (res[1])
-      res = res[1]
-    return 'https://www.youtube.com/embed/' + res
+    if (link) {
+      let res = link.split('?v=')
+      if (res[1])
+        res = res[1]
+      return 'https://www.youtube.com/embed/' + res
+    }
   }
 
   pad = nbr => {
@@ -34,6 +36,7 @@ class Movie extends React.Component {
           synopsis: res.synopsis,
           genres: res.genres,
           year: res.year,
+          rating: res.rating.percentage / 10,
           time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
           trailer: this.parseYtLink(res.trailer)
         }})
@@ -48,6 +51,7 @@ class Movie extends React.Component {
           synopsis: res.description_intro,
           genres: res.genres,
           year: res.year,
+          rating: res.rating,
           time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
           trailer: this.parseYtLink(res.yt_trailer_code)
         }})
@@ -58,10 +62,6 @@ class Movie extends React.Component {
   componentWillMount() {
     const id = this.props.match.params.id
     this.fetchMovie(id)
-    var ifr = document.getElementById('ytplayer')
-    if (ifr) {
-      ifr.contentWindow.location.replace('http://google.com')
-    }
   }
 
   render() {
@@ -84,7 +84,7 @@ class Movie extends React.Component {
                   <Typography color="textPrimary">{movie.synopsis}</Typography>
                 </div>
               </Grid>
-              <Grid item xs={12} sm={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>movie_creation</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.production}</Typography>
@@ -92,6 +92,13 @@ class Movie extends React.Component {
                 </div>
               </Grid>
               <Grid item xs={12} md={6}>
+                <div className={classes.paper}>
+                  <Icon color="primary" style={{float:'right'}}>star</Icon>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.rating}</Typography>
+                  <Typography color="textPrimary">{movie.rating}</Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>timer</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.time}</Typography>
@@ -109,13 +116,15 @@ class Movie extends React.Component {
                   })}
                 </div>
               </Grid>
-              <Grid item xs={12}>
-                <div className={classes.paper}>
-                  <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
-                  <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
-                </div>
-              </Grid>
+              {movie.trailer &&
+                <Grid item xs={12}>
+                  <div className={classes.paper}>
+                    <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
+                    <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
+                    <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
+                  </div>
+                </Grid>
+              }
             </Grid>
           </Grid>
         </Grid>

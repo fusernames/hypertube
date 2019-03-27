@@ -32,22 +32,29 @@ class Search extends Component {
   render() {
     const { movies } = this.props.search
     const { classes } = this.props
+    const { locale } = this.props.locales
+    console.log(movies)
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
           <Sort />
         </Grid>
-        {movies.map(movie => {
-          return (
-            <Grid key={movie.id} item xs={6} sm={3} md={2}>
-              <Link to={'/movie/' + movie.id} style={{textDecoration: 'none'}}>
-                <div className={classes.movie}>
-                  <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
-                </div>
-              </Link>
-            </Grid>
-          )
-        })}
+        <Grid item xs={12}>
+          {movies.length == 0 && <Typography align="center">{locale.search.no_results}</Typography>}
+          <Grid container spacing={8}>
+            {movies.map(movie => {
+              return (
+                <Grid key={movie.id} item xs={6} sm={3} md={2}>
+                  <Link to={'/movie/' + movie.id} style={{textDecoration: 'none'}}>
+                    <div className={classes.movie}>
+                      <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
+                    </div>
+                  </Link>
+                </Grid>
+              )
+            })}
+          </Grid>
+        </Grid>
       </Grid>
     )
   }
