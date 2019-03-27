@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\MediaObject;
 use Doctrine\ORM\Mapping as ORM;
 use App\Controller\GetMeController;
 use FOS\UserBundle\Model\UserInterface;
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\ResettingPasswordTokenController;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\ResettingPasswordSendEmailController;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -24,16 +26,29 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  * @ApiResource(
- *      normalizationContext={"groups"={"user", "user:read"}},
- *      denormalizationContext={"groups"={"user", "user:write"}},
+ *      normalizationContext={
+ *          "groups"={
+ *              "user",
+ *              "user:read"
+ *          }
+ *      },
+ *      denormalizationContext={
+ *          "groups"={
+ *              "user",
+ *              "user:write"
+ *          }
+ *      },
  *      itemOperations={
  *          "me"={
  *              "method"="GET",
  *              "path"="users/me",
  *              "access_control"="is_granted('ROLE_USER')",
- *              "access_control_message"="Sorry, you must be logged in to perform this action",
- *              "denormalization_context"={"groups"={"me"}},
- *              "normalization_context"={"groups"={"me"}},
+ *              "denormalization_context"={
+ *                  "groups"={"me"}
+ *              },
+ *              "normalization_context"={
+ *                  "groups"={"me"}
+ *              },
  *              "controller"=GetMeController::class,
  *              "defaults"={"_api_receive"=false}
  *          },
@@ -42,16 +57,27 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "path"="users/{id}",
  *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')",
  *              "access_control_message"="Sorry, you are not authorized to update this user.",
- *              "denormalization_context"={"groups"={"me"}},
- *              "normalization_context"={"groups"={"me"}}
+ *              "denormalization_context"={
+ *                  "groups"={"me"}
+ *              },
+ *              "normalization_context"={
+ *                  "groups"={"me"}
+ *              }
  *          },
+ *          "get",
+ *          "put"={
+ *              "method"="PUT",
+ *              "path"="users/{id}",
+ *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')",
+ *              "access_control_message"="Sorry, you are not authorized to update this user."
+ *          },
+ *          
  *          "delete"={
  *              "method"="DELETE",
  *              "path"="users/{id}",
  *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')",
  *              "access_control_message"="Sorry, you are not authorized to delete this user."
- *          },
- *          "get"
+ *          }
  *      },
  *      collectionOperations={
  *          "change-password"={
@@ -129,6 +155,7 @@ class User extends BaseUser
 
     /**
      * @Groups({"user:write", "me", "rest-password-send-email"})
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      */
     protected $email;
 
@@ -187,18 +214,34 @@ class User extends BaseUser
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user", "me"})
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user", "me"})
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your last name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"me"})
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "lang cannot be longer than {{ limit }} characters"
+     * )
      */
     private $lang;
 
@@ -206,6 +249,12 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="owner", orphanRemoval=true)
      */
     private $messages;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\MediaObject", cascade={"persist", "remove"})
+     * @Groups({"user", "me"})
+     */
+    private $avatar;
 
     public function __construct()
     {
@@ -219,6 +268,7 @@ class User extends BaseUser
     public function onCreate() {
        !$this->getCreatedAt() ? $this->setCreatedAt(new \DateTime()) : 0;
        !$this->getUpdatedAt() ? $this->setUpdatedAt(new \DateTime()) : 0;
+       $this->setAvatar(new MediaObject());
        $this->enabled = true;
     }
 
@@ -331,6 +381,18 @@ class User extends BaseUser
                 $message->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?MediaObject
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?MediaObject $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
