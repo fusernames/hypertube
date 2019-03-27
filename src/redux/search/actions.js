@@ -64,29 +64,42 @@ export function formatMovies(list, callback, set = false) {
 export function fetchMovies(options = {}) {
   return (dispatch, getState) => {
 
-    let { word, genre } = options
+    let { word, genre, sort, api } = options
     let search = getState().search
     if (word === undefined) word = search.word
     if (genre === undefined) genre = search.genre
-
+    if (sort === undefined) sort = search.sort
+    if (api === undefined) api = search.api
     let list = []
-    let url = 'https://tv-v2.api-fetch.website/movies/1?'
-    if (word) url += '&keywords=' + word
-    if (genre) url += '&genre=' + genre
-    dispatch(fetching())
-    fetch(url).then(res => res.json()).then(json => {
-      list = [...json]
-      url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
-      if (word) url += '&query_term=' + word
-      if (genre) url += '&genre=' + translateGenre(genre)
+
+    if (api === 'popcorntime' || api === 'yts') {
+      dispatch(setOptions(word, genre, sort, api))
+    }
+    if (api === 'popcorntime') {
+      let url = 'https://tv-v2.api-fetch.website/movies/1?'
+      if (word) url += '&keywords=' + word
+      if (genre) url += '&genre=' + genre
+      if (sort) url += '&sort=' + sort
+      dispatch(fetching())
       fetch(url).then(res => res.json()).then(json => {
-        if (json.data.movies)
-          list = [...json.data.movies, ...list]
-        formatMovies(list, (movies) => {
-          dispatch(setMovies(movies, word, genre))
+        formatMovies(json, (movies) => {
+          dispatch(setMovies(movies))
         }, true)
       })
-    })
+    } else if (api === 'yts') {
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
+      if (word) url += '&query_term=' + word
+      if (genre) url += '&genre=' + translateGenre(genre)
+      if (sort) url += '&sort_by=' + sort
+      dispatch(fetching())
+      fetch(url).then(res => res.json()).then(json => {
+        if (json.data.movies)
+          list = json.data.movies
+        formatMovies(list, (movies) => {
+          dispatch(setMovies(movies))
+        }, true)
+      })
+    }
   }
 }
 
@@ -94,27 +107,33 @@ export function fetchAddMovies() {
   return (dispatch, getState) => {
     let list = []
     let search = getState().search
-
-    let url = 'https://tv-v2.api-fetch.website/movies/' + search.page + 1 + '?'
-    if (search.word) url += '&keywords=' + search.word
-    if (search.genre) url += '&genre=' + search.genre
     if (search.isFetching) return
-    else {
+
+    if (search.api === 'popcorntime') {
+      let url = 'https://tv-v2.api-fetch.website/movies/' + search.page + 1 + '?'
+      if (search.word) url += '&keywords=' + search.word
+      if (search.genre) url += '&genre=' + search.genre
+      if (search.sort) url += '&sort=' + search.sort
       dispatch(fetching())
-    }
-    fetch(url).then(res => res.json()).then(json => {
-      list = [...json]
-      url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page
+      fetch(url).then(res => res.json()).then(json => {
+        formatMovies(json, (movies) => {
+          dispatch(addMovies(movies))
+        })
+      })
+    } else if (search.api === 'yts') {
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=50&page=' + search.page
       if (search.word) url += '&query_term=' + search.word
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
+      if (search.sort) url += '&sort_by=' + search.sort
+      dispatch(fetching())
       fetch(url).then(res => res.json()).then(json => {
         if (json.data.movies)
-          list = [...json.data.movies, ...list]
+          list = json.data.movies
         formatMovies(list, (movies) => {
           dispatch(addMovies(movies))
         })
       })
-    })
+    }
   }
 }
 
@@ -125,12 +144,20 @@ export function addMovies(res) {
   }
 }
 
-export function setMovies(res, word, genre) {
+export function setMovies(movies) {
   return {
     type: 'SET_MOVIES',
+    movies: movies,
+  }
+}
+
+export function setOptions(word, genre, sort, api) {
+  return {
+    type: 'SET_OPTIONS',
     word: word,
-    movies: res,
-    genre: genre
+    genre: genre,
+    sort: sort,
+    api: api,
   }
 }
 

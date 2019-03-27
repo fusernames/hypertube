@@ -31,6 +31,13 @@ const translations = {
   account: {
     btn: ["Update", "Mettre à jour"],
   },
+  sort: {
+    sort: ["Sort by", "Trier par"],
+    rating: ["Rating", "Note"],
+    title: ["Title", "Titre"],
+    year: ["Production year", "Annee de production"],
+    none: ["None", "Aucun"]
+  },
   movie: {
     synopsis: ["Synopsis", "Synopsis"],
     production: ["Production", "Production"],
