@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Typography, Grid, Button, Menu, MenuItem } from '@material-ui/core'
+import Loading from '../../utils/jsx/Loading'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
 import { Link } from 'react-router-dom'
@@ -30,17 +31,16 @@ class Search extends Component {
   }
 
   render() {
-    const { movies } = this.props.search
+    const { movies, isFetching } = this.props.search
     const { classes } = this.props
     const { locale } = this.props.locales
-    console.log(movies)
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
           <Sort />
         </Grid>
         <Grid item xs={12}>
-          {movies.length == 0 && <Typography align="center">{locale.search.no_results}</Typography>}
+          {movies.length == 0 && !isFetching && <Typography align="center">{locale.search.no_results}</Typography>}
           <Grid container spacing={8}>
             {movies.map(movie => {
               return (
@@ -54,6 +54,7 @@ class Search extends Component {
               )
             })}
           </Grid>
+          <Loading display={isFetching}/>
         </Grid>
       </Grid>
     )
@@ -76,6 +77,11 @@ const styles = {
         color: 'rgba(255,255,255,0.9)',
       }
     }
+  },
+  progress: {
+    marginTop: '20px',
+    display: 'flex',
+    justifyContent: 'center'
   }
 }
 let SearchExport = Search

@@ -11,7 +11,7 @@ import Notifier from './imported/Notifier'
 import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
-import LoggedRoute from './utils/routes/LoggedRoute'
+import LoggedRoute from './utils/jsx/LoggedRoute'
 
 const theme = createMuiTheme({
   palette: {
