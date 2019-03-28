@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
+import req from '../../utils/req'
 
 class Register extends React.Component {
 
@@ -42,12 +43,17 @@ class Register extends React.Component {
 
   checkForm = (callback) => {
     let errors = {}
+    let nbErrors = 0
     for (let k in this.state.register) {
       errors[k] = this.validate(k)
+      if (errors[k].length)
+        nbErrors++
     }
     this.setState({
       ...this.state,
       formErrors: errors
+    }, () => {
+      if (callback) callback(nbErrors)
     })
   }
 
@@ -71,8 +77,17 @@ class Register extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.checkForm();
-    const { dispatch } = this.props
+    this.checkForm((nbErrors) => {
+      const { password, username, firstname, lastname, email } = this.state
+      let datas = {
+        plainPassword: password,
+        username, email, firstname, lastname
+      }
+      if (!nbErrors) {
+        req('http://35.181.48.142/api/users', {method: 'POST', body: datas})
+      }
+    });
+    const { dispatch } = this.props;
   }
 
   render () {

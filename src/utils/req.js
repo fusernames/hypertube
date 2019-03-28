@@ -1,13 +1,13 @@
 import store from '../redux/store'
 import { enqueueSnackbar } from '../redux/snackbars/actions'
 
-const req = (url, body) => {
+const req = (url, options) => {
   let params = {}
-  if (body) {
-    params = {
-      'Content-Type': 'application/json',
-      body: JSON.stringify(body)
-    }
+  if (options) {
+    if (options.method) params.method = options.method
+    if (options.body) params.body = JSON.stringify(options.body)
+    if (options.contentType) params.headers = {'Content-Type': options.contentType}
+    else if (options.body) params.headers = {'Content-Type': 'application/json'}
   }
   return new Promise((resolve, reject) => {
     fetch(url, params)
@@ -17,13 +17,13 @@ const req = (url, body) => {
           resolve(json)
         })
       } else {
-        console.error(response.statusText)
-        store.dispatch(enqueueSnackbar('error', response.statusText))
+        response.json().then(json => console.error(json))
+        store.dispatch(enqueueSnackbar(response.statusText, 'error'))
         reject()
       }
     })
     .catch(err => {
-      store.dispatch(enqueueSnackbar('error', err))
+      store.dispatch(enqueueSnackbar(err, 'error'))
       console.error(err)
       reject()
     })

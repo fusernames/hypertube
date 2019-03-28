@@ -16,9 +16,9 @@ import LoggedRoute from './utils/jsx/LoggedRoute'
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: deepOrange[400],
-      main: deepOrange[400],
-      dark: deepOrange[500]
+      light: blue[400],
+      main: blue[400],
+      dark: blue[500]
     },
     secondary: {
       light: grey[700],
