@@ -255,7 +255,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"me"})
+     * @Groups({"me", "get-lang", "set-lang"})
      * @Assert\Length(
      *      max = 255,
      *      maxMessage = "lang cannot be longer than {{ limit }} characters"
