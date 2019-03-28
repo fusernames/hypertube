@@ -2,25 +2,31 @@
 
 namespace App\Entity;
 
-use App\Entity\MediaObject;
-use Doctrine\ORM\Mapping as ORM;
-use App\Controller\GetMeController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\GroupInterface;
-use ApiPlatform\Core\Annotation\ApiFilter;
 use FOS\UserBundle\Model\User as BaseUser;
+
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\ChangePasswordController;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Controller\ResettingPasswordSendEmailController;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+
+use App\Entity\MediaObject;
+use App\Controller\ResettingPasswordSendEmailController;
+use App\Controller\GetMeController;
+use App\Controller\ChangePasswordController;
+use App\Controller\Lang\GetLangController;
+use App\Controller\Lang\SetLangController;
 
 /**
  * @ORM\Entity
@@ -99,6 +105,22 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=ResettingPasswordSendEmailController::class,
  *              "denormalization_context"={
  *                  "groups"={"rest-password-send-email"}
+ *              }
+ *          },
+ *          "set-lang"={
+ *              "method"="POST",
+ *              "path"="/lang/set",
+ *              "controller"=SetLangController::class,
+ *              "denormalization_context"={
+ *                  "groups"={"set-lang"}
+ *              }
+ *          },
+ *          "get-lang"={
+ *              "method"="GET",
+ *              "path"="/lang/get",
+ *              "controller"=GetLangController::class,
+ *              "denormalization_context"={
+ *                  "groups"={"get-lang"}
  *              }
  *          },
  *          "post",
@@ -233,13 +255,13 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"me"})
+     * @Groups({"me", "get-lang", "set-lang"})
      * @Assert\Length(
      *      max = 255,
      *      maxMessage = "lang cannot be longer than {{ limit }} characters"
      * )
      */
-    private $lang;
+    private $lang = 'EN';
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="owner", orphanRemoval=true)

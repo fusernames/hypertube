@@ -50,7 +50,7 @@ class ChangePasswordController extends AbstractController
         }
         $user->setPassword($encoder->encodePassword($user, $this->newPassword));
         $manager->flush();
-        return new JsonResponse(['message'=>'Successfully changed password'], 200);
+        return new JsonResponse(['message' => 'Successfully changed password'], 200);
     }
 
     /**
@@ -69,11 +69,10 @@ class ChangePasswordController extends AbstractController
      */
     private function setNewPassword(string $newPassword): bool
     {
-        $this->newPassword = $newPassword;
-
-        /**
-         * here we can check the new password with regex by example
-         */
-        return true;
+        if (preg_match('/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/', $newPassword)) {
+            $this->newPassword = $newPassword;
+            return true;
+        }
+        return false;
     }
 }

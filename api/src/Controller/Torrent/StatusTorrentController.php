@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Torrent;
 
 use App\Entity\Movie;
 use Vohof\Transmission;
-use App\Controller\TorrentController;
+use App\Controller\Torrent\TorrentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -18,7 +18,7 @@ class StatusTorrentController extends TorrentController
         // Decodes post json
         $data = $request->getContent();
         $data = json_decode($data, true);
-        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'NOT_DOWNLOADED_TORRENT'], 404);
+        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'WRONG_DATA'], 404);
         $torrentLink = $data['torrent_link'];
         // Loads the asked movie
         $movie = $repository->findOneBy(['torrentLink' => $torrentLink]);
