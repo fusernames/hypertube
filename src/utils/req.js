@@ -4,12 +4,14 @@ import { enqueueSnackbar } from '../redux/snackbars/actions'
 const req = (url, options) => {
   let params = {}
   if (options) {
+    console.log('body', options.body)
     if (options.method) params.method = options.method
     if (options.body) params.body = JSON.stringify(options.body)
     if (options.contentType) params.headers = {'Content-Type': options.contentType}
     else if (options.body) params.headers = {'Content-Type': 'application/json'}
   }
   return new Promise((resolve, reject) => {
+    console.log(params)
     fetch(url, params)
     .then(response => {
       if (response.ok) {
