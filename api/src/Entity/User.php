@@ -15,7 +15,6 @@ use App\Controller\ChangePasswordController;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Controller\ResettingPasswordTokenController;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\ResettingPasswordSendEmailController;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
@@ -249,7 +248,7 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\MediaObject", cascade={"persist", "remove"})
-     * @Groups({"user", "me"})
+     * @Groups({"user:read", "me"})
      */
     private $avatar;
 

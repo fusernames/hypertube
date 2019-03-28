@@ -29,4 +29,4 @@ yarn-error.log*
 *vendor*
 api/*avi
 api/*mp4
-api/.env*
+api/.env
