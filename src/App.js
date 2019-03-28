@@ -11,14 +11,14 @@ import Notifier from './imported/Notifier'
 import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
-import LoggedRoute from './utils/routes/LoggedRoute'
+import LoggedRoute from './utils/jsx/LoggedRoute'
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: deepOrange[400],
-      main: deepOrange[400],
-      dark: deepOrange[500]
+      light: blue[400],
+      main: blue[400],
+      dark: blue[500]
     },
     secondary: {
       light: grey[700],
@@ -44,7 +44,7 @@ class App extends Component {
         <CssBaseline />
         <Notifier />
         <Navbar />
-        <Grid container justify="center" style={{marginTop: '90px'}}>
+        <Grid container justify="center" style={{marginTop: '90px', marginBottom:'20px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
             <LoggedRoute path="/movie/:id" component={Movie} />

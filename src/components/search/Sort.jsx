@@ -67,52 +67,61 @@ class Sort extends Component {
     const { locale } = this.props.locales
     const { search } = this.props
     return (
-      <div>
-        <Button
-           color={search.genre ? 'primary' : 'textPrimary'}
-           onClick={this.openGenres}
-         >
-           {search.genre ? locale.genres[search.genre] : 'Genre'}
-        </Button>
-        <Menu
-          anchorEl={anchorGenres}
-          open={Boolean(anchorGenres)}
-          onClose={this.closeMenu}
-        >
-         {genres.map(genre => {
-           return <MenuItem key={genre} onClick={() => this.selectGenre(genre)}>{locale.genres[genre]}</MenuItem>
-         })}
-        </Menu>
-        <Button
-          color={search.sort ? 'primary' : 'textPrimary'}
-          onClick={this.openSorts}
-        >
-          {search.sort ? locale.sort[search.sort] : locale.sort.sort}
-        </Button>
-        <Menu
-          anchorEl={anchorSorts}
-          open={Boolean(anchorSorts)}
-          onClose={this.closeMenu}
-        >
-         {sorts.map(sort => {
-           return <MenuItem key={sort} onClick={() => this.selectSort(sort)}>{locale.sort[sort]}</MenuItem>
-         })}
-        </Menu>
-        <Button
-          color="primary"
-          onClick={this.openAPIs}
-        >
-          {'API : ' + search.api}
-        </Button>
-        <Menu
-          anchorEl={anchorAPIs}
-          open={Boolean(anchorAPIs)}
-          onClose={this.closeMenu}
-        >
-          <MenuItem onClick={() => this.selectAPI('yts')}>YTS</MenuItem>
-          <MenuItem onClick={() => this.selectAPI('popcorntime')}>popcorntime</MenuItem>
-        </Menu>
-      </div>
+      <Grid container spacing={8}>
+        <Grid item>
+          <Button
+            variant="outlined"
+            color={search.genre ? 'primary' : 'default'}
+            onClick={this.openGenres}
+          >
+             {search.genre ? locale.genres[search.genre] : 'Genre'}
+          </Button>
+          <Menu
+            anchorEl={anchorGenres}
+            open={Boolean(anchorGenres)}
+            onClose={this.closeMenu}
+          >
+           {genres.map(genre => {
+             return <MenuItem key={genre} onClick={() => this.selectGenre(genre)}>{locale.genres[genre]}</MenuItem>
+           })}
+          </Menu>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="outlined"
+            color={search.sort ? 'primary' : 'default'}
+            onClick={this.openSorts}
+          >
+            {search.sort ? locale.sort[search.sort] : locale.sort.sort}
+          </Button>
+          <Menu
+            anchorEl={anchorSorts}
+            open={Boolean(anchorSorts)}
+            onClose={this.closeMenu}
+          >
+           {sorts.map(sort => {
+             return <MenuItem key={sort} onClick={() => this.selectSort(sort)}>{locale.sort[sort]}</MenuItem>
+           })}
+          </Menu>
+        </Grid>
+        <Grid item>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={this.openAPIs}
+          >
+            {'API : ' + search.api}
+          </Button>
+          <Menu
+            anchorEl={anchorAPIs}
+            open={Boolean(anchorAPIs)}
+            onClose={this.closeMenu}
+          >
+            <MenuItem onClick={() => this.selectAPI('yts')}>YTS</MenuItem>
+            <MenuItem onClick={() => this.selectAPI('popcorntime')}>popcorntime</MenuItem>
+          </Menu>
+        </Grid>
+      </Grid>
     )
   }
 }

@@ -3,20 +3,25 @@ import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
+import Loading from '../../utils/jsx/Loading'
+import req from '../../utils/req'
 
 class Movie extends React.Component {
 
   state = {
     movie: {
       genres: []
-    }
+    },
+    isFetching: false
   }
 
   parseYtLink(link) {
-    let res = link.split('?v=')
-    if (res[1])
-      res = res[1]
-    return 'https://www.youtube.com/embed/' + res
+    if (link) {
+      let res = link.split('?v=')
+      if (res[1])
+        res = res[1]
+      return 'https://www.youtube.com/embed/' + res
+    }
   }
 
   pad = nbr => {
@@ -25,35 +30,42 @@ class Movie extends React.Component {
 
   fetchMovie = (id) => {
     if (id[0] == 't') {
-      fetch('https://tv-v2.api-fetch.website/movie/' + id)
-      .then(res => res.json())
-      .then(json => {
-        this.setState({movie: {
-          image: json.images.poster,
-          title: json.title,
-          synopsis: json.synopsis,
-          genres: json.genres,
-          year: json.year,
-          time: parseInt(json.runtime / 60) + 'h' + this.pad(json.runtime % 60),
-          trailer: this.parseYtLink(json.trailer)
-        }})
-        console.log(json)
+      this.setState({...this.state, isFetching: true})
+      req('https://tv-v2.api-fetch.website/movie/' + id)
+      .then(res => {
+        this.setState({
+          isFetching: false,
+          movie: {
+            image: res.images.poster,
+            title: res.title,
+            synopsis: res.synopsis,
+            genres: res.genres,
+            year: res.year,
+            rating: res.rating.percentage / 10,
+            time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
+            trailer: this.parseYtLink(res.trailer)
+          }
+        })
       })
     } else {
-      fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
-      .then(res => res.json())
-      .then(json => {
-        json = json.data.movie
-        this.setState({movie: {
-          image: json.large_cover_image,
-          title: json.title,
-          synopsis: json.description_intro,
-          genres: json.genres,
-          year: json.year,
-          time: parseInt(json.runtime / 60) + 'h' + this.pad(json.runtime % 60),
-          trailer: this.parseYtLink(json.yt_trailer_code)
-        }})
-        console.log(json)
+      this.setState({...this.state, isFetching: true})
+      req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
+      .then(res => {
+        res = res.data.movie
+        this.setState({
+          isFetching: false,
+          movie: {
+            isFetching: false,
+            image: res.large_cover_image,
+            title: res.title,
+            synopsis: res.description_intro,
+            genres: res.genres,
+            year: res.year,
+            rating: res.rating,
+            time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
+            trailer: this.parseYtLink(res.yt_trailer_code)
+          }
+        })
       })
     }
   }
@@ -61,18 +73,15 @@ class Movie extends React.Component {
   componentWillMount() {
     const id = this.props.match.params.id
     this.fetchMovie(id)
-    var ifr = document.getElementById('ytplayer')
-    if (ifr) {
-      ifr.contentWindow.location.replace('http://google.com')
-    }
   }
 
   render() {
-    const { movie } = this.state
+    const { movie, isFetching } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
     return (
       <div>
+        <Loading display={isFetching}/>
         <Typography variant="h5" color="primary" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
           <Grid item xs={12} sm={5} md={5}>
@@ -80,6 +89,20 @@ class Movie extends React.Component {
           </Grid>
           <Grid item xs={12} sm={7} md={7}>
             <Grid container spacing={8}>
+              <Grid item xs={12} md={6}>
+                <div className={classes.paper}>
+                  <Icon color="primary" style={{float:'right'}}>star</Icon>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.rating}</Typography>
+                  <Typography color="textPrimary">{movie.rating + '/10'}</Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <div className={classes.paper}>
+                  <Icon color="primary" style={{float:'right'}}>movie_creation</Icon>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.production}</Typography>
+                  <Typography color="textPrimary">{movie.year}</Typography>
+                </div>
+              </Grid>
               <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>format_align_left</Icon>
@@ -87,14 +110,7 @@ class Movie extends React.Component {
                   <Typography color="textPrimary">{movie.synopsis}</Typography>
                 </div>
               </Grid>
-              <Grid item xs={12} sm={12} md={6}>
-                <div className={classes.paper}>
-                  <Icon color="primary" style={{float:'right'}}>movie_creation</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.production}</Typography>
-                  <Typography color="textPrimary">{movie.year}</Typography>
-                </div>
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>timer</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.time}</Typography>
@@ -112,13 +128,15 @@ class Movie extends React.Component {
                   })}
                 </div>
               </Grid>
-              <Grid item xs={12}>
-                <div className={classes.paper}>
-                  <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
-                  <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
-                </div>
-              </Grid>
+              {movie.trailer &&
+                <Grid item xs={12}>
+                  <div className={classes.paper}>
+                    <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
+                    <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
+                    <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
+                  </div>
+                </Grid>
+              }
             </Grid>
           </Grid>
         </Grid>

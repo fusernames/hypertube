@@ -1,4 +1,5 @@
 import store from '../store'
+import req from '../../utils/req'
 
 function translateGenre(genre) {
   switch(genre) {
@@ -12,10 +13,6 @@ function translateGenre(genre) {
 }
 
 export function exists(code, list, set = false) {
-  for (let i in list) {
-    if (list[i].code == code)
-      return true
-  }
   const { movies } = store.getState().search
   if (!set) {
     for (let i in movies) {
@@ -81,8 +78,8 @@ export function fetchMovies(options = {}) {
       if (genre) url += '&genre=' + genre
       if (sort) url += '&sort=' + sort
       dispatch(fetching())
-      fetch(url).then(res => res.json()).then(json => {
-        formatMovies(json, (movies) => {
+      req(url).then(res => {
+        formatMovies(res, (movies) => {
           dispatch(setMovies(movies))
         }, true)
       })
@@ -92,9 +89,9 @@ export function fetchMovies(options = {}) {
       if (genre) url += '&genre=' + translateGenre(genre)
       if (sort) url += '&sort_by=' + sort
       dispatch(fetching())
-      fetch(url).then(res => res.json()).then(json => {
-        if (json.data.movies)
-          list = json.data.movies
+      req(url).then(res => {
+        if (res.data.movies)
+          list = res.data.movies
         formatMovies(list, (movies) => {
           dispatch(setMovies(movies))
         }, true)
@@ -115,8 +112,8 @@ export function fetchAddMovies() {
       if (search.genre) url += '&genre=' + search.genre
       if (search.sort) url += '&sort=' + search.sort
       dispatch(fetching())
-      fetch(url).then(res => res.json()).then(json => {
-        formatMovies(json, (movies) => {
+      req(url).then(res => {
+        formatMovies(res, (movies) => {
           dispatch(addMovies(movies))
         })
       })
@@ -126,9 +123,9 @@ export function fetchAddMovies() {
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
       if (search.sort) url += '&sort_by=' + search.sort
       dispatch(fetching())
-      fetch(url).then(res => res.json()).then(json => {
-        if (json.data.movies)
-          list = json.data.movies
+      req(url).then(res => {
+        if (res.data.movies)
+          list = res.data.movies
         formatMovies(list, (movies) => {
           dispatch(addMovies(movies))
         })
