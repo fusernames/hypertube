@@ -163,12 +163,6 @@ class User extends BaseUser
     protected $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user", "me"})
-     */
-    protected $fullname;
-
-    /**
      * @Groups({"user:write"})
      */
     protected $plainPassword;
@@ -280,16 +274,6 @@ class User extends BaseUser
      */
     public function onUpdate() {
        $this->setUpdatedAt(new \DateTime());
-    }
-
-    public function setFullname(?string $fullname): void
-    {
-        $this->fullname = $fullname;
-    }
-
-    public function getFullname(): ?string
-    {
-        return $this->fullname;
     }
 
     public function isUser(?UserInterface $user = null): bool
