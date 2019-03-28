@@ -78,13 +78,13 @@ class Register extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     this.checkForm((nbErrors) => {
-      const { password, username, firstname, lastname, email } = this.state
+      const { password, username, firstname, lastname, email } = this.state.register
       let datas = {
         plainPassword: password,
         username, email, firstname, lastname
       }
       if (!nbErrors) {
-        req('http://35.181.48.142/api/users', {method: 'POST', body: datas})
+        req('http://35.181.48.142/api/users', {method: 'post', body: datas})
       }
     });
     const { dispatch } = this.props;
