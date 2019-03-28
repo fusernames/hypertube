@@ -2,36 +2,37 @@
 
 namespace App\Entity;
 
+use App\Entity\MediaObject;
+use Doctrine\ORM\Mapping as ORM;
+use App\Controller\GetMeController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\GroupInterface;
+use App\Controller\Lang\GetLangController;
+use App\Controller\Lang\SetLangController;
 use FOS\UserBundle\Model\User as BaseUser;
-
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\ChangePasswordController;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use App\Controller\ResettingPasswordSendEmailController;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiFilter;
-
-use App\Entity\MediaObject;
-use App\Controller\ResettingPasswordSendEmailController;
-use App\Controller\GetMeController;
-use App\Controller\ChangePasswordController;
-use App\Controller\Lang\GetLangController;
-use App\Controller\Lang\SetLangController;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  * @ApiResource(
+ *      attributes={
+ *          "pagination_client_enabled"=true,
+ *          "pagination_client_items_per_page"=true,
+ *          "maximum_items_per_page"=50
+ *      },
  *      normalizationContext={
  *          "groups"={
  *              "user",
@@ -58,7 +59,8 @@ use App\Controller\Lang\SetLangController;
  *              "controller"=GetMeController::class,
  *              "defaults"={"_api_receive"=false}
  *          },
- *          "update"={
+ *          "get",
+ *          "put"={
  *              "method"="PUT",
  *              "path"="users/{id}",
  *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')",
@@ -70,14 +72,6 @@ use App\Controller\Lang\SetLangController;
  *                  "groups"={"me"}
  *              }
  *          },
- *          "get",
- *          "put"={
- *              "method"="PUT",
- *              "path"="users/{id}",
- *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')",
- *              "access_control_message"="Sorry, you are not authorized to update this user."
- *          },
- *          
  *          "delete"={
  *              "method"="DELETE",
  *              "path"="users/{id}",
@@ -133,7 +127,9 @@ use App\Controller\Lang\SetLangController;
  *          "id": "exact",
  *          "email": "ipartial",
  *          "fullname": "ipartial",
- *          "username": "ipartial"
+ *          "username": "ipartial",
+ *          "firstname": "ipartial",
+ *          "lastname": "ipartial"
  *      }
  * )
  * @ApiFilter(
@@ -157,6 +153,7 @@ use App\Controller\Lang\SetLangController;
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("email")
  * @UniqueEntity("username")
+ * @UniqueEntity("avatar")
  */
 class User extends BaseUser
 {
@@ -169,33 +166,85 @@ class User extends BaseUser
 
     /**
      * @Groups({"change-password"})
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage="The password must be at least {{ limit }} characters long",
+     *      maxMessage="The password cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
      */
     protected $current_password;
 
     /**
      * @Groups({"change-password"})
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage="The password must be at least {{ limit }} characters long",
+     *      maxMessage="The password cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
      */
     protected $new_password;
 
     /**
      * @Groups({"user:write", "me", "rest-password-send-email"})
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     protected $email;
 
     /**
      * @Groups({"user:write"})
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage="The password must be at least {{ limit }} characters long",
+     *      maxMessage="The password cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     protected $plainPassword;
 
     /**
      * @Groups({"user", "me"})
+     * @Assert\NotNull(message="The username cannot be null")
+     * @Assert\NotBlank(message="Your username cannot be blank")
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage="The username must be at least {{ limit }} characters long",
+     *      maxMessage="The username cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     protected $username;
 
     /**
      * @var bool
      * @Groups({"user", "me"})
+     * @Assert\Type(
+     *     type="bool",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     protected $enabled;
 
@@ -234,9 +283,18 @@ class User extends BaseUser
      * @Groups({"user", "me"})
      * @Assert\Length(
      *      min = 2,
-     *      max = 50,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     *      max = 40,
+     *      minMessage = "The firstname must be at least {{ limit }} characters long",
+     *      maxMessage = "The firstname cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Firstname cannot contain a number"
      * )
      */
     private $firstname;
@@ -246,9 +304,18 @@ class User extends BaseUser
      * @Groups({"user", "me"})
      * @Assert\Length(
      *      min = 2,
-     *      max = 50,
-     *      minMessage = "Your last name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
+     *      max = 40,
+     *      minMessage = "The last name must be at least {{ limit }} characters long",
+     *      maxMessage = "The last name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Lastname cannot contain a number"
      * )
      */
     private $lastname;
@@ -258,10 +325,14 @@ class User extends BaseUser
      * @Groups({"me", "get-lang", "set-lang"})
      * @Assert\Length(
      *      max = 255,
-     *      maxMessage = "lang cannot be longer than {{ limit }} characters"
+     *      maxMessage = "The lang cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      */
-    private $lang = 'EN';
+    private $lang;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="owner", orphanRemoval=true)
@@ -286,8 +357,8 @@ class User extends BaseUser
     public function onCreate() {
        !$this->getCreatedAt() ? $this->setCreatedAt(new \DateTime()) : 0;
        !$this->getUpdatedAt() ? $this->setUpdatedAt(new \DateTime()) : 0;
-       $this->setAvatar(new MediaObject());
        $this->enabled = true;
+       !$this->lang ? $this->lang = 'EN' : 0;
     }
 
     /**

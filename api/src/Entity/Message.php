@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -66,6 +67,12 @@ class Message
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Message must be at least {{ limit }} characters long",
+     *      maxMessage = "Message cannot be longer than {{ limit }} characters"
+     * )
      */
     private $message;
 
