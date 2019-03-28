@@ -98,8 +98,8 @@ class ResettingPasswordSendEmailController extends AbstractController
 
     private function getHeaders(string $newLine, string $boundary): string
     {
-        return "From: \"Hypertube-Security\"<security@hypertube.fr>$newLine"
-            . "Reply-to: \"Hypertube-Security\"<security@hypertube.fr>$newLine"
+        return "From: \"Hypertube-Security\"<security@hypertube.barthonet.ovh>$newLine"
+            . "Reply-to: \"Hypertube-Security\"<security@hypertube.barthonet.ovh>$newLine"
             . "MIME-Version: 1.0$newLine"
             . "Content-Type: multipart/alternative;$newLine"
             . " boundary=\"$boundary\"$newLine";

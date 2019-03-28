@@ -1,28 +1,18 @@
 const initialState = {
   user: undefined,
-  token: undefined,
   logged: undefined,
 }
 
 function authReducer(state = initialState, action) {
-  if (action.type === 'LOGIN_SUCCESS') {
-    return {
-      user: action.user,
-      token: action.token,
-      logged: true,
-    }
-  }
-  else if (action.type === 'LOGOUT') {
+  if (action.type === 'LOGOUT') {
     return {
       user: undefined,
-      token: undefined,
       logged: false,
     }
-  } else if (action.type === 'IS_LOGGED') {
+  } else if (action.type === 'SET_CURRENT_USER') {
     return {
       user: action.user,
-      token: action.token,
-      logged: true,
+      logged: action.logged,
     }
   } else {
     return state

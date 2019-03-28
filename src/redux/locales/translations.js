@@ -53,7 +53,9 @@ const translations = {
   alerts: {
     ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],
     // login
-    LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"]
+    LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"],
+    // register
+    REGISTER_SUCCESS: ["You have successfully register", "Inscription réussie"],
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],
