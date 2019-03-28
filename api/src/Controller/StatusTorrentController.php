@@ -18,7 +18,7 @@ class StatusTorrentController extends TorrentController
         // Decodes post json
         $data = $request->getContent();
         $data = json_decode($data, true);
-        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'NOT_DOWNLOADED_TORRENT'], 404);
+        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'WRONG_DATA'], 404);
         $torrentLink = $data['torrent_link'];
         // Loads the asked movie
         $movie = $repository->findOneBy(['torrentLink' => $torrentLink]);
