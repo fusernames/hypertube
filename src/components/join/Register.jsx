@@ -34,7 +34,9 @@ class Register extends React.Component {
         username, email, firstname, lastname
       }
       if (!nbErrors) {
-        req('http://35.181.48.142/api/users', {method: 'post', body: datas})
+        req('http://35.181.48.142/api/users', {
+          method: 'post', body: datas
+        })
         .then(() => {
           enqueueSnackbar(locale.REGISTER_SUCCESS, 'success')
         })
