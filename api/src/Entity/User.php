@@ -109,7 +109,7 @@ use App\Controller\Lang\SetLangController;
  *          },
  *          "set-lang"={
  *              "method"="POST",
- *              "path"="/users/lang/set",
+ *              "path"="/lang/set",
  *              "controller"=SetLangController::class,
  *              "denormalization_context"={
  *                  "groups"={"set-lang"}
@@ -117,7 +117,7 @@ use App\Controller\Lang\SetLangController;
  *          },
  *          "get-lang"={
  *              "method"="GET",
- *              "path"="/users/lang/get",
+ *              "path"="/lang/get",
  *              "controller"=GetLangController::class,
  *              "denormalization_context"={
  *                  "groups"={"get-lang"}
