@@ -4,6 +4,7 @@ import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
+import { enqueueSnackbar } from '../../redux/snackbars/actions'
 
 class Register extends React.Component {
 
@@ -19,6 +20,29 @@ class Register extends React.Component {
     formErrors: {
       username: [], firstname: [], lastname: [], email: [], password: [], repassword: []
     }
+  }
+
+  handleSubmit = (e) => {
+    const { dispatch, locales } = this.props
+    const { locale } = locales
+    e.preventDefault()
+
+    this.checkForm((nbErrors) => {
+      const { password, username, firstname, lastname, email } = this.state.register
+      let datas = {
+        plainPassword: password,
+        username, email, firstname, lastname
+      }
+      if (!nbErrors) {
+        req('http://35.181.48.142/api/users', {method: 'post', body: datas})
+        .then(() => {
+          enqueueSnackbar(locale.REGISTER_SUCCESS, 'success')
+        })
+        .catch(err => {
+          //
+        })
+      }
+    });
   }
 
   validate = (name) => {
@@ -73,21 +97,6 @@ class Register extends React.Component {
         }
       })
     })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.checkForm((nbErrors) => {
-      const { password, username, firstname, lastname, email } = this.state.register
-      let datas = {
-        plainPassword: password,
-        username, email, firstname, lastname
-      }
-      if (!nbErrors) {
-        req('http://35.181.48.142/api/users', {method: 'post', body: datas})
-      }
-    });
-    const { dispatch } = this.props;
   }
 
   render () {
