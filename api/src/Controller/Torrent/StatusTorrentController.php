@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Torrent;
 
 use App\Entity\Movie;
 use Vohof\Transmission;
-use App\Controller\TorrentController;
+use App\Controller\Torrent\TorrentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
