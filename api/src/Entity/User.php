@@ -203,6 +203,8 @@ class User extends BaseUser
      *     type="string",
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
+     * @Assert\NotNull(message="Email cannot be null")
+     * @Assert\NotBlank(message="Email cannot be blank")
      */
     protected $email;
 
@@ -280,6 +282,8 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotNull(message="The firstname cannot be null")
+     * @Assert\NotBlank(message="The firstname cannot be blank")
      * @Groups({"user", "me"})
      * @Assert\Length(
      *      min = 2,
@@ -317,6 +321,8 @@ class User extends BaseUser
      *     match=false,
      *     message="Lastname cannot contain a number"
      * )
+     * @Assert\NotNull(message="The lastname cannot be null")
+     * @Assert\NotBlank(message="Your lastname cannot be blank")
      */
     private $lastname;
 
