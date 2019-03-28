@@ -17,10 +17,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={
- *          "access_control"="is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')",
- *          "access_control_message"="Sorry, you are not authorized to access this service."
- *      },
+ *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      itemOperations={
  *          "get",
  *          "put",
@@ -110,6 +107,10 @@ class Movie
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $torrentId;
 

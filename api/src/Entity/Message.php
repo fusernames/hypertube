@@ -3,24 +3,48 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-
 use ApiPlatform\Core\Annotation\ApiFilter;
+use App\Controller\CommentMovieController;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      attributes={
+ *          "pagination_client_enabled"=true,
+ *          "pagination_client_items_per_page"=true,
+ *          "maximum_items_per_page"=50,
+ *          "pagination_items_per_page"=15
+ *      },
+ *      itemOperations={
+ *          "get",
+ *          "put"={
+ *              "access_control"="is_granted('ROLE_USER') and object.owner == user",
+ *              "access_control_message"="Sorry, you are not authorized to update this message."
+ *          },
+ *          "delete"={
+ *              "access_control"="(is_granted('ROLE_USER') and object.owner == user) or is_granted('ROLE_ADMIN')",
+ *              "access_control_message"="Sorry, you are not authorized to delete this message."
+ *          }
+ *      },
+ *      collectionOperations={
+ *          "post"={"access_control"="is_granted('ROLE_USER')"},
+ *          "get"
+ *      }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ApiFilter(
  *      SearchFilter::class,
  *      properties={
  *          "id": "exact",
- *          "owner": "exact"
+ *          "owner.id": "exact",
+ *          "movie.id": "exact",
+ *          "movie": "exact"
  *      }
  * )
  * @ApiFilter(
@@ -52,8 +76,9 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull(message="Owner cannot be null")
      */
-    private $owner;
+    public $owner;
 
     /**
      * @ORM\Column(type="datetime")
@@ -73,12 +98,15 @@ class Message
      *      minMessage = "Message must be at least {{ limit }} characters long",
      *      maxMessage = "Message cannot be longer than {{ limit }} characters"
      * )
+     * @Assert\NotNull(message="Message cannot be null")
+     * @Assert\NotBlank(message="Message cannot be blank")
      */
     private $message;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull( message="Movie cannot be null")
      */
     private $movie;
 
