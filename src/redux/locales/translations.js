@@ -7,7 +7,9 @@ const translations = {
     lastname: ["Last name", "Nom de famille"],
     firstname: ["First name", "Prénom"],
     repassword: ["Repeat password", "Repetez votre mot de passe"],
-    new_password: ["New password", "Nouveau mot de passe"]
+    new_password: ["New password", "Nouveau mot de passe"],
+    cancel: ["Cancel", "Annuler"],
+    send: ["Send", "Envoyer"],
   },
   navbar: {
     login: ["Login", "Connexion"],
@@ -22,6 +24,10 @@ const translations = {
   login: {
     btn: ["Log In", "Se connecter"],
     title: ["Sign in", "Connexion"],
+    forgot_password: ["Forgot password ?", "Mot de passe oublié ?"]
+  },
+  resetpw: {
+    title: ["Send a reset link", "Envoyer un lien de réinitialisation"]
   },
   register: {
     btn: ["Register", "S'enregister"],

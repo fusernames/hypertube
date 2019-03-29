@@ -97,6 +97,11 @@ class Update extends React.Component {
     })
   }
 
+  onFileChange = (e) => {
+    const file = e.target.files[0]
+    this.setState({...this.state, file})
+  }
+
   componentWillMount() {
     this.fetchUser()
   }
@@ -149,7 +154,7 @@ class Update extends React.Component {
               />
             </Grid>
             <Grid item xs={12}>
-              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}}/>
+              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}} onChange={this.onFileChange}/>
               <label htmlFor="contained-button-file">
                 <Button color="primary" component="span" fullWidth>
                   {locale.register.upload}

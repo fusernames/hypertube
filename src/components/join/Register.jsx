@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
 import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import { login } from '../../redux/auth/actions'
 import api from '../../config'
 
 class Register extends React.Component {
@@ -18,6 +19,7 @@ class Register extends React.Component {
       password: '',
       repassword: ''
     },
+    file : {},
     formErrors: {
       username: [], firstname: [], lastname: [], email: [], password: [], repassword: []
     }
@@ -39,13 +41,17 @@ class Register extends React.Component {
           method: 'post', body: datas
         })
         .then(() => {
-          req(api + '/media_objects/avatar/create', {
-            method: 'post',
-            contentType:'multipart/form-data',
-            body: this.state.file,
-            token: true
-          })
-          enqueueSnackbar(locale.REGISTER_SUCCESS, 'success')
+          dispatch(login({username: datas.username, password: datas.plainPassword}, () => {
+            const formData = new FormData();
+            formData.append('file', this.state.file)
+            req(api + '/media_objects/avatar/create', {
+              method: 'post',
+              contentType:'multipart/form-data',
+              body: formData,
+              token: true
+            })
+          }))
+          dispatch(enqueueSnackbar(locale.REGISTER_SUCCESS, 'success'))
         })
         .catch(err => {
           //
@@ -110,7 +116,10 @@ class Register extends React.Component {
 
   onFileChange = (e) => {
     const file = e.target.files[0]
-    this.setState({...this.state, file})
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    let image = reader.results
+    this.setState({...this.state, file, image})
   }
 
   render () {
@@ -220,12 +229,7 @@ const styles = {
     marginTop: '10px'
   }
 }
-
-function mapStateToProps(state) {
-  return state
-}
-
 let RegisterExport = Register
 RegisterExport = withStyles(styles)(RegisterExport)
-RegisterExport = connect(mapStateToProps)(RegisterExport)
+RegisterExport = connect(state => state)(RegisterExport)
 export default RegisterExport

@@ -3,7 +3,7 @@ import req from '../../utils/req'
 import Cookies from 'js-cookie'
 import api from '../../config'
 
-export function login(data) {
+export function login(data, callback) {
 
   data.email = data.username
   let auth = {}
@@ -18,6 +18,7 @@ export function login(data) {
       Cookies.set('jwt', auth.token)
       dispatch(getCurrentUser())
       dispatch(enqueueSnackbar(locale.alerts.LOGIN_SUCCESS, 'success'))
+      if (callback) callback()
     })
   }
 }
