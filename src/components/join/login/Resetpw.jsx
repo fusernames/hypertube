@@ -13,6 +13,7 @@ class Resetpw extends React.Component {
           open={open}
           onClose={toggleResetpw}
           aria-labelledby="form-dialog-title"
+          fullWidth
         >
           <DialogTitle id="form-dialog-title">{locale.resetpw.title}</DialogTitle>
           <DialogContent>
