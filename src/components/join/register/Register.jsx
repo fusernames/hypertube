@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import validator from '../../utils/validator'
-import req from '../../utils/req'
-import { enqueueSnackbar } from '../../redux/snackbars/actions'
-import { login } from '../../redux/auth/actions'
-import api from '../../config'
+import validator from '../../../utils/validator'
+import req from '../../../utils/req'
+import { alert } from '../../../redux/snackbars/actions'
+import { login } from '../../../redux/auth/actions'
+import api from '../../../config'
 
 class Register extends React.Component {
 
@@ -51,7 +51,7 @@ class Register extends React.Component {
               token: true
             })
           }))
-          dispatch(enqueueSnackbar(locale.REGISTER_SUCCESS, 'success'))
+          dispatch(alert('REGISTER_SUCCESS', 'success'))
         })
         .catch(err => {
           //

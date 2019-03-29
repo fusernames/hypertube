@@ -62,6 +62,10 @@ const translations = {
     LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"],
     // register
     REGISTER_SUCCESS: ["You have successfully register", "Inscription réussie"],
+    // reset
+    RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
+    // user
+    USER_NOT_FOUND: ["User not found", "Utilisateur non trouvé"],
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],

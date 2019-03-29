@@ -4,7 +4,7 @@ import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
-import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import { alert } from '../../redux/snackbars/actions'
 import api from '../../config'
 
 class Update extends React.Component {
@@ -24,8 +24,8 @@ class Update extends React.Component {
   }
 
   fetchUser(id) {
-    const { dispatch } = this.props
-    req(api + 'users/me', {token: true})
+    const { dispatch, locales } = this.props
+    req(api + '/users/me', {token: true})
     .then(res => {
       this.setState({
         ...this.state,
@@ -39,7 +39,7 @@ class Update extends React.Component {
       })
     }).catch(err => {
       if (err.status === 404)
-        dispatch(enqueueSnackbar('User not found', 'error'))
+        dispatch(alert('USER_NOT_FOUND', 'error'))
     })
   }
 

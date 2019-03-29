@@ -1,4 +1,4 @@
-import { enqueueSnackbar } from '../snackbars/actions'
+import { alert } from '../snackbars/actions'
 import req from '../../utils/req'
 import Cookies from 'js-cookie'
 import api from '../../config'
@@ -17,7 +17,7 @@ export function login(data, callback) {
       auth.token = res.token
       Cookies.set('jwt', auth.token)
       dispatch(getCurrentUser())
-      dispatch(enqueueSnackbar(locale.alerts.LOGIN_SUCCESS, 'success'))
+      dispatch(alert('LOGIN_SUCCESS', 'success'))
       if (callback) callback()
     })
   }

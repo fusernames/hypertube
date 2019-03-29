@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Paper } from '@material-ui/core'
 import Login from './login/Login'
-import Register from './Register'
+import Register from './register/Register'
 
 class Join extends React.Component {
   render() {

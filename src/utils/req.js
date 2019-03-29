@@ -28,10 +28,14 @@ const req = (url, options) => {
           resolve(json)
         })
       } else {
-        response.json().then(json => console.error(json))
-        if (response.status >= 500)
-          store.dispatch(enqueueSnackbar(response.statusText, 'error'))
-        reject(response)
+        response.json().then(json => {
+          json.statusText = response.statusText
+          json.status = response.status
+          if (response.status >= 500)
+            store.dispatch(enqueueSnackbar(response.statusText, 'error'))
+          reject(json)
+          console.error(json)
+        })
       }
     })
     .catch(err => {
