@@ -35,6 +35,9 @@ export function getCurrentUser() {
       .then(res => {
         dispatch(setCurrentUser(res))
       })
+      .catch(err => {
+        dispatch(logout())
+      })
     } else {
       dispatch(setCurrentUser())
     }

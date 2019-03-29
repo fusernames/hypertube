@@ -104,7 +104,7 @@ class Update extends React.Component {
     const { classes } = this.props
     const { locale } = this.props.locales
     const { formErrors } = this.state
-    const { lastname, firstname, username } = this.state.user
+    const { lastname, firstname, username, email } = this.state.user
 
     return (
       <div>
@@ -163,6 +163,7 @@ class Update extends React.Component {
                 label={locale.global.email}
                 onChange={this.onChange}
                 margin="normal"
+                value={email}
                 fullWidth
               />
             </Grid>

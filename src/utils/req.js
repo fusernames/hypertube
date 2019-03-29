@@ -27,7 +27,7 @@ const req = (url, options) => {
           resolve(json)
         })
       } else {
-        //response.json().then(json => console.error(json))
+        response.json().then(json => console.error(json))
         if (response.status >= 500)
           store.dispatch(enqueueSnackbar(response.statusText, 'error'))
         reject(response)
