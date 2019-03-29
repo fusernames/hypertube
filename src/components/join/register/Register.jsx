@@ -48,7 +48,7 @@ class Register extends React.Component {
               method: 'post',
               contentType:'multipart/form-data',
               body: formData,
-              token: true
+              useToken: true
             })
           }))
           dispatch(alert('REGISTER_SUCCESS', 'success'))

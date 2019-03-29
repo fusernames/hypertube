@@ -24,8 +24,8 @@ class Update extends React.Component {
   }
 
   fetchUser(id) {
-    const { dispatch, locales } = this.props
-    req(api + '/users/me', {token: true})
+    const { dispatch } = this.props
+    req(api + '/users/me', {useToken: true})
     .then(res => {
       this.setState({
         ...this.state,
@@ -45,7 +45,22 @@ class Update extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.checkForm();
+    const { dispatch, auth } = this.props
+
+    this.checkForm(nbErrors => {
+      if (!nbErrors) {
+        let body = {...this.state.user}
+        req(api + '/users/' + auth.user.id, {
+          method: 'put',
+          body: body,
+          useToken: true,
+        })
+        .then(res => {
+          console.log(res)
+          dispatch(alert('USER_EDIT_SUCCESS', 'success'))
+        })
+      }
+    });
   }
 
   validate = (name) => {
@@ -70,12 +85,17 @@ class Update extends React.Component {
 
   checkForm = (callback) => {
     let errors = {}
+    let nbErrors = 0
     for (let k in this.state.user) {
       errors[k] = this.validate(k)
+      if (errors[k].length)
+        nbErrors++
     }
     this.setState({
       ...this.state,
       formErrors: errors
+    }, () => {
+      if (callback) callback(nbErrors)
     })
   }
 
@@ -205,7 +225,7 @@ class Update extends React.Component {
             className={classes.button}
             fullWidth
           >
-            {locale.register.btn}
+            {locale.account.btn}
           </Button>
         </form>
       </div>

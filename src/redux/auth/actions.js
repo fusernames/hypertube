@@ -33,8 +33,10 @@ export function logout() {
 export function getCurrentUser() {
   return (dispatch) => {
     if (Cookies.get('jwt')) {
-      req(api + '/users/me', {token: true})
+      req(api + '/users/me', {useToken: true})
       .then(res => {
+        let id = res['@id'].split('id=')
+        res.id = id[1]
         dispatch(setCurrentUser(res))
       })
       .catch(err => {

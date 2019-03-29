@@ -16,7 +16,7 @@ class Profile extends Component {
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req(api + '/users/' + id, {token: true})
+    req(api + '/users/' + id, {useToken: true})
     .then(res => {
       this.setState({
         username: res.username,

@@ -66,7 +66,7 @@ class Navbar extends React.Component {
               </div>
               <Button
                 color="inherit"
-                onClick={() => { dispatch(toggleLanguage(locales.code)) }}
+                onClick={() => { dispatch(toggleLanguage()) }}
               >
                 {locales.code}
               </Button>

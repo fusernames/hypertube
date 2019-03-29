@@ -57,7 +57,6 @@ const translations = {
     rating: ["Rating", "Note"]
   },
   alerts: {
-    ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],
     // login
     LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"],
     // register
@@ -66,6 +65,7 @@ const translations = {
     RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
     // user
     USER_NOT_FOUND: ["User not found", "Utilisateur non trouvé"],
+    USER_EDIT_SUCCESS: ["Your informations has been updated", "Vos informations ont bien étés éditées"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],
