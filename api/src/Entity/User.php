@@ -7,13 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Controller\GetMeController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\GroupInterface;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Controller\Lang\GetLangController;
 use App\Controller\Lang\SetLangController;
 use FOS\UserBundle\Model\User as BaseUser;
-use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\ChangePasswordController;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -107,7 +108,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=SetLangController::class,
  *              "denormalization_context"={
  *                  "groups"={"set-lang"}
- *              }
+ *              },
+ *              "access_control"="is_granted('ROLE_USER')",
  *          },
  *          "get-lang"={
  *              "method"="GET",
@@ -115,7 +117,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=GetLangController::class,
  *              "denormalization_context"={
  *                  "groups"={"get-lang"}
- *              }
+ *              },
+ *              "access_control"="is_granted('ROLE_USER')",
  *          },
  *          "post",
  *          "get"
@@ -342,12 +345,14 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="owner", orphanRemoval=true)
+     * @ApiSubresource
      */
     private $messages;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\MediaObject", cascade={"persist", "remove"})
      * @Groups({"user:read", "me"})
+     * @ApiSubresource
      */
     private $avatar;
 
