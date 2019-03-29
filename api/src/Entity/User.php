@@ -274,10 +274,16 @@ class User extends BaseUser
      */
     private $avatar;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MovieStatus", mappedBy="user", orphanRemoval=true)
+     */
+    private $movieStatuses;
+
     public function __construct()
     {
         parent::__construct();
         $this->messages = new ArrayCollection();
+        $this->movieStatuses = new ArrayCollection();
     }
 
     /**
@@ -401,6 +407,37 @@ class User extends BaseUser
     public function setAvatar(?MediaObject $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MovieStatus[]
+     */
+    public function getMovieStatuses(): Collection
+    {
+        return $this->movieStatuses;
+    }
+
+    public function addMovieStatus(MovieStatus $movieStatus): self
+    {
+        if (!$this->movieStatuses->contains($movieStatus)) {
+            $this->movieStatuses[] = $movieStatus;
+            $movieStatus->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovieStatus(MovieStatus $movieStatus): self
+    {
+        if ($this->movieStatuses->contains($movieStatus)) {
+            $this->movieStatuses->removeElement($movieStatus);
+            // set the owning side to null (unless already changed)
+            if ($movieStatus->getUser() === $this) {
+                $movieStatus->setUser(null);
+            }
+        }
 
         return $this;
     }
