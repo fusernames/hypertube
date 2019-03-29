@@ -106,7 +106,7 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull( message="Movie cannot be null")
+     * @Assert\NotNull(message="Movie cannot be null")
      */
     private $movie;
 

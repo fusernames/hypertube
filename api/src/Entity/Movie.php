@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Controller\Torrent\StatusTorrentController;
@@ -35,7 +36,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "controller"=StatusTorrentController::class
  *          },
  *          "post",
- *          "get"
+ *          "get",
+ *          "delete-old-movies"={
+ *              "method"="GET",
+ *              "path"="/movies/remove-old",
+ *              "controller"=StatusTorrentController::class
+ *          }
  *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
@@ -102,6 +108,7 @@ class Movie
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="movie", orphanRemoval=true)
+     * @ApiSubresource
      */
     private $messages;
 
