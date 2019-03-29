@@ -4,12 +4,11 @@ import Cookies from 'js-cookie'
 
 export function login(data) {
 
-  let locale
   data.email = data.username
   let auth = {}
 
   return (dispatch, getState) => {
-    locale = getState().locales.locale
+    const { locale } = getState().locales
     req('http://35.181.48.142/api/login_check', {
       method: 'post', body: data
     })

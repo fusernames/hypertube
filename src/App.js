@@ -35,11 +35,8 @@ const theme = createMuiTheme({
 
 class App extends Component {
 
-  componentDidMount() {
-    document.title = 'Hypertube'
-  }
-
   componentWillMount() {
+    document.title = 'Hypertube'
     const { dispatch } = this.props
     dispatch(getCurrentUser())
   }
