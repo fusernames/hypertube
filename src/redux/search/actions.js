@@ -160,6 +160,6 @@ export function setOptions(word, genre, sort, api) {
 
 export function fetching() {
   return {
-    type: 'FETCHING'
+    type: 'SEARCH_FETCHING'
   }
 }

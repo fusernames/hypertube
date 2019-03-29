@@ -9,17 +9,26 @@ export function login(data, callback) {
   let auth = {}
 
   return (dispatch, getState) => {
-    const { locale } = getState().locales
-    req(api + '/login_check', {
-      method: 'post', body: data
-    })
-    .then(res => {
-      auth.token = res.token
-      Cookies.set('jwt', auth.token)
-      dispatch(getCurrentUser())
-      dispatch(alert('LOGIN_SUCCESS', 'success'))
-      if (callback) callback()
-    })
+    const { isFetching } = getState().auth
+    if (!isFetching) {
+      dispatch(authFetching())
+      req(api + '/login_check', {
+        method: 'post', body: data
+      })
+      .then(res => {
+        auth.token = res.token
+        Cookies.set('jwt', auth.token)
+        dispatch(getCurrentUser())
+        dispatch(alert('LOGIN_SUCCESS', 'success'))
+        if (callback) callback()
+      })
+    }
+  }
+}
+
+export function authFetching() {
+  return {
+    type: 'AUTH_FETCHING'
   }
 }
 
