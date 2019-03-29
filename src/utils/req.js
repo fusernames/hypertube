@@ -34,9 +34,9 @@ const req = (url, options) => {
       }
     })
     .catch(err => {
-      store.dispatch(enqueueSnackbar(err, 'error'))
+      store.dispatch(enqueueSnackbar(err.message, 'error'))
       console.error(err)
-      reject()
+      reject(err)
     })
   })
 }

@@ -4,6 +4,7 @@ import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import req from '../../utils/req'
 import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import api from '../../config'
 
 class Profile extends Component {
 
@@ -15,7 +16,7 @@ class Profile extends Component {
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req('http://35.181.48.142/api/users/' + id, {token: true})
+    req(api + '/users/' + id, {token: true})
     .then(res => {
       this.setState({
         username: res.username,

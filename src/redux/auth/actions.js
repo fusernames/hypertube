@@ -1,6 +1,7 @@
 import { enqueueSnackbar } from '../snackbars/actions'
 import req from '../../utils/req'
 import Cookies from 'js-cookie'
+import api from '../../config'
 
 export function login(data) {
 
@@ -9,7 +10,7 @@ export function login(data) {
 
   return (dispatch, getState) => {
     const { locale } = getState().locales
-    req('http://35.181.48.142/api/login_check', {
+    req(api + '/login_check', {
       method: 'post', body: data
     })
     .then(res => {
@@ -31,7 +32,7 @@ export function logout() {
 export function getCurrentUser() {
   return (dispatch) => {
     if (Cookies.get('jwt')) {
-      req('http://35.181.48.142/api/users/me', {token: true})
+      req(api + '/users/me', {token: true})
       .then(res => {
         dispatch(setCurrentUser(res))
       })

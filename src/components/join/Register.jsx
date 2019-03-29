@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
 import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import api from '../../config'
 
 class Register extends React.Component {
 
@@ -34,10 +35,16 @@ class Register extends React.Component {
         username, email, firstname, lastname
       }
       if (!nbErrors) {
-        req('http://35.181.48.142/api/users', {
+        req(api + '/users', {
           method: 'post', body: datas
         })
         .then(() => {
+          req(api + '/media_objects/avatar/create', {
+            method: 'post',
+            contentType:'multipart/form-data',
+            body: this.state.file,
+            token: true
+          })
           enqueueSnackbar(locale.REGISTER_SUCCESS, 'success')
         })
         .catch(err => {
@@ -101,6 +108,11 @@ class Register extends React.Component {
     })
   }
 
+  onFileChange = (e) => {
+    const file = e.target.files[0]
+    this.setState({...this.state, file})
+  }
+
   render () {
     const { classes } = this.props
     const { locale } = this.props.locales
@@ -145,7 +157,7 @@ class Register extends React.Component {
               />
             </Grid>
             <Grid item xs={12}>
-              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}}/>
+              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}} onChange={this.onFileChange}/>
               <label htmlFor="contained-button-file">
                 <Button color="primary" component="span" fullWidth>
                   {locale.register.upload}

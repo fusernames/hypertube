@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
 import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import api from '../../config'
 
 class Update extends React.Component {
 
@@ -24,7 +25,7 @@ class Update extends React.Component {
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req('http://35.181.48.142/api/users/me', {token: true})
+    req(api + 'users/me', {token: true})
     .then(res => {
       this.setState({
         ...this.state,
