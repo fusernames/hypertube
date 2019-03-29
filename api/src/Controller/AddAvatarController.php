@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\MediaObject;
 use App\Form\MediaObjectType;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 
-final class CreateMediaObjectAction extends AbstractController
+final class AddAvatarController extends AbstractController
 {
     /**
      * @var RegistryInterface
@@ -44,22 +45,24 @@ final class CreateMediaObjectAction extends AbstractController
     /**
      * @IsGranted("ROLE_USER")
      */
-    public function __invoke(Request $request): MediaObject
+    public function __invoke(Request $request): User
     {
         $mediaObject = new MediaObject();
 
         $form = $this->factory->create(MediaObjectType::class, $mediaObject);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->doctrine->getManager();
+            $user = $this->getUser();
+            $user->setAvatar($mediaObject);
             $mediaObject->setOwner($this->getUser());
+            $em = $this->doctrine->getManager();
             $em->persist($mediaObject);
             $em->flush();
 
             // Prevent the serialization of the file property
             $mediaObject->file = null;
 
-            return $mediaObject;
+            return $user;
         }
 
         // This will be handled by API Platform and returns a validation error.

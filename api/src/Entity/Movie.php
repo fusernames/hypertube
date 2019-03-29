@@ -3,25 +3,21 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
-
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\Torrent\StatusTorrentController;
+use App\Controller\Torrent\DownloadTorrentController;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
-use App\Controller\Torrent\StatusTorrentController;
-use App\Controller\Torrent\DownloadTorrentController;
-
 /**
  * @ApiResource(
- *      attributes={
- *          "access_control"="is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')",
- *          "access_control_message"="Sorry, you are not authorized to access this service."
- *      },
+ *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      itemOperations={
  *          "get",
  *          "put",
@@ -80,6 +76,12 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Name must be at least {{ limit }} characters long",
+     *      maxMessage = "Name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
@@ -105,11 +107,19 @@ class Movie
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $torrentId;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\Type(
+     *     type="bool",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
     private $finished = false;
 

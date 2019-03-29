@@ -9,6 +9,7 @@
     "@material-ui/icons": "^3.0.2",
     "@material-ui/lab": "^3.0.0-alpha.30",
     "express": "^4.16.4",
+    "js-cookie": "^2.2.0",
     "notistack": "^0.5.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -16,8 +17,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "webpack": "^4.29.6"
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

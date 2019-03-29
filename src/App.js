@@ -12,6 +12,7 @@ import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
 import LoggedRoute from './utils/jsx/LoggedRoute'
+import { getCurrentUser } from './redux/auth/actions'
 
 const theme = createMuiTheme({
   palette: {
@@ -34,11 +35,15 @@ const theme = createMuiTheme({
 
 class App extends Component {
 
-  componentDidMount() {
+  componentWillMount() {
     document.title = 'Hypertube'
+    const { dispatch } = this.props
+    dispatch(getCurrentUser())
   }
 
   render() {
+    const { auth } = this.props
+    if (auth.logged === undefined) return null
     return (
       <MuiThemeProvider theme={theme}>
         <CssBaseline />

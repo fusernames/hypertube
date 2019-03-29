@@ -82,7 +82,7 @@ class Movie extends React.Component {
     return (
       <div>
         <Loading display={isFetching}/>
-        <Typography variant="h5" color="primary" style={{marginBottom:'15px'}}>{movie.title}</Typography>
+        <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
           <Grid item xs={12} sm={5} md={5}>
             <img className={classes.img} src={movie.image} width="100%"/>
