@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
+import req from '../../utils/req'
+import { enqueueSnackbar } from '../../redux/snackbars/actions'
 
 class Update extends React.Component {
 
@@ -18,6 +20,31 @@ class Update extends React.Component {
     formErrors: {
       username: [], firstname: [], lastname: [], email: [], newpassword: [], repassword: []
     }
+  }
+
+  fetchUser(id) {
+    const { dispatch } = this.props
+    req('http://35.181.48.142/api/users/me', {token: true})
+    .then(res => {
+      this.setState({
+        ...this.state,
+        user : {
+          ...this.state.user,
+          username: res.username,
+          firstname: res.firstname,
+          lastname: res.lastname,
+          email: res.email,
+        }
+      })
+    }).catch(err => {
+      if (err.status === 404)
+        dispatch(enqueueSnackbar('User not found', 'error'))
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.checkForm();
   }
 
   validate = (name) => {
@@ -69,15 +96,15 @@ class Update extends React.Component {
     })
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.checkForm();
+  componentWillMount() {
+    this.fetchUser()
   }
 
   render () {
     const { classes } = this.props
     const { locale } = this.props.locales
     const { formErrors } = this.state
+    const { lastname, firstname, username } = this.state.user
 
     return (
       <div>
@@ -92,6 +119,7 @@ class Update extends React.Component {
                 label={locale.global.username}
                 onChange={this.onChange}
                 margin="normal"
+                value={username}
                 fullWidth
               />
             </Grid>
@@ -103,6 +131,7 @@ class Update extends React.Component {
                 label={locale.global.firstname}
                 onChange={this.onChange}
                 margin="normal"
+                value={firstname}
                 fullWidth
               />
             </Grid>
@@ -114,6 +143,7 @@ class Update extends React.Component {
                 label={locale.global.lastname}
                 onChange={this.onChange}
                 margin="normal"
+                value={lastname}
                 fullWidth
               />
             </Grid>

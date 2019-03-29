@@ -17,7 +17,7 @@ export function exists(code, list, set = false) {
   if (!set) {
     for (let i in movies) {
       if (movies[i]) {
-        if (movies[i].code == code)
+        if (movies[i].code === code)
           return true
       }
     }

@@ -2,13 +2,34 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
+import req from '../../utils/req'
+import { enqueueSnackbar } from '../../redux/snackbars/actions'
 
 class Profile extends Component {
 
   state = {
-    username: 'j.doe',
-    firstname: 'John',
-    lastname: 'Doe',
+    username: undefined,
+    firstname: undefined,
+    lastname: undefined,
+  }
+
+  fetchUser(id) {
+    const { dispatch } = this.props
+    req('http://35.181.48.142/api/users/' + id, {token: true})
+    .then(res => {
+      this.setState({
+        username: res.username,
+        firstname: res.firstname,
+        lastname: res.lastname
+      })
+    }).catch(err => {
+      if (err.status === 404)
+        dispatch(enqueueSnackbar('User not found', 'error'))
+    })
+  }
+
+  componentWillMount() {
+    this.fetchUser(this.props.match.params.id)
   }
 
   render() {
@@ -16,6 +37,7 @@ class Profile extends Component {
     const { locale } = this.props.locales
     const { classes } = this.props
 
+    if (!username) return null
     return (
       <div>
         <Typography align="center" color="primary" variant="h4">{username}</Typography>
