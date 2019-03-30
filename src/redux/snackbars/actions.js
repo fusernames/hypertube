@@ -1,3 +1,10 @@
+export function alert(code, variant) {
+  return (dispatch, getState) => {
+    const { locale } = getState().locales
+    dispatch(enqueueSnackbar(locale.alerts[code], variant))
+  }
+}
+
 export function enqueueSnackbar(message, variant) {
   return {
     type: 'ENQUEUE_SNACKBAR',
@@ -13,5 +20,5 @@ export function enqueueSnackbar(message, variant) {
 
 export const removeSnackbar = key => ({
   type: 'REMOVE_SNACKBAR',
-  key,
+  key: key
 });

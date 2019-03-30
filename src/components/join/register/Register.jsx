@@ -2,9 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import validator from '../../utils/validator'
-import req from '../../utils/req'
-import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import validator from '../../../utils/validator'
+import req from '../../../utils/req'
+import { alert } from '../../../redux/snackbars/actions'
+import { login } from '../../../redux/auth/actions'
+import api from '../../../config'
 
 class Register extends React.Component {
 
@@ -17,6 +19,7 @@ class Register extends React.Component {
       password: '',
       repassword: ''
     },
+    file : {},
     formErrors: {
       username: [], firstname: [], lastname: [], email: [], password: [], repassword: []
     }
@@ -34,11 +37,21 @@ class Register extends React.Component {
         username, email, firstname, lastname
       }
       if (!nbErrors) {
-        req('http://35.181.48.142/api/users', {
+        req(api + '/users', {
           method: 'post', body: datas
         })
         .then(() => {
-          enqueueSnackbar(locale.REGISTER_SUCCESS, 'success')
+          dispatch(login({username: datas.username, password: datas.plainPassword}, () => {
+            const formData = new FormData();
+            formData.append('file', this.state.file)
+            req(api + '/media_objects/avatar/create', {
+              method: 'post',
+              contentType:'multipart/form-data',
+              body: formData,
+              useToken: true
+            })
+          }))
+          dispatch(alert('REGISTER_SUCCESS', 'success'))
         })
         .catch(err => {
           //
@@ -101,6 +114,18 @@ class Register extends React.Component {
     })
   }
 
+  onFileChange = (e) => {
+    const file = e.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    let image
+    reader.onload = () => {
+      this.setState({...this.state, image: reader.result}, () => {
+        this.setState({...this.state, file})
+      })
+    }
+  }
+
   render () {
     const { classes } = this.props
     const { locale } = this.props.locales
@@ -110,7 +135,7 @@ class Register extends React.Component {
       <div>
         <Typography color="primary" variant="h5">{locale.register.title}</Typography>
         <form onSubmit={this.handleSubmit}>
-          <Grid container spacing={16}>
+          <Grid container spacing={16} justify="center">
             <Grid item xs={12}>
               <TextField
                 error={formErrors.username.length ? true : false}
@@ -144,8 +169,17 @@ class Register extends React.Component {
                 fullWidth
               />
             </Grid>
+            {this.state.image &&
+              <Grid item xs={12} sm={6} md={7} lg={6}>
+                <div
+                  className={classes.avatar}
+                  style={{backgroundImage:'url(' + this.state.image + ')'}}
+                >
+                </div>
+              </Grid>
+            }
             <Grid item xs={12}>
-              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}}/>
+              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}} onChange={this.onFileChange}/>
               <label htmlFor="contained-button-file">
                 <Button color="primary" component="span" fullWidth>
                   {locale.register.upload}
@@ -206,14 +240,18 @@ class Register extends React.Component {
 const styles = {
   button: {
     marginTop: '10px'
+  },
+  avatar: {
+    width: '100%',
+    paddingBottom: '100%',
+    backgroundColor: '#222',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% auto',
+    borderRadius: '5px'
   }
 }
-
-function mapStateToProps(state) {
-  return state
-}
-
 let RegisterExport = Register
 RegisterExport = withStyles(styles)(RegisterExport)
-RegisterExport = connect(mapStateToProps)(RegisterExport)
+RegisterExport = connect(state => state)(RegisterExport)
 export default RegisterExport

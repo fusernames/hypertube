@@ -1,23 +1,34 @@
-import { enqueueSnackbar } from '../snackbars/actions'
+import { alert } from '../snackbars/actions'
 import req from '../../utils/req'
 import Cookies from 'js-cookie'
+import api from '../../config'
 
-export function login(data) {
+export function login(data, callback) {
 
   data.email = data.username
   let auth = {}
 
   return (dispatch, getState) => {
-    const { locale } = getState().locales
-    req('http://35.181.48.142/api/login_check', {
-      method: 'post', body: data
-    })
-    .then(res => {
-      auth.token = res.token
-      Cookies.set('jwt', auth.token)
-      dispatch(getCurrentUser())
-      dispatch(enqueueSnackbar(locale.alerts.LOGIN_SUCCESS, 'success'))
-    })
+    const { isFetching } = getState().auth
+    if (!isFetching) {
+      dispatch(authFetching())
+      req(api + '/login_check', {
+        method: 'post', body: data
+      })
+      .then(res => {
+        auth.token = res.token
+        Cookies.set('jwt', auth.token)
+        dispatch(getCurrentUser())
+        dispatch(alert('LOGIN_SUCCESS', 'success'))
+        if (callback) callback()
+      })
+    }
+  }
+}
+
+export function authFetching() {
+  return {
+    type: 'AUTH_FETCHING'
   }
 }
 
@@ -31,9 +42,14 @@ export function logout() {
 export function getCurrentUser() {
   return (dispatch) => {
     if (Cookies.get('jwt')) {
-      req('http://35.181.48.142/api/users/me', {token: true})
+      req(api + '/users/me', {useToken: true})
       .then(res => {
+        let id = res['@id'].split('id=')
+        res.id = id[1]
         dispatch(setCurrentUser(res))
+      })
+      .catch(err => {
+        dispatch(logout())
       })
     } else {
       dispatch(setCurrentUser())

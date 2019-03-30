@@ -7,7 +7,9 @@ const translations = {
     lastname: ["Last name", "Nom de famille"],
     firstname: ["First name", "Prénom"],
     repassword: ["Repeat password", "Repetez votre mot de passe"],
-    new_password: ["New password", "Nouveau mot de passe"]
+    new_password: ["New password", "Nouveau mot de passe"],
+    cancel: ["Cancel", "Annuler"],
+    send: ["Send", "Envoyer"],
   },
   navbar: {
     login: ["Login", "Connexion"],
@@ -22,6 +24,10 @@ const translations = {
   login: {
     btn: ["Log In", "Se connecter"],
     title: ["Sign in", "Connexion"],
+    forgot_password: ["Forgot password ?", "Mot de passe oublié ?"]
+  },
+  ask_reset: {
+    title: ["Send a reset link", "Envoyer un lien de réinitialisation"]
   },
   register: {
     btn: ["Register", "S'enregister"],
@@ -51,11 +57,15 @@ const translations = {
     rating: ["Rating", "Note"]
   },
   alerts: {
-    ALERT_EXAMPLE_SUCCESS: ['Example', 'Exemple'],
     // login
     LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"],
     // register
     REGISTER_SUCCESS: ["You have successfully register", "Inscription réussie"],
+    // reset
+    RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
+    // user
+    USER_NOT_FOUND: ["User not found", "Utilisateur non trouvé"],
+    USER_EDIT_SUCCESS: ["Your informations has been updated", "Vos informations ont bien étés éditées"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],

@@ -9,7 +9,7 @@ const initialState = {
 }
 
 function searchReducer(state = initialState, action) {
-  if (action.type === 'FETCHING') {
+  if (action.type === 'SEARCH_FETCHING') {
     return {
       ...state,
       isFetching: true
