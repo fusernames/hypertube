@@ -119,7 +119,14 @@ class Update extends React.Component {
 
   onFileChange = (e) => {
     const file = e.target.files[0]
-    this.setState({...this.state, file})
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    let image
+    reader.onload = () => {
+      this.setState({...this.state, image: reader.result}, () => {
+        this.setState({...this.state, file})
+      })
+    }
   }
 
   componentWillMount() {
@@ -136,7 +143,7 @@ class Update extends React.Component {
       <div>
         <Typography color="primary" variant="h5">{locale.navbar.my_account }</Typography>
         <form onSubmit={this.handleSubmit}>
-          <Grid container spacing={16}>
+          <Grid container spacing={16} justify="center">
             <Grid item xs={12}>
               <TextField
                 error={formErrors.username.length ? true : false}
@@ -173,6 +180,15 @@ class Update extends React.Component {
                 fullWidth
               />
             </Grid>
+            {this.state.image &&
+              <Grid item xs={12} sm={6} md={7} lg={6}>
+                <div
+                  className={classes.avatar}
+                  style={{backgroundImage:'url(' + this.state.image + ')'}}
+                >
+                </div>
+              </Grid>
+            }
             <Grid item xs={12}>
               <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}} onChange={this.onFileChange}/>
               <label htmlFor="contained-button-file">
@@ -236,6 +252,15 @@ class Update extends React.Component {
 const styles = {
   button: {
     marginTop: '10px'
+  },
+  avatar: {
+    width: '100%',
+    paddingBottom: '100%',
+    backgroundColor: '#222',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% auto',
+    borderRadius: '5px'
   }
 }
 const mapStateToProps = (state) => {

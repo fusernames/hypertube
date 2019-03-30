@@ -9,9 +9,7 @@ import api from '../../config'
 class Profile extends Component {
 
   state = {
-    username: undefined,
-    firstname: undefined,
-    lastname: undefined,
+    
   }
 
   fetchUser(id) {
