@@ -7,6 +7,7 @@ import req from '../../../utils/req'
 import { alert } from '../../../redux/snackbars/actions'
 import { login } from '../../../redux/auth/actions'
 import api from '../../../config'
+import Cookies from 'js-cookie'
 
 class Register extends React.Component {
 
@@ -19,7 +20,6 @@ class Register extends React.Component {
       password: '',
       repassword: ''
     },
-    file : {},
     formErrors: {
       username: [], firstname: [], lastname: [], email: [], password: [], repassword: []
     }
@@ -42,13 +42,13 @@ class Register extends React.Component {
         })
         .then(() => {
           dispatch(login({username: datas.username, password: datas.plainPassword}, () => {
-            const formData = new FormData();
-            formData.append('file', this.state.file)
+            const data = new FormData();
+            data.append('file', this.state.file)
             req(api + '/media_objects/avatar/create', {
               method: 'post',
-              contentType:'multipart/form-data',
-              body: formData,
-              useToken: true
+              body: data,
+              useToken: true,
+              contentType: false
             })
           }))
           dispatch(alert('REGISTER_SUCCESS', 'success'))
@@ -106,6 +106,7 @@ class Register extends React.Component {
       }
     }, () => {
       this.setState({
+        ...this.state,
         formErrors: {
           ...this.state.formErrors,
           [name]: this.validate(name)
@@ -121,7 +122,7 @@ class Register extends React.Component {
     let image
     reader.onload = () => {
       this.setState({...this.state, image: reader.result}, () => {
-        this.setState({...this.state, file})
+        this.setState({...this.state, file: file})
       })
     }
   }

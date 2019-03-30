@@ -59,6 +59,14 @@ class Update extends React.Component {
           console.log(res)
           dispatch(alert('USER_EDIT_SUCCESS', 'success'))
         })
+        const data = new FormData();
+        data.append('file', this.state.file)
+        req(api + '/media_objects/avatar/create', {
+          method: 'post',
+          body: data,
+          useToken: true,
+          contentType: false
+        })
       }
     });
   }

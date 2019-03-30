@@ -8,9 +8,7 @@ import api from '../../config'
 
 class Profile extends Component {
 
-  state = {
-    
-  }
+  state = {}
 
   fetchUser(id) {
     const { dispatch } = this.props
@@ -19,8 +17,10 @@ class Profile extends Component {
       this.setState({
         username: res.username,
         firstname: res.firstname,
-        lastname: res.lastname
+        lastname: res.lastname,
+        avatar: res.avatar.contentUrl
       })
+      console.log(res)
     }).catch(err => {
       if (err.status === 404)
         dispatch(alert('USER_NOT_FOUND', 'error'))
