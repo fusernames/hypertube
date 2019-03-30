@@ -1,11 +1,13 @@
 import React from 'react'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { TextField, Button, Grid, Typography } from '@material-ui/core'
+import { TextField, Button, Grid, Typography, Link } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { login } from '../../redux/auth/actions'
+import { login } from '../../../redux/auth/actions'
 import { indigo, red, blue, grey } from '@material-ui/core/colors'
+import AskReset from './AskReset'
 
+// theme colors
 const twitter = createMuiTheme({typography: {useNextVariants: true}, palette: {primary:blue}})
 const facebook = createMuiTheme({typography: {useNextVariants: true}, palette: {primary: { main: indigo['A200'] }}})
 const google = createMuiTheme({typography: {useNextVariants: true}, palette: {primary: { main: red[400] }}})
@@ -16,6 +18,11 @@ class Login extends React.Component {
   state = {
     username: '',
     password: '',
+    openAskReset: false
+  }
+
+  toggleAskReset = () => {
+    this.setState({...this.state, openAskReset: !this.state.openAskReset})
   }
 
   onChange = (e) => {
@@ -24,7 +31,7 @@ class Login extends React.Component {
 
   handleSubmit = (e) => {
     const { dispatch } = this.props
-    
+
     dispatch(login(this.state))
     e.preventDefault()
   }
@@ -77,6 +84,7 @@ class Login extends React.Component {
 
     return (
       <div>
+        <AskReset open={this.state.openAskReset} toggleAskReset={this.toggleAskReset}/>
         <Typography color="primary" variant="h5">{locale.login.title}</Typography>
         <form onSubmit={this.handleSubmit}>
           <Grid container spacing={16}>
@@ -102,6 +110,9 @@ class Login extends React.Component {
               />
             </Grid>
           </Grid>
+          <Typography>
+            <Link onClick={this.toggleAskReset} style={{cursor: 'pointer'}}>{locale.login.forgot_password}</Link>
+          </Typography>
           <Button
             style={{margin:'10px 0'}}
             type="submit"
@@ -155,11 +166,8 @@ class Login extends React.Component {
 const styles = {
 
 }
-const mapStateToProps = state => {
-  return state
-}
 let LoginExport = Login
 LoginExport = withStyles(styles)(LoginExport)
-LoginExport = connect(mapStateToProps)(LoginExport)
+LoginExport = connect(state => state)(LoginExport)
 
 export default LoginExport

@@ -3,20 +3,18 @@ import { connect } from 'react-redux'
 import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import req from '../../utils/req'
-import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import { alert } from '../../redux/snackbars/actions'
 import api from '../../config'
 
 class Profile extends Component {
 
   state = {
-    username: undefined,
-    firstname: undefined,
-    lastname: undefined,
+    
   }
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req(api + '/users/' + id, {token: true})
+    req(api + '/users/' + id, {useToken: true})
     .then(res => {
       this.setState({
         username: res.username,
@@ -25,7 +23,7 @@ class Profile extends Component {
       })
     }).catch(err => {
       if (err.status === 404)
-        dispatch(enqueueSnackbar('User not found', 'error'))
+        dispatch(alert('USER_NOT_FOUND', 'error'))
     })
   }
 

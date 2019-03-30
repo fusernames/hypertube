@@ -4,7 +4,7 @@ import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
-import { enqueueSnackbar } from '../../redux/snackbars/actions'
+import { alert } from '../../redux/snackbars/actions'
 import api from '../../config'
 
 class Update extends React.Component {
@@ -25,7 +25,7 @@ class Update extends React.Component {
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req(api + 'users/me', {token: true})
+    req(api + '/users/me', {useToken: true})
     .then(res => {
       this.setState({
         ...this.state,
@@ -39,13 +39,28 @@ class Update extends React.Component {
       })
     }).catch(err => {
       if (err.status === 404)
-        dispatch(enqueueSnackbar('User not found', 'error'))
+        dispatch(alert('USER_NOT_FOUND', 'error'))
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.checkForm();
+    const { dispatch, auth } = this.props
+
+    this.checkForm(nbErrors => {
+      if (!nbErrors) {
+        let body = {...this.state.user}
+        req(api + '/users/' + auth.user.id, {
+          method: 'put',
+          body: body,
+          useToken: true,
+        })
+        .then(res => {
+          console.log(res)
+          dispatch(alert('USER_EDIT_SUCCESS', 'success'))
+        })
+      }
+    });
   }
 
   validate = (name) => {
@@ -70,12 +85,17 @@ class Update extends React.Component {
 
   checkForm = (callback) => {
     let errors = {}
+    let nbErrors = 0
     for (let k in this.state.user) {
       errors[k] = this.validate(k)
+      if (errors[k].length)
+        nbErrors++
     }
     this.setState({
       ...this.state,
       formErrors: errors
+    }, () => {
+      if (callback) callback(nbErrors)
     })
   }
 
@@ -97,6 +117,18 @@ class Update extends React.Component {
     })
   }
 
+  onFileChange = (e) => {
+    const file = e.target.files[0]
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    let image
+    reader.onload = () => {
+      this.setState({...this.state, image: reader.result}, () => {
+        this.setState({...this.state, file})
+      })
+    }
+  }
+
   componentWillMount() {
     this.fetchUser()
   }
@@ -111,7 +143,7 @@ class Update extends React.Component {
       <div>
         <Typography color="primary" variant="h5">{locale.navbar.my_account }</Typography>
         <form onSubmit={this.handleSubmit}>
-          <Grid container spacing={16}>
+          <Grid container spacing={16} justify="center">
             <Grid item xs={12}>
               <TextField
                 error={formErrors.username.length ? true : false}
@@ -148,8 +180,17 @@ class Update extends React.Component {
                 fullWidth
               />
             </Grid>
+            {this.state.image &&
+              <Grid item xs={12} sm={6} md={7} lg={6}>
+                <div
+                  className={classes.avatar}
+                  style={{backgroundImage:'url(' + this.state.image + ')'}}
+                >
+                </div>
+              </Grid>
+            }
             <Grid item xs={12}>
-              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}}/>
+              <input accept="image/*" id="contained-button-file" type="file" style={{display: 'none'}} onChange={this.onFileChange}/>
               <label htmlFor="contained-button-file">
                 <Button color="primary" component="span" fullWidth>
                   {locale.register.upload}
@@ -200,7 +241,7 @@ class Update extends React.Component {
             className={classes.button}
             fullWidth
           >
-            {locale.register.btn}
+            {locale.account.btn}
           </Button>
         </form>
       </div>
@@ -211,6 +252,15 @@ class Update extends React.Component {
 const styles = {
   button: {
     marginTop: '10px'
+  },
+  avatar: {
+    width: '100%',
+    paddingBottom: '100%',
+    backgroundColor: '#222',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% auto',
+    borderRadius: '5px'
   }
 }
 const mapStateToProps = (state) => {

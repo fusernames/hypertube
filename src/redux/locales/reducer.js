@@ -1,4 +1,5 @@
 import translations from './translations';
+import Cookies from 'js-cookie'
 
 function getLocale(code) {
   let locale = JSON.parse(JSON.stringify(translations));
@@ -13,21 +14,24 @@ function getLocale(code) {
 const EN = 0, FR = 1
 const en = getLocale(EN)
 const fr = getLocale(FR)
+const locales = {en, fr}
+
+const lang = Cookies.get('lang')
 
 const initialState = {
-  code: 'EN',
-  locale: en
+  code: lang ? lang : 'en',
+  locale: lang ? locales[lang] : en
 }
 
 function localesReducer(state = initialState, action) {
   if (action.type === 'SET_FRENCH') {
     return {
-      code: 'FR',
+      code: 'fr',
       locale: fr
     }
   } else if (action.type === 'SET_ENGLISH') {
     return {
-      code: 'EN',
+      code: 'en',
       locale: en
     }
   } else {
