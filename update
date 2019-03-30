@@ -1,0 +1,12 @@
+#!/bin/bash
+chmod 400 hypertube.pem
+tar --exclude='.git' --exclude='./node_modules' --exclude='./api/vendor' --exclude='./api/var' -czvf output.tar.gz .
+scp -i hypertube.pem ./output.tar.gz root@hypertube.barthonet.ovh:/opt/
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh rm -rf /var/www/hypertube/*
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh tar xvf /opt/output.tar.gz -C /var/www/hypertube/
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm i --prefix /var/www/hypertube/
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh composer install -d /var/www/hypertube/api/
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh chown -R www-data: /var/www/
+ssh -i hypertube.pem -t root@hypertube.barthonet.ovh rm -f /opt/output.tar.gz
+rm -f output.tar.gz
