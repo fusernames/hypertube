@@ -42,6 +42,18 @@ class MovieStatus
      */
     private $movie;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onUpdate() {
+        $this->setUpdatedAt(new \DateTime());
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +91,18 @@ class MovieStatus
     public function setMovie(?Movie $movie): self
     {
         $this->movie = $movie;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

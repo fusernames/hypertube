@@ -68,9 +68,9 @@ class Register extends React.Component {
     if (name === 'username')
       errors = validator.notNull().minLen(3).maxLen(20).errors
     else if (name === 'firstname')
-      errors = validator.notNull().maxLen(40).errors
+      errors = validator.notNull().isAlphabetic().maxLen(40).errors
     else if (name === 'lastname')
-      errors = validator.notNull().maxLen(40).errors
+      errors = validator.notNull().isAlphabetic().maxLen(40).errors
     else if (name === 'email')
       errors = validator.isEmail().errors
     else if (name === 'password')

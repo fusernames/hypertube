@@ -15,6 +15,13 @@ class Validator {
     return this
   }
 
+  isAlphabetic() {
+    let regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/
+    if (!this._value.match(regex))
+      this.addError('NOT_ALPHABETIC')
+    return this
+  }
+
   isNumeric() {
     if (isNaN(this._value) || !isFinite(this._value))
       this.addError('NOT_NUMERIC')
