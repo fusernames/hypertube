@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <body>
+    <p>test</p>
+    <input id="file-upload" type="file" accept=".gif,.jpg,.jpeg,.png">
+    <script>
+        window.addEventListener("load", function() {
+            document.getElementById("file-upload").onchange = function(event) {
+                var reader = new FileReader();
+                reader.readAsDataURL(event.srcElement.files[0]);
+                var me = this;
+                reader.onload = function () {
+                    var fileContent = reader.result;
+                    console.log(fileContent);
+                    var data = new FormData();
+                    data.append("file", fileContent);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+
+                    xhr.addEventListener("readystatechange", function () {
+                        if (this.readyState === this.DONE) {
+                            console.log(this.responseText);
+                        }
+                    });
+
+                    xhr.open("POST", "https://hypertube.barthonet.ovh/api/media_objects");
+                    xhr.setRequestHeader("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1NTM5MzM5NDYsImV4cCI6MTU1NDUzODc0Niwicm9sZXMiOlsiU1VQRVJfQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJkaW1pdHJpIn0.cKJ-MG4b7w_k4F5NNUhlxkOCFUO-lFmGAmGPyfps-UNWSgwIZjtocNx29SZVFhM29Cif3rO0VUu3s_gCb6OZGrpduZWhScb7u5Z-3NAQq_Lt3tJfUgUpq6PdtEGYpR7h7DmOqKVIxnYchABJxfgP_6bce6Xlu4PK9dS6ayL9HynRP6aXjSOj-rJSWP5K__WyNGNMIJ2k8tobGRd-aOL99B2qD3TcSWYAdRmdm6sPbUrxk9GwVLhY938BDTjAdlWriz2hPWLRQ2LqNto53NCo4zhQyy6Sx_OFxjNUsz2wC5unwoxlEa0CUN6-mXvancSC9gZvXpCW7uXReg_jfKmsgTU36e_HWCc0YhqkodAcsgir61vnU27VUepZKT4kM-UjQcLF9P2if-3ddAMwFbHtzDYCn_ENNdy4yvEY08MUEVdw3B6q558mGVmTlvHr_8zJBYki1pevkv9-Z8nkZFf-U4mm968uRjGUmqgDbm_cAUuhoFsnrfGTkYRhslgs07pTkhdz2iAul3xen76eNnLiMlMkAin2JXNMnsGahVBSONIEEcrRYHfsr8-nfs63dsc2lYypSqLITumcvgtiMVM82PutuhJR_Rg0t6NpEDFAUaXjCzhP2s108V2-4-J-HD2-DadtJW_fkrWJhjvRMyjvRU8O2Tyjw-PMw23vsRoX4DA");
+
+                    xhr.send(data);
+                }
+            }
+        });
+    </script>
+  </body>
+</html>
