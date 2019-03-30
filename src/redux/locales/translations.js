@@ -26,7 +26,7 @@ const translations = {
     title: ["Sign in", "Connexion"],
     forgot_password: ["Forgot password ?", "Mot de passe oublié ?"]
   },
-  resetpw: {
+  ask_reset: {
     title: ["Send a reset link", "Envoyer un lien de réinitialisation"]
   },
   register: {

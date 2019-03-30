@@ -12,7 +12,7 @@ class Resetpw extends React.Component {
   }
 
   handleSubmit = () => {
-    const { toggleResetpw, dispatch } = this.props
+    const { toggleAskReset, dispatch } = this.props
     req(api + '/users/reset-password/send-email', {
       method: 'post',
       body: {email: this.state.email}
@@ -24,7 +24,7 @@ class Resetpw extends React.Component {
       if (err.status === 403)
         dispatch(alert('USER_NOT_FOUND', 'error'))
     })
-    toggleResetpw();
+    toggleAskReset();
   }
 
   onChange = (e) => {
@@ -32,17 +32,17 @@ class Resetpw extends React.Component {
   }
 
   render() {
-    const { open, toggleResetpw, locales } = this.props
+    const { open, toggleAskReset, locales } = this.props
     const { locale } = locales
     return (
       <div>
         <Dialog
           open={open}
-          onClose={toggleResetpw}
+          onClose={toggleAskReset}
           aria-labelledby="form-dialog-title"
           fullWidth
         >
-          <DialogTitle id="form-dialog-title">{locale.resetpw.title}</DialogTitle>
+          <DialogTitle id="form-dialog-title">{locale.ask_reset.title}</DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -55,10 +55,10 @@ class Resetpw extends React.Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={toggleResetpw} color="default">
+            <Button onClick={toggleAskReset} color="default" variant="outlined">
               {locale.global.cancel}
             </Button>
-            <Button onClick={this.handleSubmit} color="primary">
+            <Button onClick={this.handleSubmit} color="primary" variant="outlined">
               {locale.global.send}
             </Button>
           </DialogActions>

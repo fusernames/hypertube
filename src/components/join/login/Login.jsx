@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { login } from '../../../redux/auth/actions'
 import { indigo, red, blue, grey } from '@material-ui/core/colors'
-import Resetpw from './Resetpw'
+import AskReset from './AskReset'
 
 // theme colors
 const twitter = createMuiTheme({typography: {useNextVariants: true}, palette: {primary:blue}})
@@ -18,11 +18,11 @@ class Login extends React.Component {
   state = {
     username: '',
     password: '',
-    openResetpw: false
+    openAskReset: false
   }
 
-  toggleResetpw = () => {
-    this.setState({...this.state, openResetpw: !this.state.openResetpw})
+  toggleAskReset = () => {
+    this.setState({...this.state, openAskReset: !this.state.openAskReset})
   }
 
   onChange = (e) => {
@@ -84,7 +84,7 @@ class Login extends React.Component {
 
     return (
       <div>
-        <Resetpw open={this.state.openResetpw} toggleResetpw={this.toggleResetpw}/>
+        <AskReset open={this.state.openAskReset} toggleAskReset={this.toggleAskReset}/>
         <Typography color="primary" variant="h5">{locale.login.title}</Typography>
         <form onSubmit={this.handleSubmit}>
           <Grid container spacing={16}>
@@ -111,7 +111,7 @@ class Login extends React.Component {
             </Grid>
           </Grid>
           <Typography>
-            <Link onClick={this.toggleResetpw} style={{cursor: 'pointer'}}>{locale.login.forgot_password}</Link>
+            <Link onClick={this.toggleAskReset} style={{cursor: 'pointer'}}>{locale.login.forgot_password}</Link>
           </Typography>
           <Button
             style={{margin:'10px 0'}}
