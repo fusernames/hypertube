@@ -3,7 +3,7 @@
 JWT_PASSPHRASE="`grep JWT_PASSPHRASE ./api/.env | cut -f2 -d '='`"
 
 chmod 400 hypertube.pem
-tar --exclude='.git' --exclude='./node_modules' --exclude='./api/vendor' --exclude='./api/var' -czvf output.tar.gz .
+tar --exclude='./node_modules' --exclude='./api/vendor' --exclude='./api/var' -czvf output.tar.gz .
 scp -i hypertube.pem ./output.tar.gz root@hypertube.barthonet.ovh:/opt/
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh rm -rf /var/www/hypertube/*
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh tar xvf /opt/output.tar.gz -C /var/www/hypertube/
