@@ -26,6 +26,10 @@ const translations = {
     title: ["Sign in", "Connexion"],
     forgot_password: ["Forgot password ?", "Mot de passe oublié ?"]
   },
+  resetpw: {
+    title: ["Reset your password", "Réinitilisez votre mot de passe"],
+    btn: ["Reset", "Réinitiliser"]
+  },
   ask_reset: {
     title: ["Send a reset link", "Envoyer un lien de réinitialisation"]
   },
