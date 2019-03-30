@@ -54,7 +54,8 @@ const translations = {
     genres: ["Genres", "Genres"],
     trailer: ["Trailer", "Bande annonce"],
     download: ["Download", "Télécharger"],
-    rating: ["Rating", "Note"]
+    rating: ["Rating", "Note"],
+    torrents: ["Torrents", "Torrents"]
   },
   alerts: {
     // login

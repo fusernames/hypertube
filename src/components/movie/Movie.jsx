@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid, Button, Chip } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
@@ -10,7 +10,8 @@ class Movie extends React.Component {
 
   state = {
     movie: {
-      genres: []
+      genres: [],
+      torrents: []
     },
     isFetching: false
   }
@@ -28,11 +29,22 @@ class Movie extends React.Component {
     return nbr > 0 && nbr < 10 ? '0' + nbr : nbr;
   }
 
+  parseTorrents = torrents => {
+    let ret = []
+    for (let k in torrents) {
+      ret.push(torrents[k])
+      ret[ret.length - 1].quality = k
+      ret[ret.length - 1].size = torrents[k].filesize
+    }
+    return ret
+  }
+
   fetchMovie = (id) => {
     if (id[0] === 't') {
       this.setState({...this.state, isFetching: true})
       req('https://tv-v2.api-fetch.website/movie/' + id)
       .then(res => {
+        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -43,7 +55,8 @@ class Movie extends React.Component {
             year: res.year,
             rating: res.rating.percentage / 10,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
-            trailer: this.parseYtLink(res.trailer)
+            trailer: this.parseYtLink(res.trailer),
+            torrents: this.parseTorrents(res.torrents.en)
           }
         })
       })
@@ -52,6 +65,7 @@ class Movie extends React.Component {
       req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
       .then(res => {
         res = res.data.movie
+        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -63,7 +77,8 @@ class Movie extends React.Component {
             year: res.year,
             rating: res.rating,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
-            trailer: this.parseYtLink(res.yt_trailer_code)
+            trailer: this.parseYtLink(res.yt_trailer_code),
+            torrents: res.torrents.reverse()
           }
         })
       })
@@ -137,6 +152,25 @@ class Movie extends React.Component {
                   </div>
                 </Grid>
               }
+              <Grid item xs={12}>
+                <div className={classes.paper}>
+                  <Icon color="primary" style={{float:'right'}}>link</Icon>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
+                  <Grid container spacing={8}>
+                  {movie.torrents.map((torrent, i)=> {
+                    return (
+                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
+                        <div>
+                          <Chip label={torrent.quality} color="primary" variant="outlined" style={{marginRight:'10px'}}/>
+                          <Typography inline variant="caption">{torrent.size}</Typography>
+                        </div>
+                        <Button size="small">{locale.movie.download}</Button>
+                      </Grid>
+                    )
+                  })}
+                  </Grid>
+                </div>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -149,6 +183,11 @@ const styles = theme => ({
   img: {
     borderRadius:'5px',
     overflow:'hidden'
+  },
+  torrent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline'
   },
   paper: {
     background: theme.palette.secondary.dark,
