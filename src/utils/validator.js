@@ -16,7 +16,7 @@ class Validator {
   }
 
   isAlphabetic() {
-    let regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/
+    let regex = /^([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+([-]([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+)*$/
     if (!this._value.match(regex))
       this.addError('NOT_ALPHABETIC')
     return this
