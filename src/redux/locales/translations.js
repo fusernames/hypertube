@@ -73,6 +73,7 @@ const translations = {
     DIFFERENT: ["Not the same", "Ne correspond pas"],
     IS_NULL: ["Can't be null", "Ne peut pas être nul"],
     INVALID_EMAIL: ["Invalid email", "Email invalide"],
+    NOT_ALPHABETIC: ["Must be alphabetic", "Doit être alphabétique"]
   },
   genres: {
     action: ['Action', 'Action'],
