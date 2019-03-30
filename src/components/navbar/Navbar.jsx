@@ -5,9 +5,8 @@ import { withStyles } from '@material-ui/core/styles'
 import SideNav from './SideNav'
 import LoggedNav from './LoggedNav'
 import { Link } from 'react-router-dom'
-import { Button, AppBar, Toolbar, IconButton, Typography, Badge, InputBase, Paper } from '@material-ui/core'
+import { Button, AppBar, Toolbar, IconButton, Typography, InputBase } from '@material-ui/core'
 import { toggleLanguage } from '../../redux/locales/actions'
-import { logout } from '../../redux/auth/actions'
 import { SearchTwoTone as SearchIcon } from '@material-ui/icons'
 import { fetchMovies } from '../../redux/search/actions'
 import history from '../../utils/history'
@@ -19,7 +18,7 @@ class Navbar extends React.Component {
   }
 
   searchChange = (e) => {
-    if (history.location.pathname != '/')
+    if (history.location.pathname !== '/')
       history.push('/')
     this.props.dispatch(fetchMovies({word: e.target.value}))
   }

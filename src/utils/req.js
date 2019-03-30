@@ -22,12 +22,8 @@ const req = (url, options) => {
       params.headers = {...params.headers, Authorization: 'Bearer ' + Cookies.get('jwt')}
   }
   return new Promise((resolve, reject) => {
-    // debug
-    console.log(url, params)
-    // requete
     fetch(url, params)
     .then(response => {
-      console.log('response', response)
       if (response.ok) {
         response.json().then(json => {
           resolve(json)

@@ -79,7 +79,6 @@ class Login extends React.Component {
   }
 
   render () {
-    const { classes } = this.props
     const { locale } = this.props.locales
 
     return (

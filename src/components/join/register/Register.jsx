@@ -7,7 +7,6 @@ import req from '../../../utils/req'
 import { alert } from '../../../redux/snackbars/actions'
 import { login } from '../../../redux/auth/actions'
 import api from '../../../config'
-import Cookies from 'js-cookie'
 
 class Register extends React.Component {
 
@@ -26,8 +25,7 @@ class Register extends React.Component {
   }
 
   handleSubmit = (e) => {
-    const { dispatch, locales } = this.props
-    const { locale } = locales
+    const { dispatch } = this.props
     e.preventDefault()
 
     this.checkForm((nbErrors) => {
@@ -119,7 +117,6 @@ class Register extends React.Component {
     const file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    let image
     reader.onload = () => {
       this.setState({...this.state, image: reader.result}, () => {
         this.setState({...this.state, file: file})

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid, Paper } from '@material-ui/core'
+import { Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
@@ -29,7 +29,7 @@ class Movie extends React.Component {
   }
 
   fetchMovie = (id) => {
-    if (id[0] == 't') {
+    if (id[0] === 't') {
       this.setState({...this.state, isFetching: true})
       req('https://tv-v2.api-fetch.website/movie/' + id)
       .then(res => {
@@ -85,7 +85,7 @@ class Movie extends React.Component {
         <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
           <Grid item xs={12} sm={5} md={5}>
-            <img className={classes.img} src={movie.image} width="100%"/>
+            <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>
           </Grid>
           <Grid item xs={12} sm={7} md={7}>
             <Grid container spacing={8}>
@@ -133,7 +133,7 @@ class Movie extends React.Component {
                   <div className={classes.paper}>
                     <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
                     <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
-                    <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
+                    <iframe title="yt" id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
                   </div>
                 </Grid>
               }

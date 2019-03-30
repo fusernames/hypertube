@@ -20,7 +20,6 @@ class Profile extends Component {
         lastname: res.lastname,
         avatar: res.avatar.contentUrl
       })
-      console.log(res)
     }).catch(err => {
       if (err.status === 404)
         dispatch(alert('USER_NOT_FOUND', 'error'))

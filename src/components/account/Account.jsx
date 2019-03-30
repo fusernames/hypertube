@@ -56,7 +56,6 @@ class Update extends React.Component {
           useToken: true,
         })
         .then(res => {
-          console.log(res)
           dispatch(alert('USER_EDIT_SUCCESS', 'success'))
         })
         const data = new FormData();
@@ -129,7 +128,6 @@ class Update extends React.Component {
     const file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    let image
     reader.onload = () => {
       this.setState({...this.state, image: reader.result}, () => {
         this.setState({...this.state, file})

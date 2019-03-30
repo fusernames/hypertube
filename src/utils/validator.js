@@ -35,7 +35,7 @@ class Validator {
   }
 
   isEmail() {
-    let regex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/
+    let regex = /^\w+[\w-+.]*@\w+([-.]\w+)*\.[a-zA-Z]{2,}$/
     if (!this._value.match(regex))
       this.addError('INVALID_EMAIL')
     return this

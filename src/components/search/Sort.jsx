@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Typography, Grid, Button, Menu, MenuItem } from '@material-ui/core'
-import { withStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
-import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
+import { Grid, Button, Menu, MenuItem } from '@material-ui/core'
+import { fetchMovies } from '../../redux/search/actions'
 
 class Sort extends Component {
 
