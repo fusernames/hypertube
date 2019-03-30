@@ -36,12 +36,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "controller"=StatusTorrentController::class
  *          },
  *          "post",
- *          "get",
- *          "delete-old-movies"={
- *              "method"="GET",
- *              "path"="/movies/remove-old",
- *              "controller"=StatusTorrentController::class
- *          }
+ *          "get"
  *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
