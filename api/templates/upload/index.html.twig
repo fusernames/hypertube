@@ -18,14 +18,11 @@
     <script>
         window.addEventListener("load", function() {
             document.getElementById("file-upload").onchange = function(event) {
-                var reader = new FileReader();
-                reader.readAsDataURL(event.srcElement.files[0]);
-                var me = this;
-                reader.onload = function () {
-                    var fileContent = reader.result;
-                    console.log(fileContent);
+                
+                    {# var fileContent = reader.result;
+                    console.log(fileContent); #}
                     var data = new FormData();
-                    data.append("file", fileContent);
+                    data.append("file", event.srcElement.files[0]);
 
                     var xhr = new XMLHttpRequest();
                     xhr.withCredentials = true;
@@ -36,11 +33,10 @@
                         }
                     });
 
-                    xhr.open("POST", "https://hypertube.barthonet.ovh/api/media_objects");
-                    xhr.setRequestHeader("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1NTM5MzM5NDYsImV4cCI6MTU1NDUzODc0Niwicm9sZXMiOlsiU1VQRVJfQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJkaW1pdHJpIn0.cKJ-MG4b7w_k4F5NNUhlxkOCFUO-lFmGAmGPyfps-UNWSgwIZjtocNx29SZVFhM29Cif3rO0VUu3s_gCb6OZGrpduZWhScb7u5Z-3NAQq_Lt3tJfUgUpq6PdtEGYpR7h7DmOqKVIxnYchABJxfgP_6bce6Xlu4PK9dS6ayL9HynRP6aXjSOj-rJSWP5K__WyNGNMIJ2k8tobGRd-aOL99B2qD3TcSWYAdRmdm6sPbUrxk9GwVLhY938BDTjAdlWriz2hPWLRQ2LqNto53NCo4zhQyy6Sx_OFxjNUsz2wC5unwoxlEa0CUN6-mXvancSC9gZvXpCW7uXReg_jfKmsgTU36e_HWCc0YhqkodAcsgir61vnU27VUepZKT4kM-UjQcLF9P2if-3ddAMwFbHtzDYCn_ENNdy4yvEY08MUEVdw3B6q558mGVmTlvHr_8zJBYki1pevkv9-Z8nkZFf-U4mm968uRjGUmqgDbm_cAUuhoFsnrfGTkYRhslgs07pTkhdz2iAul3xen76eNnLiMlMkAin2JXNMnsGahVBSONIEEcrRYHfsr8-nfs63dsc2lYypSqLITumcvgtiMVM82PutuhJR_Rg0t6NpEDFAUaXjCzhP2s108V2-4-J-HD2-DadtJW_fkrWJhjvRMyjvRU8O2Tyjw-PMw23vsRoX4DA");
+                    xhr.open("POST", "http://127.0.0.1:8000/api/media_objects");
+                    xhr.setRequestHeader("authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1NTM5MzQ4MjQsImV4cCI6MTU1NDUzOTYyNCwicm9sZXMiOlsiU1VQRVJfQURNSU4iLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJkaW1pdHJpIn0.Z8xAxEVoe1zczpyKJOnXc3Xg_r5x91KD_l5ClPaFKlp3kemIqLerthO6Djr0LlzCeADfKOaYvOFnzL9i4xz55oRoE0Xgh2GCfNMnuNZFex9tK7LDAyKyadgBcXMg35Ql-FUziPq_USApEaQRMUR_jqSs1xzkXUD3Tw0mep3LRqP-rTK1iRl742pc2AquXc6htb6z6vFpj4qaLXVyqhH6OB7WrawfWwJYDePP-APdmZPd0aFaxFAq7aFN04Z-aBdrKSGTM_3By3ggo9zzH6DHz7sxdSaXEoCGdqebrZC0eFAvBj5dPrKPj70y6b8RdkIaiEZx8QRGbBBWPh9lQ-FRc_pZTYMLgmWrozaZ2SF_aFdjkWghw125qxdr3PFL29PmVLdMqhGhHwHjiOig_ryMeZT8Q-uMwH2d8BkXmK403PBzWxfbmX7Ng5X0oRZwXWiUOJMDv6JcSe1DGucAtwSsrtmjiDXuvpwclVlJWxntU37Wvdujc-5GkjWoeGDbiQ19gmFJ4lSEdyZkrz_8IIkHBmzRtrdrzMqXz2S_ARi5kHmYMoOgskVojdQBtbtbJOxQygl72vDvlYFUpeaDF9tKtAWyd3hBI-MUu1VVqNw4ojy92_xKcl61idFEH7_lnmDUNo7RYRa2lbJnNykoHUNSdGfmDubEswrvVfFNeukDPrs");
 
                     xhr.send(data);
-                }
             }
         });
     </script>
