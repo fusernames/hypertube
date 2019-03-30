@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid, Button, Chip } from '@material-ui/core'
+import { Typography, Grid, Chip, IconButton } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
@@ -156,15 +156,17 @@ class Movie extends React.Component {
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>link</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
-                  <Grid container spacing={8}>
+                  <Grid container>
                   {movie.torrents.map((torrent, i)=> {
                     return (
                       <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
                         <div>
-                          <Chip label={torrent.quality} color="primary" variant="outlined" style={{marginRight:'10px'}}/>
+                          <Chip label={torrent.quality} variant="outlined" style={{marginRight:'10px', width:'100px'}}/>
                           <Typography inline variant="caption">{torrent.size}</Typography>
                         </div>
-                        <Button size="small">{locale.movie.download}</Button>
+                        <IconButton component="span">
+                            <Icon>get_app</Icon>
+                        </IconButton>
                       </Grid>
                     )
                   })}
@@ -187,7 +189,7 @@ const styles = theme => ({
   torrent: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'baseline'
+    alignItems: 'center'
   },
   paper: {
     background: theme.palette.secondary.dark,
