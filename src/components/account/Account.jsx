@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Informations from './Informations'
 import Password from './Password'
-import { Divider, Paper } from '@material-ui/core'
+import { Paper } from '@material-ui/core'
 
 
 class Account extends Component {

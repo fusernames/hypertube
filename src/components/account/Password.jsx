@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { req, validator, checkForm } from '../../utils'
-import { TextField, Button, Grid, Typography } from '@material-ui/core'
+import { TextField, Button, Grid } from '@material-ui/core'
 import host from '../../config'
 import { alert } from '../../redux/snackbars/actions'
 
