@@ -63,7 +63,7 @@ class UserListener implements EventSubscriber
         !$user->getCreatedAt() ? $user->setCreatedAt(new \DateTime()) : 0;
         !$user->getUpdatedAt() ? $user->setUpdatedAt(new \DateTime()) : 0;
         !$user->getLang() ? $user->setLang('EN') : 0;
-        if (!$user->plainPassword) {
+        if (!$user->getplainPassword()) {
             throw new BadRequestHttpException('Plainpassword cannot be null or blank');
         }
     }

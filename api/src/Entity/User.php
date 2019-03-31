@@ -153,6 +153,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      },
  *      arguments={"orderParameterName"="order"}
  * )
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity("email")
  * @UniqueEntity("username")
  * @UniqueEntity("avatar")
@@ -174,6 +175,10 @@ class User extends BaseUser
      *      minMessage="The password must be at least {{ limit }} characters long",
      *      maxMessage="The password cannot be longer than {{ limit }} characters"
      * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
      */
     protected $current_password;
@@ -186,6 +191,10 @@ class User extends BaseUser
      *      minMessage="The password must be at least {{ limit }} characters long",
      *      maxMessage="The password cannot be longer than {{ limit }} characters"
      * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
      */
     protected $new_password;
@@ -193,6 +202,10 @@ class User extends BaseUser
     /**
      * @Groups({"user:write", "me", "rest-password-send-email"})
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      * @Assert\NotNull(message="Email cannot be null")
      * @Assert\NotBlank(message="Email cannot be blank")
      */
@@ -206,9 +219,12 @@ class User extends BaseUser
      *      minMessage="The password must be at least {{ limit }} characters long",
      *      maxMessage="The password cannot be longer than {{ limit }} characters"
      * )
-     * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
      */
-    public $plainPassword;
+    protected $plainPassword;
 
     /**
      * @Groups({"user", "me"})
@@ -283,8 +299,8 @@ class User extends BaseUser
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Assert\Regex(
-     *     pattern="/\d/",
-     *     match=false,
+     *     pattern="/^([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+([-]([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+)*$/",
+     *     match=true,
      *     message="Firstname cannot contain a number"
      * )
      */
@@ -304,8 +320,8 @@ class User extends BaseUser
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
      * @Assert\Regex(
-     *     pattern="/\d/",
-     *     match=false,
+     *     pattern="/^([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+([-]([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+)*$/",
+     *     match=true,
      *     message="Lastname cannot contain a number"
      * )
      * @Assert\NotNull(message="The lastname cannot be null")
@@ -350,6 +366,23 @@ class User extends BaseUser
         parent::__construct();
         $this->messages = new ArrayCollection();
         $this->movieStatuses = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onCreate() {
+       !$this->getCreatedAt() ? $this->setCreatedAt(new \DateTime()) : 0;
+       !$this->getUpdatedAt() ? $this->setUpdatedAt(new \DateTime()) : 0;
+       $this->enabled = true;
+       !$this->lang ? $this->lang = 'EN' : 0;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function onUpdate() {
+       $this->setUpdatedAt(new \DateTime());
     }
 
     public function isUser(?UserInterface $user = null): bool

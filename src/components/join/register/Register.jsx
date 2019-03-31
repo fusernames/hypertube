@@ -19,15 +19,13 @@ class Register extends React.Component {
       password: '',
       repassword: ''
     },
-    file : {},
     formErrors: {
       username: [], firstname: [], lastname: [], email: [], password: [], repassword: []
     }
   }
 
   handleSubmit = (e) => {
-    const { dispatch, locales } = this.props
-    const { locale } = locales
+    const { dispatch } = this.props
     e.preventDefault()
 
     this.checkForm((nbErrors) => {
@@ -42,13 +40,13 @@ class Register extends React.Component {
         })
         .then(() => {
           dispatch(login({username: datas.username, password: datas.plainPassword}, () => {
-            const formData = new FormData();
-            formData.append('file', this.state.file)
+            const data = new FormData();
+            data.append('file', this.state.file)
             req(api + '/media_objects/avatar/create', {
               method: 'post',
-              contentType:'multipart/form-data',
-              body: formData,
-              useToken: true
+              body: data,
+              useToken: true,
+              contentType: false
             })
           }))
           dispatch(alert('REGISTER_SUCCESS', 'success'))
@@ -106,6 +104,7 @@ class Register extends React.Component {
       }
     }, () => {
       this.setState({
+        ...this.state,
         formErrors: {
           ...this.state.formErrors,
           [name]: this.validate(name)
@@ -118,10 +117,9 @@ class Register extends React.Component {
     const file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    let image
     reader.onload = () => {
       this.setState({...this.state, image: reader.result}, () => {
-        this.setState({...this.state, file})
+        this.setState({...this.state, file: file})
       })
     }
   }

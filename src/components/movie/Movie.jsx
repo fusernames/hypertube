@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid, Paper } from '@material-ui/core'
+import { Typography, Grid, Chip, IconButton } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
@@ -10,7 +10,8 @@ class Movie extends React.Component {
 
   state = {
     movie: {
-      genres: []
+      genres: [],
+      torrents: []
     },
     isFetching: false
   }
@@ -28,11 +29,22 @@ class Movie extends React.Component {
     return nbr > 0 && nbr < 10 ? '0' + nbr : nbr;
   }
 
+  parseTorrents = torrents => {
+    let ret = []
+    for (let k in torrents) {
+      ret.push(torrents[k])
+      ret[ret.length - 1].quality = k
+      ret[ret.length - 1].size = torrents[k].filesize
+    }
+    return ret
+  }
+
   fetchMovie = (id) => {
-    if (id[0] == 't') {
+    if (id[0] === 't') {
       this.setState({...this.state, isFetching: true})
       req('https://tv-v2.api-fetch.website/movie/' + id)
       .then(res => {
+        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -43,7 +55,8 @@ class Movie extends React.Component {
             year: res.year,
             rating: res.rating.percentage / 10,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
-            trailer: this.parseYtLink(res.trailer)
+            trailer: this.parseYtLink(res.trailer),
+            torrents: this.parseTorrents(res.torrents.en)
           }
         })
       })
@@ -52,6 +65,7 @@ class Movie extends React.Component {
       req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
       .then(res => {
         res = res.data.movie
+        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -63,7 +77,8 @@ class Movie extends React.Component {
             year: res.year,
             rating: res.rating,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
-            trailer: this.parseYtLink(res.yt_trailer_code)
+            trailer: this.parseYtLink(res.yt_trailer_code),
+            torrents: res.torrents.reverse()
           }
         })
       })
@@ -85,7 +100,7 @@ class Movie extends React.Component {
         <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
           <Grid item xs={12} sm={5} md={5}>
-            <img className={classes.img} src={movie.image} width="100%"/>
+            <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>
           </Grid>
           <Grid item xs={12} sm={7} md={7}>
             <Grid container spacing={8}>
@@ -131,12 +146,38 @@ class Movie extends React.Component {
               {movie.trailer &&
                 <Grid item xs={12}>
                   <div className={classes.paper}>
-                    <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
+                    <Icon color="primary" style={{float:'right'}}>play_circle_outline</Icon>
                     <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
-                    <iframe id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
+                    <iframe title="yt" id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
                   </div>
                 </Grid>
               }
+              <Grid item xs={12}>
+                <div className={classes.paper}>
+                  <Icon color="primary" style={{float:'right'}}>link</Icon>
+                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
+                  <Grid container>
+                  {movie.torrents.map((torrent, i)=> {
+                    return (
+                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
+                        <div>
+                          <Chip label={torrent.quality} variant="outlined" style={{marginRight:'10px', width:'100px'}}/>
+                          <Typography inline variant="caption">{torrent.size}</Typography>
+                        </div>
+                        <div>
+                          <IconButton>
+                            <Icon>get_app</Icon>
+                          </IconButton>
+                          <IconButton>
+                            <Icon>play_arrow</Icon>
+                          </IconButton>
+                        </div>
+                      </Grid>
+                    )
+                  })}
+                  </Grid>
+                </div>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -149,6 +190,11 @@ const styles = theme => ({
   img: {
     borderRadius:'5px',
     overflow:'hidden'
+  },
+  torrent: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   paper: {
     background: theme.palette.secondary.dark,

@@ -30,7 +30,6 @@ function searchReducer(state = initialState, action) {
       api: action.api
     }
   } else if (action.type === 'ADD_MOVIES') {
-    console.log(action.movies)
     return {
       ...state,
       movies: [

@@ -56,8 +56,15 @@ class Update extends React.Component {
           useToken: true,
         })
         .then(res => {
-          console.log(res)
           dispatch(alert('USER_EDIT_SUCCESS', 'success'))
+        })
+        const data = new FormData();
+        data.append('file', this.state.file)
+        req(api + '/media_objects/avatar/create', {
+          method: 'post',
+          body: data,
+          useToken: true,
+          contentType: false
         })
       }
     });
@@ -121,7 +128,6 @@ class Update extends React.Component {
     const file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    let image
     reader.onload = () => {
       this.setState({...this.state, image: reader.result}, () => {
         this.setState({...this.state, file})

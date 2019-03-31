@@ -11,7 +11,7 @@ export function login(data, callback) {
   return (dispatch, getState) => {
     const { isFetching } = getState().auth
     if (!isFetching) {
-      dispatch(authFetching())
+      dispatch(authFetching(true))
       req(api + '/login_check', {
         method: 'post', body: data
       })
@@ -22,13 +22,17 @@ export function login(data, callback) {
         dispatch(alert('LOGIN_SUCCESS', 'success'))
         if (callback) callback()
       })
+      .catch(() => {
+        dispatch(authFetching(false))
+      })
     }
   }
 }
 
-export function authFetching() {
+export function authFetching(state) {
   return {
-    type: 'AUTH_FETCHING'
+    type: 'AUTH_FETCHING',
+    state: state
   }
 }
 

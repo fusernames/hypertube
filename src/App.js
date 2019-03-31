@@ -3,14 +3,14 @@ import { Route } from "react-router-dom"
 import { connect } from 'react-redux'
 import { CssBaseline, Grid } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import { grey, indigo, red, blue, deepOrange } from '@material-ui/core/colors';
+import { grey, blue } from '@material-ui/core/colors';
 import Navbar from './components/navbar/Navbar'
-import Join from './components/join/Join'
 import Home from './components/home/Home'
 import Notifier from './imported/Notifier'
 import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
+import Resetpw from './components/resetpw/Resetpw'
 import LoggedRoute from './utils/jsx/LoggedRoute'
 import { getCurrentUser } from './redux/auth/actions'
 
@@ -52,6 +52,7 @@ class App extends Component {
         <Grid container justify="center" style={{marginTop: '90px', marginBottom:'20px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
+            <Route exact path="/reset/:code" component={Resetpw} />
             <LoggedRoute path="/movie/:id" component={Movie} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />

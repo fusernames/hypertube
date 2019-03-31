@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Typography, Grid, Button, Menu, MenuItem } from '@material-ui/core'
+import { Typography, Grid } from '@material-ui/core'
 import Loading from '../../utils/jsx/Loading'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
@@ -18,11 +18,13 @@ class Search extends Component {
   }
 
   componentDidMount() {
-    const { search, dispatch } = this.props
+    const { dispatch } = this.props
     this._isMounted = true
     window.onscroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 200)
-        dispatch(fetchAddMovies())
+      if (this._isMounted === true) {
+        if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 200)
+          dispatch(fetchAddMovies())
+      }
     }
   }
 
@@ -40,7 +42,7 @@ class Search extends Component {
           <Sort />
         </Grid>
         <Grid item xs={12}>
-          {movies.length == 0 && !isFetching && <Typography align="center">{locale.search.no_results}</Typography>}
+          {movies.length === 0 && !isFetching && <Typography align="center">{locale.search.no_results}</Typography>}
           <Grid container spacing={8}>
             {movies.map(movie => {
               return (

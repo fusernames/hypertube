@@ -16,7 +16,7 @@ class Validator {
   }
 
   isAlphabetic() {
-    let regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/
+    let regex = /^([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+([-]([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+)*$/
     if (!this._value.match(regex))
       this.addError('NOT_ALPHABETIC')
     return this
@@ -35,7 +35,7 @@ class Validator {
   }
 
   isEmail() {
-    let regex = /^\w+[\w-+\.]*\@\w+([-\.]\w+)*\.[a-zA-Z]{2,}$/
+    let regex = /^\w+[\w-+.]*@\w+([-.]\w+)*\.[a-zA-Z]{2,}$/
     if (!this._value.match(regex))
       this.addError('INVALID_EMAIL')
     return this
