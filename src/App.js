@@ -10,7 +10,6 @@ import Notifier from './imported/Notifier'
 import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
-import Resetpw from './components/resetpw/Resetpw'
 import LoggedRoute from './utils/jsx/LoggedRoute'
 import { getCurrentUser } from './redux/auth/actions'
 
