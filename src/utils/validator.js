@@ -15,6 +15,13 @@ class Validator {
     return this
   }
 
+  isPassword() {
+    let regex = /^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/
+    if (!this._value.match(regex))
+      this.addError('INVALID_PASSWORD')
+    return this
+  }
+
   isAlphabetic() {
     let regex = /^([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+([-]([A-Za-zàéèêëîïôöûüùç.]+(( |')[A-Za-zàéèêëîïôöûüùç.]+)*)+)*$/
     if (!this._value.match(regex))

@@ -40,6 +40,7 @@ const translations = {
   },
   account: {
     btn: ["Update", "Mettre à jour"],
+    change_password: ["Change password", "Changer le mot de passe"]
   },
   search : {
     no_results: ["There is no results for you research", "Il n'y a aucun résultat pour votre recherche"]
@@ -70,7 +71,9 @@ const translations = {
     RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
     // user
     USER_NOT_FOUND: ["User not found", "Utilisateur non trouvé"],
-    USER_EDIT_SUCCESS: ["Your informations has been updated", "Vos informations ont bien étés éditées"]
+    USER_EDIT_SUCCESS: ["Your informations has been updated", "Vos informations ont bien étés éditées"],
+    USER_BAD_PASSWORD: ["This password is not correct", "Le mot de passe n'est pas correct"],
+    USER_EDIT_PASSWORD_SUCCESS: ["Password updated successfully", "Votre mot de passe a bien été mis à jour"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],
@@ -78,7 +81,8 @@ const translations = {
     DIFFERENT: ["Not the same", "Ne correspond pas"],
     IS_NULL: ["Can't be null", "Ne peut pas être nul"],
     INVALID_EMAIL: ["Invalid email", "Email invalide"],
-    NOT_ALPHABETIC: ["Must be alphabetic", "Doit être alphabétique"]
+    NOT_ALPHABETIC: ["Must be alphabetic", "Doit être alphabétique"],
+    INVALID_PASSWORD: ["Invalid password", "Mot de passe invalide"]
   },
   genres: {
     action: ['Action', 'Action'],
