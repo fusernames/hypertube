@@ -146,7 +146,7 @@ class Movie extends React.Component {
               {movie.trailer &&
                 <Grid item xs={12}>
                   <div className={classes.paper}>
-                    <Icon color="primary" style={{float:'right'}}>play_arrow</Icon>
+                    <Icon color="primary" style={{float:'right'}}>play_circle_outline</Icon>
                     <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.trailer}</Typography>
                     <iframe title="yt" id="ytplayer" type="text/html" src={movie.trailer} frameBorder="0" className={classes.frame} allowFullScreen="1"/>
                   </div>
@@ -164,9 +164,14 @@ class Movie extends React.Component {
                           <Chip label={torrent.quality} variant="outlined" style={{marginRight:'10px', width:'100px'}}/>
                           <Typography inline variant="caption">{torrent.size}</Typography>
                         </div>
-                        <IconButton component="span">
+                        <div>
+                          <IconButton>
                             <Icon>get_app</Icon>
-                        </IconButton>
+                          </IconButton>
+                          <IconButton>
+                            <Icon>play_arrow</Icon>
+                          </IconButton>
+                        </div>
                       </Grid>
                     )
                   })}
