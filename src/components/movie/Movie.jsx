@@ -159,16 +159,16 @@ class Movie extends React.Component {
                   <Grid container>
                   {movie.torrents.map((torrent, i)=> {
                     return (
-                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
+                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12} spacing={8}>
                         <div>
                           <Chip label={torrent.quality} variant="outlined" style={{marginRight:'10px', width:'100px'}}/>
                           <Typography inline variant="caption">{torrent.size}</Typography>
                         </div>
                         <div>
-                          <IconButton style={{width:'10px', height:'10px'}}>
+                          <IconButton style={{width:'40px', height:'40px'}}>
                             <Icon>get_app</Icon>
                           </IconButton>
-                          <IconButton>
+                          <IconButton style={{width:'40px', height:'40px'}}>
                             <Icon>play_arrow</Icon>
                           </IconButton>
                         </div>
