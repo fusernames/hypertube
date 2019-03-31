@@ -6,7 +6,7 @@ import validator from '../../../utils/validator'
 import req from '../../../utils/req'
 import { alert } from '../../../redux/snackbars/actions'
 import { login } from '../../../redux/auth/actions'
-import api from '../../../config'
+import host from '../../../config'
 
 class Register extends React.Component {
 
@@ -35,14 +35,14 @@ class Register extends React.Component {
         username, email, firstname, lastname
       }
       if (!nbErrors) {
-        req(api + '/users', {
+        req(host + '/api/users', {
           method: 'post', body: datas
         })
         .then(() => {
           dispatch(login({username: datas.username, password: datas.plainPassword}, () => {
             const data = new FormData();
             data.append('file', this.state.file)
-            req(api + '/media_objects/avatar/create', {
+            req(host + '/api/media_objects/avatar/create', {
               method: 'post',
               body: data,
               useToken: true,

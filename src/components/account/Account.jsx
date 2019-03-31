@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import validator from '../../utils/validator'
 import req from '../../utils/req'
 import { alert } from '../../redux/snackbars/actions'
-import api from '../../config'
+import host from '../../config'
 
 class Update extends React.Component {
 
@@ -25,7 +25,7 @@ class Update extends React.Component {
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req(api + '/users/me', {useToken: true})
+    req(host + '/api/users/me', {useToken: true})
     .then(res => {
       this.setState({
         ...this.state,
@@ -50,7 +50,7 @@ class Update extends React.Component {
     this.checkForm(nbErrors => {
       if (!nbErrors) {
         let body = {...this.state.user}
-        req(api + '/users/' + auth.user.id, {
+        req(host + '/api/users/' + auth.user.id, {
           method: 'put',
           body: body,
           useToken: true,
@@ -60,7 +60,7 @@ class Update extends React.Component {
         })
         const data = new FormData();
         data.append('file', this.state.file)
-        req(api + '/media_objects/avatar/create', {
+        req(host + '/api/media_objects/avatar/create', {
           method: 'post',
           body: data,
           useToken: true,

@@ -165,7 +165,7 @@ class Movie extends React.Component {
                           <Typography inline variant="caption">{torrent.size}</Typography>
                         </div>
                         <div>
-                          <IconButton>
+                          <IconButton style={{width:'10px', height:'10px'}}>
                             <Icon>get_app</Icon>
                           </IconButton>
                           <IconButton>

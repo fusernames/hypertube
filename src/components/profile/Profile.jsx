@@ -4,7 +4,7 @@ import { Typography, Grid, Paper } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import req from '../../utils/req'
 import { alert } from '../../redux/snackbars/actions'
-import api from '../../config'
+import host from '../../config'
 
 class Profile extends Component {
 
@@ -12,7 +12,7 @@ class Profile extends Component {
 
   fetchUser(id) {
     const { dispatch } = this.props
-    req(api + '/users/' + id, {useToken: true})
+    req(host + '/api/users/' + id, {useToken: true})
     .then(res => {
       this.setState({
         username: res.username,
@@ -31,7 +31,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { firstname, lastname, username } = this.state
+    const { firstname, lastname, username, avatar } = this.state
     const { locale } = this.props.locales
     const { classes } = this.props
 
@@ -43,7 +43,7 @@ class Profile extends Component {
           <Grid item xs={12} sm={7}>
             <div
               className={classes.avatar}
-              style={{backgroundImage:'url(https://i.imgflip.com/2wr8df.jpg)'}}
+              style={{backgroundImage:'url(' + host + '/media/' + avatar + ')'}}
             >
             </div>
           </Grid>

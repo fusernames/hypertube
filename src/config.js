@@ -1,3 +1,3 @@
-const api = 'https://hypertube.barthonet.ovh/api'
+const host = 'https://hypertube.barthonet.ovh'
 
-export default api
+export default host
