@@ -52,7 +52,6 @@ class App extends Component {
         <Grid container justify="center" style={{marginTop: '90px', marginBottom:'20px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
-            <Route exact path="/reset/:code" component={Resetpw} />
             <LoggedRoute path="/movie/:id" component={Movie} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />
