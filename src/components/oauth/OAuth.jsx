@@ -1,31 +1,41 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
+import queryString from 'query-string'
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
 
 class OAuth extends React.Component {
 
+  state = {
+    component: <Loading />
+  }
+
   componentDidMount() {
-    const { name } = this.props.match.params;
-    let token = "";
+    const { name } = this.props.match.params
+    let token = ""
+
+    console.log(this.props.location);
+
     switch (name) {
       case "github":
       case "42":
-        token = this.props.location.query.code;
-        break;
+        token = queryString.parse(this.props.location.search).code
+        break
       case "facebook":
-        // Handle
-        break;
+        token = queryString.parse(this.props.location.hash.replace("#", "")).access_token
+        break
       case "twitter":
         // Handle
-        break;
+        break
       case "gmail":
         // Handle
-        break;
+        break
+      default:
+        break
     }
-    if (token != undefined) {
+    if (token !== undefined && token !== null) {
       req(host + "/api/oauth", {
       method: "POST",
       body: {
@@ -34,18 +44,21 @@ class OAuth extends React.Component {
       }
       }).then(res => {
         // Handle api response
+        this.setState({
+            component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
+        });
       }).catch(err => {
         // Handle errors
       })
     } else {
-      window.location = host;
+      window.location = host
     }
   }
 
   render() {
     const { auth } = this.props
     return (
-      auth.logged ? <Redirect to={{pathname: '/', state: {from: this.props.location}}} /> :  <Loading />
+      auth.logged ? <Redirect to={{pathname: '/', state: {from: this.props.location}}} /> : this.state.component
     )
   }
 }

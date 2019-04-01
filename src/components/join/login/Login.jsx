@@ -37,13 +37,12 @@ class Login extends React.Component {
   }
 
   openWindow = (name) => {
-    let openedWindow = undefined
     if (name === "42") {
       window.location = 'https://api.intra.42.fr/oauth/authorize?client_id=410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9&redirect_uri=https%3A%2F%2Fhypertube.barthonet.ovh%2Foauth%2F42&response_type=code';
     } else if (name === "Twitter" && false) {
       window.location = 'Manque url twitter';
     } else if (name === "Facebook") {
-      window.location = 'https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=http://localhost:3000/&display=popup&response_type=token';
+      window.location = 'https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=https://hypertube.barthonet.ovh/oauth/facebook/&display=popup&response_type=token';
     } else if (name === "Github") {
       window.location = 'https://github.com/login/oauth/authorize?client_id=419e2d89b672ff004243';
     } else if (name === "Gmail" && false) {
