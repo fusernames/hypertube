@@ -66,6 +66,7 @@ class Movie extends React.Component {
       .then(res => {
         res = res.data.movie
         console.log(res)
+        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -94,6 +95,7 @@ class Movie extends React.Component {
     const { movie, isFetching } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
+
     return (
       <div>
         <Loading display={isFetching}/>
@@ -159,7 +161,7 @@ class Movie extends React.Component {
                   <Grid container>
                   {movie.torrents.map((torrent, i)=> {
                     return (
-                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12} spacing={8}>
+                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
                         <div>
                           <Chip label={torrent.quality} variant="outlined" style={{marginRight:'10px', width:'100px'}}/>
                           <Typography inline variant="caption">{torrent.size}</Typography>
