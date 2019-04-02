@@ -36,7 +36,7 @@ class DownloadTorrentController extends TorrentController
             );
         } else {
             // Torrent might be already downloaded
-            return new JsonResponse(['error' => 'WRONG_DATA'], 404);
+            return new JsonResponse(['error' => 'WRONG_DATA'], 403);
         }
         // Id is temporary since idk how entity works
         return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS'], 200);
