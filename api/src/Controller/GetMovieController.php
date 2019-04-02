@@ -23,8 +23,7 @@ class GetMovieController extends AbstractController
         }
         $totalPath = $this->_downloadPath . $movie->getFileName();
         if (file_exists($totalPath)) {
-            $stream = new Stream($totalPath);
-            $response = new BinaryFileResponse($stream);
+            $response = new BinaryFileResponse($totalPath);
             $response->setAutoEtag(true);
             $response->headers->set('Content-Type', 'video/mp4');
             return $response;
