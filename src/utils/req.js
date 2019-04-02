@@ -26,6 +26,7 @@ const req = (url, options) => {
     .then(response => {
       if (response.ok) {
         response.json().then(json => {
+          json._status = response.status
           resolve(json)
         })
       } else {
