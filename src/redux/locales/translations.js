@@ -65,6 +65,7 @@ const translations = {
   alerts: {
     // login
     LOGIN_SUCCESS: ["Logged successfully", "Connexion réussie"],
+    LOGIN_ERROR: ["Invalid password or username", "Mot de passe ou nom d'utilisateur invalide"],
     // register
     REGISTER_SUCCESS: ["You have successfully register", "Inscription réussie"],
     // reset

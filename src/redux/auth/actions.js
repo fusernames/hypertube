@@ -22,8 +22,11 @@ export function login(data, callback) {
         dispatch(alert('LOGIN_SUCCESS', 'success'))
         if (callback) callback()
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(authFetching(false))
+        if (err.status >= 400 && err.status < 500) {
+          dispatch(alert('LOGIN_ERROR', 'error'))
+        }
       })
     }
   }
