@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
+import host from '../../config'
 
 class Movie extends React.Component {
 
@@ -35,8 +36,27 @@ class Movie extends React.Component {
       ret.push(torrents[k])
       ret[ret.length - 1].quality = k
       ret[ret.length - 1].size = torrents[k].filesize
+      ret[ret.length - 1].magnet = torrents[k].url
     }
     return ret
+  }
+
+  getTorrentsStatus = torrents => {
+    torrents.map((torrent, i) => {
+      let body = (torrent.magnet ? {torrent_link: torrent.magnet} : {torrent_link: torrent.url})
+      req(host + '/api/movies/torrent/status', {
+        useToken:true,
+        body: body,
+        method: 'post'
+      }).then((res) => {
+        torrents[i].downloaded = true
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
+        torrents[i].downloaded = false
+      })
+    })
+    return torrents
   }
 
   fetchMovie = (id) => {
@@ -56,15 +76,16 @@ class Movie extends React.Component {
             rating: res.rating.percentage / 10,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
             trailer: this.parseYtLink(res.trailer),
-            torrents: this.parseTorrents(res.torrents.en)
+            torrents: this.getTorrentsStatus(this.parseTorrents(res.torrents.en))
           }
-        })
+        }, () => {console.log('test')})
       })
     } else {
       this.setState({...this.state, isFetching: true})
       req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
       .then(res => {
         res = res.data.movie
+        console.log(res)
         console.log(res)
         this.setState({
           isFetching: false,
@@ -78,11 +99,22 @@ class Movie extends React.Component {
             rating: res.rating,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
             trailer: this.parseYtLink(res.yt_trailer_code),
-            torrents: res.torrents.reverse()
+            torrents: this.getTorrentsStatus(res.torrents.reverse())
           }
         })
       })
     }
+  }
+
+  handleDownload = (torrent) => {
+    const { url, magnet } = torrent
+    console.log(torrent)
+    let body = (magnet ? {torrent_magnet: magnet} : {torrent_url: url})
+    req(host + '/api/movies/torrent/download', {
+      useToken:true,
+      body: body,
+      method: 'post'
+    })
   }
 
   componentWillMount() {
@@ -94,6 +126,7 @@ class Movie extends React.Component {
     const { movie, isFetching } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
+
     return (
       <div>
         <Loading display={isFetching}/>
@@ -156,8 +189,9 @@ class Movie extends React.Component {
                 <div className={classes.paper}>
                   <Icon color="primary" style={{float:'right'}}>link</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
-                  <Grid container>
+                  <Grid container spacing={8}>
                   {movie.torrents.map((torrent, i)=> {
+                    console.log(torrent)
                     return (
                       <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
                         <div>
@@ -165,12 +199,16 @@ class Movie extends React.Component {
                           <Typography inline variant="caption">{torrent.size}</Typography>
                         </div>
                         <div>
-                          <IconButton>
-                            <Icon>get_app</Icon>
-                          </IconButton>
-                          <IconButton>
-                            <Icon>play_arrow</Icon>
-                          </IconButton>
+                          {!torrent.downloaded &&
+                            <IconButton style={{padding:'5px'}} onClick={() => this.handleDownload(torrent)}>
+                              <Icon>get_app</Icon>
+                            </IconButton>
+                          }
+                          {torrent.downloaded &&
+                            <IconButton style={{padding:'5px'}}>
+                              <Icon>play_arrow</Icon>
+                            </IconButton>
+                          }
                         </div>
                       </Grid>
                     )

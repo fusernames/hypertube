@@ -10,9 +10,9 @@ import Notifier from './imported/Notifier'
 import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
-import Resetpw from './components/resetpw/Resetpw'
 import LoggedRoute from './utils/jsx/LoggedRoute'
 import { getCurrentUser } from './redux/auth/actions'
+import OAuth from './components/oauth/OAuth'
 
 const theme = createMuiTheme({
   palette: {
@@ -52,7 +52,7 @@ class App extends Component {
         <Grid container justify="center" style={{marginTop: '90px', marginBottom:'20px'}}>
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
-            <Route exact path="/reset/:code" component={Resetpw} />
+            <Route path="/oauth/:name" component={OAuth} />
             <LoggedRoute path="/movie/:id" component={Movie} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />

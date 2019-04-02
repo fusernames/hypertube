@@ -2,12 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-import { req, validator, checkForm } from '../../../utils'
-import { alert } from '../../../redux/snackbars/actions'
-import { login } from '../../../redux/auth/actions'
-import host from '../../../config'
+import { req, validator, checkForm } from '../../utils'
+import { alert } from '../../redux/snackbars/actions'
+import host from '../../config'
 
-class Register extends React.Component {
+class Informations extends React.Component {
 
   state = {
     form: {
@@ -15,42 +14,57 @@ class Register extends React.Component {
       firstname: '',
       lastname: '',
       email: '',
-      password: '',
-      repassword: ''
     },
     formErrors: {
-      username: [], firstname: [], lastname: [], email: [], password: [], repassword: []
+      username: [], firstname: [], lastname: [], email: []
     }
   }
 
-  handleSubmit = (e) => {
+  fetchUser(id) {
     const { dispatch } = this.props
+    req(host + '/api/users/me', {useToken: true})
+    .then(res => {
+      this.setState({
+        ...this.state,
+        form : {
+          username: res.username,
+          firstname: res.firstname,
+          lastname: res.lastname,
+          email: res.email,
+        }
+      })
+    }).catch(err => {
+      if (err.status === 404)
+        dispatch(alert('USER_NOT_FOUND', 'error'))
+    })
+  }
+
+  handleSubmit = (e) => {
     e.preventDefault()
-    let body = {...this.state.form}
+    const { dispatch, auth } = this.props
+    const body = {...this.state.form}
 
     checkForm(body, this.validate, (errors, nbErrors) => {
-      this.setState({...this.state, formErrors: errors})
-      body = {...body, plainPassword: body.password}
+      this.setState({...this.state, formErros: errors})
       if (!nbErrors) {
-        req(host + '/api/users', {
-          method: 'post', body: body
+        req(host + '/api/users/' + auth.user.id, {
+          method: 'put',
+          body: body,
+          useToken: true,
         })
-        .then(() => {
-          dispatch(login({username: body.username, password: body.plainPassword}, () => {
-            const data = new FormData();
-            data.append('file', this.state.file)
-            req(host + '/api/media_objects/avatar/create', {
-              method: 'post',
-              body: data,
-              useToken: true,
-              contentType: false
-            })
-          }))
-          dispatch(alert('REGISTER_SUCCESS', 'success'))
+        .then(res => {
+          dispatch(alert('USER_EDIT_SUCCESS', 'success'))
         })
-        .catch(err => {
-          //
-        })
+        if (this.state.file) {
+          const data = new FormData();
+          data.append('file', this.state.file)
+          req(host + '/api/media_objects/avatar/create', {
+            method: 'post',
+            body: data,
+            useToken: true,
+            contentType: false
+          })
+        }
       }
     })
   }
@@ -66,10 +80,6 @@ class Register extends React.Component {
       return validator.notNull().isAlphabetic().maxLen(40).errors
     else if (name === 'email')
       return validator.isEmail().errors
-    else if (name === 'password')
-      return validator.notNull().minLen(5).errors
-    else if (name === 'repassword')
-      return validator.sameAs(this.state.form.password).errors
   }
 
   onChange = (e) => {
@@ -82,7 +92,6 @@ class Register extends React.Component {
       }
     }, () => {
       this.setState({
-        ...this.state,
         formErrors: {
           ...this.state.formErrors,
           [name]: this.validate(name)
@@ -97,19 +106,24 @@ class Register extends React.Component {
     reader.readAsDataURL(file)
     reader.onload = () => {
       this.setState({...this.state, image: reader.result}, () => {
-        this.setState({...this.state, file: file})
+        this.setState({...this.state, file})
       })
     }
+  }
+
+  componentWillMount() {
+    this.fetchUser()
   }
 
   render () {
     const { classes } = this.props
     const { locale } = this.props.locales
     const { formErrors } = this.state
+    const { lastname, firstname, username, email } = this.state.form
 
     return (
       <div>
-        <Typography color="primary" variant="h5">{locale.register.title}</Typography>
+        <Typography color="primary" variant="h5">{locale.navbar.my_account }</Typography>
         <form onSubmit={this.handleSubmit}>
           <Grid container spacing={16} justify="center">
             <Grid item xs={12}>
@@ -120,6 +134,7 @@ class Register extends React.Component {
                 label={locale.global.username}
                 onChange={this.onChange}
                 margin="normal"
+                value={username}
                 fullWidth
               />
             </Grid>
@@ -131,6 +146,7 @@ class Register extends React.Component {
                 label={locale.global.firstname}
                 onChange={this.onChange}
                 margin="normal"
+                value={firstname}
                 fullWidth
               />
             </Grid>
@@ -142,6 +158,19 @@ class Register extends React.Component {
                 label={locale.global.lastname}
                 onChange={this.onChange}
                 margin="normal"
+                value={lastname}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                error={formErrors.email.length ? true : false}
+                helperText={locale.validator[formErrors.email[0]]}
+                name="email"
+                label={locale.global.email}
+                onChange={this.onChange}
+                margin="normal"
+                value={email}
                 fullWidth
               />
             </Grid>
@@ -162,41 +191,6 @@ class Register extends React.Component {
                 </Button>
               </label>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                error={formErrors.email.length ? true : false}
-                helperText={locale.validator[formErrors.email[0]]}
-                name="email"
-                label={locale.global.email}
-                onChange={this.onChange}
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                error={formErrors.password.length ? true : false}
-                helperText={locale.validator[formErrors.password[0]]}
-                type="password"
-                name="password"
-                label={locale.global.password}
-                onChange={this.onChange}
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                error={formErrors.repassword.length ? true : false}
-                helperText={locale.validator[formErrors.repassword[0]]}
-                type="password"
-                name="repassword"
-                label={locale.global.repassword}
-                onChange={this.onChange}
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
           </Grid>
           <Button
             type="submit"
@@ -205,7 +199,7 @@ class Register extends React.Component {
             className={classes.button}
             fullWidth
           >
-            {locale.register.btn}
+            {locale.account.btn}
           </Button>
         </form>
       </div>
@@ -227,7 +221,11 @@ const styles = {
     borderRadius: '5px'
   }
 }
-let RegisterExport = Register
-RegisterExport = withStyles(styles)(RegisterExport)
-RegisterExport = connect(state => state)(RegisterExport)
-export default RegisterExport
+const mapStateToProps = (state) => {
+  return state
+}
+
+let InformationsExport = Informations
+InformationsExport = withStyles(styles)(InformationsExport)
+InformationsExport = connect(mapStateToProps)(InformationsExport)
+export default InformationsExport

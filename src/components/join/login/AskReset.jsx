@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
 import req from '../../../utils/req'
-import api from '../../../config'
+import host from '../../../config'
 import { alert } from '../../../redux/snackbars/actions'
 
 class Resetpw extends React.Component {
@@ -13,7 +13,7 @@ class Resetpw extends React.Component {
 
   handleSubmit = () => {
     const { toggleAskReset, dispatch } = this.props
-    req(api + '/users/reset-password/send-email', {
+    req(host + '/api/users/reset-password/send-email', {
       method: 'post',
       body: {email: this.state.email}
     })

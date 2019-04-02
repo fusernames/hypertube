@@ -1,7 +1,5 @@
 #!/bin/bash
 
-JWT_PASSPHRASE="`grep JWT_PASSPHRASE ./api/.env | cut -f2 -d '='`"
-
 chmod 400 hypertube.pem
 tar --exclude='./node_modules' --exclude='./api/vendor' --exclude='./api/var' -czvf output.tar.gz .
 scp -i hypertube.pem ./output.tar.gz root@hypertube.barthonet.ovh:/opt/
@@ -12,6 +10,12 @@ ssh -i hypertube.pem -t root@hypertube.barthonet.ovh composer install -d /var/ww
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh rm -rf /var/www/hypertube/api/config/jwt/
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh mkdir /var/www/hypertube/api/config/jwt/
+
+# Getting JWT_PASSPHRASE in order to create keys
+JWT_PASSPHRASE="`ssh -o LogLevel=QUIET -i hypertube.pem -t root@hypertube.barthonet.ovh "grep JWT_PASSPHRASE /var/www/hypertube/api/.env | cut -f2 -d '='"`"
+# Removing '\r' at the end of JWT_PASSPHRASE
+JWT_PASSPHRASE="${JWT_PASSPHRASE/$'\r'/}"
+
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh openssl genrsa -out /var/www/hypertube/api/config/jwt/private.pem -aes256 -passout pass:$JWT_PASSPHRASE 4096
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh openssl rsa -pubout -in /var/www/hypertube/api/config/jwt/private.pem -passin pass:$JWT_PASSPHRASE -out /var/www/hypertube/api/config/jwt/public.pem
 ssh -i hypertube.pem -t root@hypertube.barthonet.ovh chown -R www-data: /var/www/

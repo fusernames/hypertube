@@ -16,6 +16,7 @@ class IndexController extends AbstractController
      * @Route("/movie/{id}", name="movie")
      * @Route("/user/{id}", name="profile")
      * @Route("/account", name="account")
+     * @Route("/oauth/{name}", name="oauth")
      */
     public function index()
     {

@@ -1,7 +1,7 @@
 import { alert } from '../snackbars/actions'
 import req from '../../utils/req'
 import Cookies from 'js-cookie'
-import api from '../../config'
+import host from '../../config'
 
 export function login(data, callback) {
 
@@ -12,7 +12,7 @@ export function login(data, callback) {
     const { isFetching } = getState().auth
     if (!isFetching) {
       dispatch(authFetching(true))
-      req(api + '/login_check', {
+      req(host + '/api/login_check', {
         method: 'post', body: data
       })
       .then(res => {
@@ -22,8 +22,11 @@ export function login(data, callback) {
         dispatch(alert('LOGIN_SUCCESS', 'success'))
         if (callback) callback()
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(authFetching(false))
+        if (err.status >= 400 && err.status < 500) {
+          dispatch(alert('LOGIN_ERROR', 'error'))
+        }
       })
     }
   }
@@ -46,7 +49,7 @@ export function logout() {
 export function getCurrentUser() {
   return (dispatch) => {
     if (Cookies.get('jwt')) {
-      req(api + '/users/me', {useToken: true})
+      req(host + '/api/users/me', {useToken: true})
       .then(res => {
         let id = res['@id'].split('id=')
         res.id = id[1]
