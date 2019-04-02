@@ -121,20 +121,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              },
  *              "access_control"="is_granted('ROLE_USER')",
  *          },
- *          "oauth-subscribe"={
+ *          "oauth"={
  *              "method"="POST",
- *              "path"="/users/oauth/subscribe",
+ *              "path"="/users/oauth",
  *              "controller"=OAuthController::class,
  *              "denormalization_context"={
- *                  "groups"={"oauth-subscribe"}
- *              },
- *          },
- *          "oauth-login"={
- *              "method"="POST",
- *              "path"="/users/oauth/login",
- *              "controller"=OAuthController::class,
- *              "denormalization_context"={
- *                  "groups"={"oauth-subscribe"}
+ *                  "groups"={"oauth"}
  *              },
  *          },
  *          "post",
@@ -387,12 +379,12 @@ class User extends BaseUser
     private $movieStatuses;
 
     /**
-     * @Groups({"oauth-subscribe"})
+     * @Groups({"oauth"})
      */
     private $omniAuthToken;
 
     /**
-     * @Groups({"oauth-subscribe"})
+     * @Groups({"oauth"})
      */
     private $omniAuthMethod;
 
