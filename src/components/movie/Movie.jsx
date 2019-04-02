@@ -43,15 +43,17 @@ class Movie extends React.Component {
 
   getTorrentsStatus = torrents => {
     torrents.map((torrent, i) => {
-      let body = (torrent.magnet ? {torrent_magnet: torrent.magnet} : {torrent_url: torrent.url})
+      let body = (torrent.magnet ? {torrent_link: torrent.magnet} : {torrent_link: torrent.url})
       req(host + '/api/movies/torrent/status', {
         useToken:true,
         body: body,
         method: 'post'
-      }).then(() => {
+      }).then((res) => {
         torrents[i].downloaded = true
-      }).catch(() => {
-        torrents[i].download = false
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
+        torrents[i].downloaded = false
       })
     })
     return torrents
@@ -76,7 +78,7 @@ class Movie extends React.Component {
             trailer: this.parseYtLink(res.trailer),
             torrents: this.getTorrentsStatus(this.parseTorrents(res.torrents.en))
           }
-        })
+        }, () => {console.log('test')})
       })
     } else {
       this.setState({...this.state, isFetching: true})
@@ -189,6 +191,7 @@ class Movie extends React.Component {
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
                   <Grid container spacing={8}>
                   {movie.torrents.map((torrent, i)=> {
+                    console.log(torrent)
                     return (
                       <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
                         <div>
