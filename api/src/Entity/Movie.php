@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Controller\GetMovieController;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -34,6 +35,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "method"="POST",
  *              "path"="/movies/torrent/status",
  *              "controller"=StatusTorrentController::class
+ *          },
+ *          "get_movie_file"={
+ *              "method"="POST",
+ *              "path"="/movies/get",
+ *              "controller"=GetMovieController::class
  *          },
  *          "post",
  *          "get"

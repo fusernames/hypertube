@@ -36,7 +36,7 @@ class OAuth extends React.Component {
         break
     }
     if (token !== undefined && token !== null) {
-      req(host + "/api/oauth", {
+      req(host + "/api/users/oauth", {
       method: "POST",
       body: {
         api: name,

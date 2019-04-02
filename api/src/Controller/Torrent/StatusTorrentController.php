@@ -18,7 +18,7 @@ class StatusTorrentController extends TorrentController
         // Decodes post json
         $data = $request->getContent();
         $data = json_decode($data, true);
-        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'WRONG_DATA'], 404);
+        if (!isset($data['torrent_link'])) return new JsonResponse(['error' => 'WRONG_DATA'], 403);
         $torrentLink = $data['torrent_link'];
         // Loads the asked movie
         $movie = $repository->findOneBy(['torrentLink' => $torrentLink]);
@@ -32,13 +32,13 @@ class StatusTorrentController extends TorrentController
             if (($percentDone === 1 || $infos['isFinished'] === true || $infos['leftUntilDone'] === 0) && $infos['status'] !== 4) {
                 $transmission->remove($movie->getTorrentId());
                 $movie->setFinished(true);
-                $entityManager->presist($movie);
+                $entityManager->persist($movie);
                 $entityManager->flush();
                 $this->forward('App\Controller\Torrent\RemoveOldMoviesController::check');
-                return new JsonResponse(['success' => 'DOWNLOAD_ENDED'], 201);
+                return new JsonResponse(['success' => 'DOWNLOAD_ENDED', 'test' => $infos], 201);
             }
             // Download percentage
-            return new JsonResponse(['success' => $percentDone], 200);
+            return new JsonResponse(['success' => ($percentDone * 100)], 200);
         } else {
             // Film might be download then
             return new JsonResponse(['success' => 'DOWNLOAD_ENDED'], 201);

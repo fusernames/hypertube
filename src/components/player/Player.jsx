@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
  *    startTime -> Time in seconds where the video should start.
  *    mediaUrl -> Link of the video to read.
  */
-class Search extends Component {
+class Player extends Component {
 
   state = {
     oldTime: 0,
@@ -46,4 +46,4 @@ class Search extends Component {
 
 const mapStateToProps = state => { return state }
 
-export default connect(mapStateToProps)(Search)
+export default connect(mapStateToProps)(Player)

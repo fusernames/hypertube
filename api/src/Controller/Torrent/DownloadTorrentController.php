@@ -3,6 +3,7 @@
 namespace App\Controller\Torrent;
 
 use Vohof\Transmission;
+use App\Entity\Movie;
 use App\Controller\Torrent\TorrentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +36,7 @@ class DownloadTorrentController extends TorrentController
             );
         } else {
             // Torrent might be already downloaded
-            return new JsonResponse(['error' => 'POST_ERROR'], 403);
+            return new JsonResponse(['error' => 'WRONG_DATA'], 403);
         }
         // Id is temporary since idk how entity works
         return new JsonResponse(['success' => 'TORRENT_DL_SUCCESS'], 200);

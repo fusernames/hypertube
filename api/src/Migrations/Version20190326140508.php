@@ -21,7 +21,6 @@ final class Version20190326140508 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE movie ADD torrent_link LONGTEXT NOT NULL, ADD torrent_id INT NOT NULL, ADD finished TINYINT(1) NOT NULL, DROP description');
     }
 
@@ -29,7 +28,6 @@ final class Version20190326140508 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE movie ADD description LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, DROP torrent_link, DROP torrent_id, DROP finished');
     }
 }

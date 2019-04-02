@@ -21,7 +21,6 @@ final class Version20190328184105 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE media_object ADD owner_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE media_object ADD CONSTRAINT FK_14D431327E3C61F9 FOREIGN KEY (owner_id) REFERENCES fos_user (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_14D431327E3C61F9 ON media_object (owner_id)');
@@ -31,7 +30,6 @@ final class Version20190328184105 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE media_object DROP FOREIGN KEY FK_14D431327E3C61F9');
         $this->addSql('DROP INDEX UNIQ_14D431327E3C61F9 ON media_object');
         $this->addSql('ALTER TABLE media_object DROP owner_id');
