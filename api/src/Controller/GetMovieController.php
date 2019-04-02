@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Stream;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GetMovieController extends AbstractController
 {
