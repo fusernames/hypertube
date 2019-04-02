@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Stream;
 
-class TorrentController extends AbstractController
+class GetMovieController extends AbstractController
 {
     public function __invoke(Request $request) {
         // Parsing request's json
