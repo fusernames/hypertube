@@ -14,6 +14,7 @@ class GetMovieController extends AbstractController
     private $_downloadPath = "/var/lib/transmission-daemon/complete/";
 
     public function __invoke(Request $request) {
+        return new JsonResponse(['request' => $request]);
         // Parsing request's json
         $data = $request->getContent();
         $data = json_decode($data, true);
@@ -26,7 +27,10 @@ class GetMovieController extends AbstractController
         $totalPath = $this->_downloadPath . $movie->getFileName();
         if (file_exists($totalPath)) {
             $stream = new Stream($totalPath);
-            return new BinaryFileResponse($stream);
+            $response = new BinaryFileResponse($stream);
+            $response->setAutoEtag(true);
+            $response->headers->set('Content-Type', 'video/mp4');
+            return $response;
         }
         return new JsonResponse(['perdu' => 't nul']);
     }

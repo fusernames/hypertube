@@ -38,7 +38,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          },
  *          "get_movie_file"={
  *              "method"="POST",
- *              "path"="/movies/get",
+ *              "path"="/movies/file/{id}",
+ *              "requirements"={"id"="\d+"},
  *              "controller"=GetMovieController::class
  *          },
  *          "post",
