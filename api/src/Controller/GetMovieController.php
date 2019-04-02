@@ -19,7 +19,7 @@ class GetMovieController extends AbstractController
         $repository = $entityManager->getRepository(Movie::class);
         $movie = $repository->find($id);
         if (!$movie) {
-            return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
+            return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
         $totalPath = $this->_downloadPath . $movie->getFileName();
         if (file_exists($totalPath)) {
@@ -29,6 +29,6 @@ class GetMovieController extends AbstractController
             $response->headers->set('Content-Type', 'video/mp4');
             return $response;
         }
-        return new JsonResponse(['perdu' => 't nul']);
+        return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
     }
 }
