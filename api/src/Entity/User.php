@@ -123,7 +123,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          },
  *          "oauth-subscribe"={
  *              "method"="POST",
- *              "path"="/users/oauth/subscrive",
+ *              "path"="/users/oauth/subscribe",
  *              "controller"=OAuthController::class,
  *              "denormalization_context"={
  *                  "groups"={"oauth-subscribe"}
