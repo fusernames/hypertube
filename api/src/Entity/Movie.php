@@ -37,7 +37,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "controller"=StatusTorrentController::class
  *          },
  *          "get_movie_file"={
- *              "method"="POST",
+ *              "method"="GET",
  *              "path"="/movies/file/{id}",
  *              "requirements"={"id"="\d+"},
  *              "controller"=GetMovieController::class
