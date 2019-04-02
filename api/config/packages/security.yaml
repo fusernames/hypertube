@@ -28,6 +28,7 @@ security:
         api:
             pattern:    ^/
             provider:   fos_userbundle
+            fos_oauth:  true
             stateless:  true
             anonymous:  true
             guard:

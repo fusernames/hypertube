@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\MediaObject;
 use Doctrine\ORM\Mapping as ORM;
 use App\Controller\GetMeController;
+use App\Controller\OAuthController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\GroupInterface;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -120,8 +121,32 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              },
  *              "access_control"="is_granted('ROLE_USER')",
  *          },
+ *          "oauth-subscribe"={
+ *              "method"="POST",
+ *              "path"="/users/oauth/subscrive",
+ *              "controller"=OAuthController::class,
+ *              "denormalization_context"={
+ *                  "groups"={"oauth-subscribe"}
+ *              },
+ *          },
+ *          "oauth-login"={
+ *              "method"="POST",
+ *              "path"="/users/oauth/login",
+ *              "controller"=OAuthController::class,
+ *              "denormalization_context"={
+ *                  "groups"={"oauth-subscribe"}
+ *              },
+ *          },
  *          "post",
  *          "get"
+ *      },
+ *      subresourceOperations={
+ *          "messages_get_subresource"={
+ *              "method"="GET",
+ *              "path"="/users/{id}/messages",
+ *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')",
+ *              "access_control_message"="Sorry, you are not authorized to delete this user."
+ *          },
  *      }
  * )
  * @ApiFilter(
@@ -345,14 +370,14 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="owner", orphanRemoval=true)
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $messages;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\MediaObject", cascade={"persist", "remove"})
      * @Groups({"user:read", "me"})
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $avatar;
 
@@ -360,6 +385,16 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="App\Entity\MovieStatus", mappedBy="user", orphanRemoval=true)
      */
     private $movieStatuses;
+
+    /**
+     * @Groups({"oauth-subscribe"})
+     */
+    private $omniAuthToken;
+
+    /**
+     * @Groups({"oauth-subscribe"})
+     */
+    private $omniAuthMethod;
 
     public function __construct()
     {
@@ -520,6 +555,30 @@ class User extends BaseUser
                 $movieStatus->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOmniAuthToken(): ?string
+    {
+        return $this->omniAuthToken;
+    }
+
+    public function setOmniAuthToken(?string $omniAuthToken): self
+    {
+        $this->omniAuthToken = $omniAuthToken;
+
+        return $this;
+    }
+
+    public function getOmniAuthMethod(): ?string
+    {
+        return $this->omniAuthMethod;
+    }
+
+    public function setOmniAuthMethod(?string $omniAuthMethod): self
+    {
+        $this->omniAuthMethod = $omniAuthMethod;
 
         return $this;
     }
