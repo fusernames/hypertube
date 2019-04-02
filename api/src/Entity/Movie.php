@@ -19,26 +19,34 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      itemOperations={
- *          "get",
- *          "put",
- *          "delete"
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_USER')"
+ *          },
+ *          "put"={
+ *              "access_control"="is_granted('ROLE_USER')"
+ *          },
+ *          "delete"={
+ *              "access_control"="is_granted('ROLE_USER')"
+ *          }
  *      },
  *      collectionOperations={
  *          "download-torrent"={
+ *              "access_control"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/movies/torrent/download",
  *              "controller"=DownloadTorrentController::class
  *          },
  *          "torrent-status"={
+ *              "access_control"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/movies/torrent/status",
  *              "controller"=StatusTorrentController::class
  *          },
  *          "get_movie_file"={
- *              "method"="POST",
- *              "path"="/movies/get",
+ *              "method"="GET",
+ *              "path"="/movies/file/{id}",
+ *              "requirements"={"id"="\d+"},
  *              "controller"=GetMovieController::class
  *          },
  *          "post",
@@ -121,6 +129,11 @@ class Movie
      * )
      */
     private $torrentId;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $fileName;
 
     /**
      * @ORM\Column(type="boolean")
@@ -249,6 +262,18 @@ class Movie
     public function setTorrentId(int $torrentId): self
     {
         $this->torrentId = $torrentId;
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }

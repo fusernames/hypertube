@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Stream;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,18 +13,21 @@ class GetMovieController extends AbstractController
 {
     private $_downloadPath = "/var/lib/transmission-daemon/complete/";
 
-    public function __invoke(Request $request) {
+    public function __invoke($id) {
         // Parsing request's json
-        $data = $request->getContent();
-        $data = json_decode($data, true);
-        if (!isset($data['torrent_link'])) {
-            return new JsonResponse(['error' => 'WRONG_DATA'], 403);
-        }
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
-        $movie = $repository->findOneBy(['torrentLink' => $data['torrent_link']]);
-        if (file_exists($_downloadPath . $movie->getName())) {
-
+        $movie = $repository->find($id);
+        if (!$movie) {
+            return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
+        $totalPath = $this->_downloadPath . $movie->getFileName();
+        if (file_exists($totalPath)) {
+            $response = new BinaryFileResponse($totalPath);
+            $response->setAutoEtag(true);
+            $response->headers->set('Content-Type', 'video/mp4');
+            return $response;
+        }
+        return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
     }
 }
