@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Stream;
 
@@ -13,6 +13,9 @@ class GetMovieController extends AbstractController
         // Parsing request's json
         $data = $request->getContent();
         $data = json_decode($data, true);
-        if (!isset($data['torrent_link'])) return new Response(null, 404);
+        if (!isset($data['torrent_link'])) {
+            return new JsonResponse(['error' => 'WRONG_DATA'], 404);
+        }
+        return new JsonResponse(['success' => 'gg negro'], 201);
     }
 }
