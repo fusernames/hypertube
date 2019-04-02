@@ -1,11 +1,12 @@
 import React from 'react'
-import { Typography, Grid, Chip, IconButton } from '@material-ui/core'
+import { Typography, Grid, Chip } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
+import Torrents from './Torrents'
 
 class Movie extends React.Component {
 
@@ -41,37 +42,6 @@ class Movie extends React.Component {
     return ret
   }
 
-  getTorrentsStatus = () => {
-    let cpy = [...this.state.movie.torrents]
-    cpy.map((torrent, i) => {
-      let body = (torrent.magnet ? {torrent_link: torrent.magnet} : {torrent_link: torrent.url})
-      req(host + '/api/movies/torrent/status', {
-        useToken:true,
-        body: body,
-        method: 'post'
-      }).then((res) => {
-        console.log(res)
-        if (res._status === 201)
-          torrent.download = true
-        else if (res._status === 200)
-          torrent.download = res.success
-        setDownloaded(cpy)
-      }).catch((err) => {
-        torrent.download = false
-        setDownloaded(cpy)
-      })
-    })
-    const setDownloaded = (torrents) => {
-      this.setState({
-        ...this.state,
-        movie : {
-          ...this.state.movie,
-          torrents: torrents
-        }
-      })
-    }
-  }
-
   fetchMovie = (id) => {
     if (id[0] === 't') {
       this.setState({...this.state, isFetching: true})
@@ -90,7 +60,7 @@ class Movie extends React.Component {
             trailer: this.parseYtLink(res.trailer),
             torrents: this.parseTorrents(res.torrents.en)
           }
-        }, () => {console.log('test')})
+        })
       })
     } else {
       this.setState({...this.state, isFetching: true})
@@ -111,22 +81,9 @@ class Movie extends React.Component {
             trailer: this.parseYtLink(res.yt_trailer_code),
             torrents: res.torrents.reverse()
           }
-        }, () => {
-          this.getTorrentsStatus()
         })
       })
     }
-  }
-
-  handleDownload = (torrent) => {
-    const { url, magnet } = torrent
-    console.log(torrent)
-    let body = (magnet ? {torrent_magnet: magnet} : {torrent_url: url})
-    req(host + '/api/movies/torrent/download', {
-      useToken: true,
-      body: body,
-      method: 'post'
-    })
   }
 
   componentWillMount() {
@@ -138,6 +95,8 @@ class Movie extends React.Component {
     const { movie, isFetching } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
+
+    if (!movie.title) return null
 
     return (
       <div>
@@ -199,37 +158,7 @@ class Movie extends React.Component {
               }
               <Grid item xs={12}>
                 <div className={classes.paper}>
-                  <Icon color="primary" style={{float:'right'}}>link</Icon>
-                  <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
-                  <Grid container spacing={8}>
-                  {movie.torrents.map((torrent, i) => {
-                    return (
-                      <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
-                        <div>
-                          <Chip label={torrent.quality} variant="outlined" style={{marginRight:'10px', width:'100px'}}/>
-                          <Typography inline variant="caption">{torrent.size}</Typography>
-                        </div>
-                        <div>
-                          {torrent.download === false &&
-                            <IconButton style={{padding:'5px'}} onClick={() => this.handleDownload(torrent)}>
-                              <Icon>get_app</Icon>
-                            </IconButton>
-                          }
-                          {torrent.download === true &&
-                            <IconButton style={{padding:'5px'}}>
-                              <Icon>play_arrow</Icon>
-                            </IconButton>
-                          }
-                          {!isNaN(torrent.download) && torrent.download !== false && torrent.download !== true &&
-                            <div style={{display: 'inline-flex', padding:'7px', width:'auto'}}>
-                              <Typography inline>{torrent.download}</Typography>
-                            </div>
-                          }
-                        </div>
-                      </Grid>
-                    )
-                  })}
-                  </Grid>
+                  <Torrents torrents={movie.torrents}/>
                 </div>
               </Grid>
             </Grid>
@@ -244,11 +173,6 @@ const styles = theme => ({
   img: {
     borderRadius:'5px',
     overflow:'hidden'
-  },
-  torrent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
   },
   paper: {
     background: theme.palette.secondary.dark,
