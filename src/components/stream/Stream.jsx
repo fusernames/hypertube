@@ -16,7 +16,7 @@ class Stream extends Component {
     console.log(this.props)
     return (
       <div>
-        <Player mediaUrl={"http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"} startTime={30}/>
+        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + this.props.match.params.id} startTime={0}/>
       </div>
     );
   }
