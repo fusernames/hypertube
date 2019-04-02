@@ -41,22 +41,35 @@ class Movie extends React.Component {
     return ret
   }
 
-  getTorrentsStatus = torrents => {
-    torrents.map((torrent, i) => {
+  getTorrentsStatus = () => {
+    let cpy = [...this.state.movie.torrents]
+    cpy.map((torrent, i) => {
       let body = (torrent.magnet ? {torrent_link: torrent.magnet} : {torrent_link: torrent.url})
       req(host + '/api/movies/torrent/status', {
         useToken:true,
         body: body,
         method: 'post'
       }).then((res) => {
-        torrents[i].downloaded = true
         console.log(res)
+        if (res._status === 201)
+          torrent.download = true
+        else if (res._status === 200)
+          torrent.download = res.success
+        setDownloaded(cpy)
       }).catch((err) => {
-        console.log(err)
-        torrents[i].downloaded = false
+        torrent.download = false
+        setDownloaded(cpy)
       })
     })
-    return torrents
+    const setDownloaded = (torrents) => {
+      this.setState({
+        ...this.state,
+        movie : {
+          ...this.state.movie,
+          torrents: torrents
+        }
+      })
+    }
   }
 
   fetchMovie = (id) => {
@@ -64,7 +77,6 @@ class Movie extends React.Component {
       this.setState({...this.state, isFetching: true})
       req('https://tv-v2.api-fetch.website/movie/' + id)
       .then(res => {
-        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -76,7 +88,7 @@ class Movie extends React.Component {
             rating: res.rating.percentage / 10,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
             trailer: this.parseYtLink(res.trailer),
-            torrents: this.getTorrentsStatus(this.parseTorrents(res.torrents.en))
+            torrents: this.parseTorrents(res.torrents.en)
           }
         }, () => {console.log('test')})
       })
@@ -85,8 +97,6 @@ class Movie extends React.Component {
       req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
       .then(res => {
         res = res.data.movie
-        console.log(res)
-        console.log(res)
         this.setState({
           isFetching: false,
           movie: {
@@ -99,8 +109,10 @@ class Movie extends React.Component {
             rating: res.rating,
             time: parseInt(res.runtime / 60) + 'h' + this.pad(res.runtime % 60),
             trailer: this.parseYtLink(res.yt_trailer_code),
-            torrents: this.getTorrentsStatus(res.torrents.reverse())
+            torrents: res.torrents.reverse()
           }
+        }, () => {
+          this.getTorrentsStatus()
         })
       })
     }
@@ -111,7 +123,7 @@ class Movie extends React.Component {
     console.log(torrent)
     let body = (magnet ? {torrent_magnet: magnet} : {torrent_url: url})
     req(host + '/api/movies/torrent/download', {
-      useToken:true,
+      useToken: true,
       body: body,
       method: 'post'
     })
@@ -190,8 +202,7 @@ class Movie extends React.Component {
                   <Icon color="primary" style={{float:'right'}}>link</Icon>
                   <Typography variant="button" color="primary" style={{marginBottom:'10px'}}>{locale.movie.torrents}</Typography>
                   <Grid container spacing={8}>
-                  {movie.torrents.map((torrent, i)=> {
-                    console.log(torrent)
+                  {movie.torrents.map((torrent, i) => {
                     return (
                       <Grid item key={'torrent' + i} className={classes.torrent} xs={12}>
                         <div>
@@ -199,15 +210,20 @@ class Movie extends React.Component {
                           <Typography inline variant="caption">{torrent.size}</Typography>
                         </div>
                         <div>
-                          {!torrent.downloaded &&
+                          {torrent.download === false &&
                             <IconButton style={{padding:'5px'}} onClick={() => this.handleDownload(torrent)}>
                               <Icon>get_app</Icon>
                             </IconButton>
                           }
-                          {torrent.downloaded &&
+                          {torrent.download === true &&
                             <IconButton style={{padding:'5px'}}>
                               <Icon>play_arrow</Icon>
                             </IconButton>
+                          }
+                          {!isNaN(torrent.download) && torrent.download !== false && torrent.download !== true &&
+                            <div style={{display: 'inline-flex', padding:'7px', width:'auto'}}>
+                              <Typography inline>{torrent.download}</Typography>
+                            </div>
                           }
                         </div>
                       </Grid>

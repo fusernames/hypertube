@@ -14,10 +14,10 @@ class OAuthController extends AbstractController
 
     public function __invoke(Request $request)
     {
-        $token = json_decode($request->getContent())->omniAuthToken;
-        $method = json_decode($request->getContent())->omniAuthMethod;
+        $token = json_decode($request->getContent())->token;
+        $api = json_decode($request->getContent())->api;
 
-        switch ($method) {
+        switch ($api) {
             case "facebook":
                 return $this->_facebook($token);
             case "42":
@@ -29,33 +29,33 @@ class OAuthController extends AbstractController
             case "google":
                 return $this->_google($token);
             default:
-                return new JsonResponse(["error" => "Invalid or unknow OAuth method", "code" => 400], 400);
+                return new JsonResponse(["error" => "Invalid or unknow OAuth api", "code" => 400], 400);
         }
         
     }
 
     private function _facebook(string $token = null)
     {
-        return new JsonResponse(["method" => "facebook", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(["api" => "facebook", "token" => $token, "code" => 200], 200);
     }
 
     private function _42(string $token = null)
     {
-        return new JsonResponse(["method" => "42", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(["api" => "42", "token" => $token, "code" => 200], 200);
     }
 
     private function _github(string $token = null)
     {
-        return new JsonResponse(["method" => "github", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(["api" => "github", "token" => $token, "code" => 200], 200);
     }
 
     private function _twitter(string $token = null)
     {
-        return new JsonResponse(["method" => "twitter", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(["api" => "twitter", "token" => $token, "code" => 200], 200);
     }
 
     private function _google(string $token = null)
     {
-        return new JsonResponse(["method" => "google", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(["api" => "google", "token" => $token, "code" => 200], 200);
     }
 }
