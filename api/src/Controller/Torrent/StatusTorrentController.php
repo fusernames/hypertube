@@ -32,6 +32,7 @@ class StatusTorrentController extends TorrentController
             if (($percentDone === 1 || $infos['isFinished'] === true || $infos['leftUntilDone'] === 0) && $infos['status'] !== 4) {
                 $transmission->remove($movie->getTorrentId());
                 $movie->setFinished(true);
+                $entityManager->presist($movie);
                 $entityManager->flush();
                 $this->forward('App\Controller\Torrent\RemoveOldMoviesController::check');
                 return new JsonResponse(['success' => 'DOWNLOAD_ENDED'], 201);
