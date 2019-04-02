@@ -3,6 +3,7 @@
 namespace App\Controller\Torrent;
 
 use Vohof\Transmission;
+use App\Entity\Movie;
 use App\Controller\Torrent\TorrentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
