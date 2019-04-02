@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Services\Curl;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class OAuthController extends AbstractController
 {
-    public function __construct()
+    private $curl;
+
+    public function __construct(Curl $curl)
     {
+        $this->curl = $curl;
     }
 
     public function __invoke(Request $request)
@@ -41,6 +45,18 @@ class OAuthController extends AbstractController
 
     private function _42(string $token = null)
     {
+        $data = [
+            "grant_type" => "authorization_code",
+            "client_id" => "410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9",
+            "client_secret" => "0e156668ef0c973c8fa8526fc683f26ce42801788756de614a307eee406ce1b8",
+            "redirect_uri" => "https://hypertube.barthonet.ovh/oauth/42",
+            "code" => $token
+        ];
+
+        $resp = $this->curl->postJson("https://api.intra.42.fr/oauth/token", json_encode($data));
+        $resp = json_decode($resp);
+        dump($resp);die;
+        
         return new JsonResponse(["api" => "42", "token" => $token, "code" => 200], 200);
     }
 
