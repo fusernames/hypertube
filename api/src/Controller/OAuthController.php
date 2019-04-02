@@ -19,24 +19,22 @@ class OAuthController extends AbstractController
 
         switch ($method) {
             case "facebook":
-                return $this->facebook($token);
+                return $this->_facebook($token);
             case "42":
                 return $this->_42($token);
             case "github":
-                return $this->github($token);
+                return $this->_github($token);
             case "twitter":
-                return $this->twitter($token);
+                return $this->_twitter($token);
             case "google":
-                return $this->google($token);
-            case "hypertube":
-                return $this->hypertube($token);
+                return $this->_google($token);
             default:
                 return new JsonResponse(["error" => "Invalid or unknow OAuth method", "code" => 400], 400);
         }
         
     }
 
-    private function facebook(string $token = null)
+    private function _facebook(string $token = null)
     {
         return new JsonResponse(["method" => "facebook", "token" => $token, "code" => 200], 200);
     }
@@ -46,23 +44,18 @@ class OAuthController extends AbstractController
         return new JsonResponse(["method" => "42", "token" => $token, "code" => 200], 200);
     }
 
-    private function github(string $token = null)
+    private function _github(string $token = null)
     {
         return new JsonResponse(["method" => "github", "token" => $token, "code" => 200], 200);
     }
 
-    private function twitter(string $token = null)
+    private function _twitter(string $token = null)
     {
         return new JsonResponse(["method" => "twitter", "token" => $token, "code" => 200], 200);
     }
 
-    private function google(string $token = null)
+    private function _google(string $token = null)
     {
         return new JsonResponse(["method" => "google", "token" => $token, "code" => 200], 200);
-    }
-
-    private function hypertube(string $token = null)
-    {
-        return new JsonResponse(["method" => "hypertube", "token" => $token, "code" => 200], 200);
     }
 }
