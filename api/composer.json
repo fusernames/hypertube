@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^2.0",
+        "friendsofsymfony/oauth-server-bundle": "^1.6",
         "friendsofsymfony/user-bundle": "~2.0",
         "guzzlehttp/guzzle": "^6.3",
         "lexik/jwt-authentication-bundle": "^2.6",

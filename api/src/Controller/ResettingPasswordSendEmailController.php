@@ -49,7 +49,7 @@ class ResettingPasswordSendEmailController extends AbstractController
         if ($user === null) {
             return new JsonResponse(['message'=>'User not found'], 403);
         }
-        if ($user->isPasswordRequestNonExpired(7200)) {
+        if ($user->isPasswordRequestNonExpired($this->retryTtl)) {
             return new JsonResponse(['message' => 'A request already in progress is less than 2 hours old'], 200);
         }
         if (null === $user->getConfirmationToken()) {

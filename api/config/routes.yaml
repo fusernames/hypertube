@@ -5,4 +5,10 @@ fos_user:
   resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 api_login_check:
-    path: /api/login_check
+  path: /api/login_check
+
+fos_oauth_server_token:
+  resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+  resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"

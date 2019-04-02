@@ -21,7 +21,6 @@ final class Version20190327013743 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE media_object DROP url');
     }
 
@@ -29,7 +28,6 @@ final class Version20190327013743 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $this->addSql('ALTER TABLE media_object ADD url VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }
