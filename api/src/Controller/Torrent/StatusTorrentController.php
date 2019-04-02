@@ -41,7 +41,7 @@ class StatusTorrentController extends TorrentController
             return new JsonResponse(['success' => $percentDone], 200);
         } else {
             // Film might be download then
-            return new JsonResponse(['success' => 'ALREADY_DOWNLOADED'], 201);
+            return new JsonResponse(['success' => 'DOWNLOAD_ENDED'], 201);
         }
     }
 }
