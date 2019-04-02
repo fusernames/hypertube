@@ -13,17 +13,14 @@ class GetMovieController extends AbstractController
 {
     private $_downloadPath = "/var/lib/transmission-daemon/complete/";
 
-    public function __invoke(Request $request) {
-        return new JsonResponse(['request' => $request]);
+    public function __invoke($id) {
         // Parsing request's json
-        $data = $request->getContent();
-        $data = json_decode($data, true);
-        if (!isset($data['torrent_link'])) {
-            return new JsonResponse(['error' => 'WRONG_DATA'], 403);
-        }
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
-        $movie = $repository->findOneBy(['torrentLink' => $data['torrent_link']]);
+        $movie = $repository->find($id);
+        if (!$movie) {
+            return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
+        }
         $totalPath = $this->_downloadPath . $movie->getFileName();
         if (file_exists($totalPath)) {
             $stream = new Stream($totalPath);
