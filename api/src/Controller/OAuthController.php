@@ -53,7 +53,6 @@ class OAuthController extends AbstractController
             "code" => $token
         ];
 
-        // dump(json_encode($data));die;
         $resp = $this->curl->postJson("https://api.intra.42.fr/oauth/token", json_encode($data));
         $resp = json_decode($resp);
         dump($resp);die;
