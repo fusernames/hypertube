@@ -60,7 +60,8 @@ const translations = {
     trailer: ["Trailer", "Bande annonce"],
     download: ["Download", "Télécharger"],
     rating: ["Rating", "Note"],
-    torrents: ["Torrents", "Torrents"]
+    torrents: ["Torrents", "Torrents"],
+    comment: ["Enter a comment", "Entrez un commentaire"]
   },
   alerts: {
     // login
