@@ -381,12 +381,12 @@ class User extends BaseUser
     /**
      * @Groups({"oauth"})
      */
-    private $omniAuthToken;
+    private $token;
 
     /**
      * @Groups({"oauth"})
      */
-    private $omniAuthMethod;
+    private $api;
 
     public function __construct()
     {
