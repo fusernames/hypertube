@@ -22,7 +22,7 @@ class GetMovieController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
         $movie = $repository->findOneBy(['torrentLink' => $data['torrent_link']]);
-        if (file_exists($_downloadPath . $movie->getName())) {
+        if (file_exists($_downloadPath . $movie->getFileName())) {
 
         }
     }
