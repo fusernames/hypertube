@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Controller\Torrent\StatusTorrentController;
 use App\Controller\Torrent\DownloadTorrentController;
+use App\Controller\GetMovieController;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -34,6 +35,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "method"="POST",
  *              "path"="/movies/torrent/status",
  *              "controller"=StatusTorrentController::class
+ *          },
+ *          "get_movie_file"={
+ *              "method"="POST",
+ *              "path"="/movies/get",
+ *              "controller"=GetMovieController::class
  *          },
  *          "post",
  *          "get"
