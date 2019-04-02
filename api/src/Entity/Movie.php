@@ -123,6 +123,11 @@ class Movie
     private $torrentId;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fileName;
+
+    /**
      * @ORM\Column(type="boolean")
      * @Assert\Type(
      *     type="bool",
@@ -249,6 +254,18 @@ class Movie
     public function setTorrentId(int $torrentId): self
     {
         $this->torrentId = $torrentId;
+
+        return $this;
+    }
+
+    public function getFileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }
