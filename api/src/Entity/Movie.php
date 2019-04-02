@@ -19,19 +19,26 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      itemOperations={
- *          "get",
- *          "put",
- *          "delete"
+ *          "get"={
+ *              "attributes"={"access_control"="is_granted('ROLE_USER')"}
+ *          },
+ *          "put"={
+ *              "attributes"={"access_control"="is_granted('ROLE_USER')"}
+ *          },
+ *          "delete"={
+ *              "attributes"={"access_control"="is_granted('ROLE_USER')"}
+ *          }
  *      },
  *      collectionOperations={
  *          "download-torrent"={
+ *              "attributes"={"access_control"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/movies/torrent/download",
  *              "controller"=DownloadTorrentController::class
  *          },
  *          "torrent-status"={
+ *              "attributes"={"access_control"="is_granted('ROLE_USER')",
  *              "method"="POST",
  *              "path"="/movies/torrent/status",
  *              "controller"=StatusTorrentController::class
