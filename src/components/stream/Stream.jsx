@@ -32,7 +32,6 @@ class Stream extends Component {
     return (
       <div>
         <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + this.props.match.params.id} startTime={0}/>
-        <CommentsBox id={this.props.match.params.id} />
         <Comments id={this.props.match.params.id} />
       </div>
     );

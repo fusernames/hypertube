@@ -39,7 +39,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          }
  *      },
  *      collectionOperations={
- *          "post"={"access_control"="is_granted('ROLE_USER')"},
+ *          "post"={
+ *              "access_control"="is_granted('ROLE_USER') and object.owner == user",
+ *              "access_control_message"="You are not allowed to post a message with this identity."
+ *          },
  *          "get"
  *      }
  * )
