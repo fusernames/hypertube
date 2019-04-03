@@ -35,7 +35,7 @@ class Api42
         $resp = $this->curl->postJson($this->getUrl(), json_encode($data));
         $resp = json_decode($resp);
 
-        return new JsonResponse(["api" => "42", "token" => $code, "code" => 200, "data" => $resp], 200);
+        return new JsonResponse(["api" => "42", "code" => $code, "code" => 200, "token" => $resp->access_token], 200);
     }
 
     public function setRedirect_uri(string $redirect_uri)
