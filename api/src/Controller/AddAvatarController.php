@@ -55,12 +55,16 @@ final class AddAvatarController extends AbstractController
             $user = $this->getUser();
             $user->setAvatar($mediaObject);
             $mediaObject->setOwner($this->getUser());
+
             $em = $this->doctrine->getManager();
             $em->persist($mediaObject);
             $em->flush();
-
+            
             // Prevent the serialization of the file property
             $mediaObject->file = null;
+            $path = "https://hypertube.barthonet.ovh/media/" . $mediaObject->contentUrl;
+            $user->setAvatarUrl($path);
+            $em->flush();
 
             return $user;
         }

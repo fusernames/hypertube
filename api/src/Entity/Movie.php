@@ -19,6 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
+ *      attributes={"pagination_items_per_page"=10},
  *      itemOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_USER')"
@@ -43,14 +44,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "path"="/movies/torrent/status",
  *              "controller"=StatusTorrentController::class
  *          },
+ *          "post",
+ *          "get",
  *          "get_movie_file"={
  *              "method"="GET",
  *              "path"="/movies/file/{id}",
- *              "requirements"={"id"="\d+"},
  *              "controller"=GetMovieController::class
- *          },
- *          "post",
- *          "get"
+ *          }
  *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
@@ -75,7 +75,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      properties={
  *          "id": "exact",
  *          "name": "ipartial",
- *          "finished": "exact"
+ *          "finished": "exact",
+ *          "torrentLink": "ipartial"
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
@@ -91,6 +92,8 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull(message="Name cannot be null")
+     * @Assert\NotBlank(message="Name cannot be blank")
      * @Assert\Length(
      *      min = 1,
      *      max = 255,

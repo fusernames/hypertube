@@ -150,4 +150,16 @@ class MediaObject
 
         return $this;
     }
+
+    public function getContentUrl(): ?string
+    {
+        return $this->contentUrl;
+    }
+
+    public function setContentUrl(?string $contentUrl): self
+    {
+        $this->contentUrl = $contentUrl;
+
+        return $this;
+    }
 }
