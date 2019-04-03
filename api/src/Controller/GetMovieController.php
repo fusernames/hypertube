@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use SplFileInfo;
+use SplFileObject;
 use App\Entity\Movie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Stream;
@@ -60,17 +60,8 @@ class GetMovieController extends AbstractController
         $filePath = $file->getRealPath();
         $fileSize = $file->getSize();
     
-        // Guess MIME Type from file extension
-        if (in_array($fileExt, $this->formats['video'])) {
-            $mime = 'video';
-        } else if (in_array($fileExt, $this->formats['audio'])) {
-            $mime = 'audio';
-        }
-    
-        $mime .= '/' . $fileExt;
-    
         $response->headers->set('Accept-Ranges', 'bytes');
-        $response->headers->set('Content-Type', $mime);
+        $response->headers->set('Content-Type', 'video/' . $fileExt);
     
         // Initialise range variables, default to the whole file size
         $rangeMin = 0;
