@@ -9,6 +9,7 @@ class Api42
 {
     private $curl;
     private $url;
+    private $user_url;
     private $client_id;
     private $client_secret;
     private $redirect_uri;
@@ -18,6 +19,7 @@ class Api42
         $this->curl = $curl;
 
         $this->setUrl("https://api.intra.42.fr/oauth/token");
+        $this->setUser_url("https://api.intra.42.fr/v2/me");
         $this->setClient_id("410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9");
         $this->setClient_secret("0e156668ef0c973c8fa8526fc683f26ce42801788756de614a307eee406ce1b8");
         $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/42");
@@ -36,9 +38,35 @@ class Api42
         
         if ($resp["code"] === 200) {
             $resp = json_decode($resp["resp"]);
-            return new JsonResponse(["api" => "42", "client_code" => $code, "code" => 200, "token" => $resp->access_token], 200);
+            return $this->getUserData($resp->access_token);
         }
         return new JsonResponse(["code" => $resp["code"], "message" => $resp["resp"]], 200);
+    }
+
+    public function getUserData(string $token)
+    {
+        $userData = $this->curl->getData($this->getUser_url(), $token);
+        return new JsonResponse(
+            [
+                "api" => "42",
+                "code" => 200,
+                "token" => $token,
+                "userData" => $userData
+            ],
+            200
+        );
+    }
+
+    public function setUser_url(string $user_url)
+    {
+        $this->user_url = $user_url;
+
+        return $this;
+    }
+
+    public function getUser_url(): string
+    {
+        return $this->user_url;
     }
 
     public function setRedirect_uri(string $redirect_uri)
