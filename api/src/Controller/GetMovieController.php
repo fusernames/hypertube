@@ -15,24 +15,6 @@ class GetMovieController extends AbstractController
 {
     private $_downloadPath = "/var/lib/transmission-daemon/complete/";
 
-    public function old_ft($id) {
-        // Parsing request's json
-        $entityManager = $this->getDoctrine()->getManager();
-        $repository = $entityManager->getRepository(Movie::class);
-        $movie = $repository->find($id);
-        if (!$movie) {
-            return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
-        }
-        $totalPath = $this->_downloadPath . $movie->getFileName();
-        if (file_exists($totalPath)) {
-            $response = new BinaryFileResponse($totalPath);
-            $response->setAutoEtag(true);
-            $response->headers->set('Content-Type', 'video/mp4');
-            return $response;
-        }
-        return new JsonResponse(['error' => 'UNKNOWN_MOVIE']);
-    }
-
     public function __invoke(Request $request, $id) {
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
