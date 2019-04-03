@@ -6,13 +6,9 @@ class Curl
 {
     private $curl;
 
-    public function __construct()
-    {
-        $this->curl = curl_init();
-    }
-
     public function initPostCurl($url, $data)
     {
+        $this->curl = curl_init();
         curl_setopt_array(
             $this->curl,
             [
@@ -31,6 +27,7 @@ class Curl
 
     public function initGetCurl(string $url, string $token)
     {
+        $this->curl = curl_init();
         $authorization = $token ? "Authorization: Bearer $token" : "";
         $data = [
             CURLOPT_URL => $url,
