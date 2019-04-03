@@ -31,7 +31,7 @@ class Curl
 
     public function initGetCurl(string $url, string $token = null)
     {
-        $data = [
+        curl_setopt_array($this->curl, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
@@ -40,12 +40,8 @@ class Curl
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_POSTFIELDS => "",
-            CURLOPT_HTTPHEADER => [
-                "authorization: Bearer 3c5535b93b885f571d92937d4424a327a04bee92c132a5ec6e3293a522c6bd24"
-            ]
-        ];
-
-        curl_setopt_array($this->curl, $data);
+            CURLOPT_HTTPHEADER => ["authorization: Bearer $token"]
+        ]);
     }
 
     public function getData($url, $token)
