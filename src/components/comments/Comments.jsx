@@ -5,8 +5,11 @@ import Loading from '../../utils/jsx/Loading'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 import req from '../../utils/req'
 import host from '../../config'
+import CommentsBox from './CommentsBox'
 
 class Comments extends React.Component {
 
@@ -19,12 +22,17 @@ class Comments extends React.Component {
     this.setState({...this.state, isFetching: true})
     req(host + '/api/movies/' + id + '/messages', {useToken: true})
     .then(res => {
-        // console.log(res['hydra:member']);
+         console.log(res);
         this.setState({
             isFetching: false,
             comments: res['hydra:member']
         })
         //dispatch les comments 
+    }).catch(err => {
+      this.setState({
+        isFetching: false,
+      })
+      console.log(err)
     })
   }
 
@@ -39,16 +47,17 @@ class Comments extends React.Component {
 
     return (
       <div>
+        <CommentsBox id={this.props.id} fetchComments={this.fetchComments}/>
         <Loading display={isFetching}/>
         <List>
         {comments.map(comment => {
             return (
                 <ListItem key={comment.id}>
-                    {/* <ListItemAvatar>
-                        <Avatar src="/static/images/avatar/2.jpg" />
-                    </ListItemAvatar> */}
+                    <ListItemAvatar>
+                        <Avatar src={comment.owner.avatar.contentUrl} />
+                    </ListItemAvatar>
                     <ListItemText
-                        primary='Username'
+                        primary={comment.owner.username}
                         secondary={comment.message}
                     >
                     </ListItemText>
