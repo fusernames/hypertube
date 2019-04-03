@@ -101,7 +101,7 @@ const styles = {
     position: 'absolute',
     bottom: '0px',
     display:'none',
-    background:'rgba(0,0,0,0.7)',
+    backgroundImage: 'linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.8))',
     width:'100%',
     padding:'10px',
     wordBreak: 'break-word'
