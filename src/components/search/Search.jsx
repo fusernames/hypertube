@@ -32,6 +32,14 @@ class Search extends Component {
     this._isMounted = false
   }
 
+  showInformations = (id) => {
+    document.getElementById(id).style.display = 'block'
+  }
+
+  hideInformations = (id) => {
+    document.getElementById(id).style.display = 'none'
+  }
+
   render() {
     const { movies, isFetching } = this.props.search
     const { classes } = this.props
@@ -48,8 +56,16 @@ class Search extends Component {
               return (
                 <Grid key={movie.id} item xs={6} sm={3} md={2}>
                   <Link to={'/movie/' + movie.id} style={{textDecoration: 'none'}}>
-                    <div className={classes.movie}>
+                    <div className={classes.movie}
+                      onMouseEnter={() => this.showInformations(movie.id)}
+                      onMouseLeave={() => this.hideInformations(movie.id)}
+                    >
                       <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
+                      <div id={movie.id} className={classes.informations}>
+                        <Typography variant="button">{movie.title}</Typography>
+                        <Typography variant="caption">{locale.movie.production + ': ' + movie.year}</Typography>
+                        <Typography variant="caption">{locale.movie.rating + ': ' + movie.rating}</Typography>
+                      </div>
                     </div>
                   </Link>
                 </Grid>
@@ -72,6 +88,7 @@ const styles = {
     borderRadius: '3px',
     overflow: 'hidden',
     display: 'flex',
+    position: 'relative',
     alignItems: 'center',
     '@global' : {
       'img' : {
@@ -79,6 +96,15 @@ const styles = {
         color: 'rgba(255,255,255,0.9)',
       }
     }
+  },
+  informations: {
+    position: 'absolute',
+    bottom: '0px',
+    display:'none',
+    backgroundImage: 'linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.7))',
+    width:'100%',
+    padding:'10px',
+    wordBreak: 'break-word'
   },
   progress: {
     marginTop: '20px',
