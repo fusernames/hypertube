@@ -18,8 +18,10 @@ class OAuthController extends AbstractController
 
     public function __invoke(Request $request)
     {
+
         $token = json_decode($request->getContent())->token;
         $api = json_decode($request->getContent())->api;
+        return new JsonResponse(["data" => json_decode($request->getContent())], 400);die;
 
         switch ($api) {
             case "facebook":
