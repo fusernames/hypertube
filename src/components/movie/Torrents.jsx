@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import req from '../../utils/req'
 import host from '../../config'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { Link } from 'react-router-dom'
 
 class Torrents extends Component {
 
@@ -20,8 +21,14 @@ class Torrents extends Component {
       method: 'post'
     }).then((res) => {
       if (res._status === 201) {
-        torrent.download = true
-        torrent.downloading = undefined
+        res.json().then(json => {
+          torrent.download = true
+          torrent.movieId = json.movieId
+          torrent.downloading = undefined
+        }).catch(err => {
+          torrent.download = false
+          if (callback) callback()
+        })
       } else if (res._status === 200) {
         torrent.download = undefined
         torrent.downloading = res.success
@@ -114,7 +121,9 @@ class Torrents extends Component {
                   }
                   {torrent.download === true &&
                     <IconButton style={{padding:'5px'}}>
-                      <Icon>play_arrow</Icon>
+                      <Typography component={Link} to={"/stream/" + torrent.movieId}>
+                        <Icon>play_arrow</Icon>                      
+                      </Typography>
                     </IconButton>
                   }
                   {torrent.downloading !== undefined &&
