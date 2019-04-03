@@ -27,7 +27,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\EventListener\UserListener:
-        # arguments:
-        #     - '@bazinga_geocoder.provider.yandex'
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    jwt_manager:
+        public: true
+        alias: lexik_jwt_authentication.jwt_manager

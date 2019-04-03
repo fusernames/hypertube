@@ -244,7 +244,7 @@ class User extends BaseUser
     protected $plainPassword;
 
     /**
-     * @Groups({"user", "me"})
+     * @Groups({"user", "me", "message"})
      * @Assert\NotNull(message="The username cannot be null")
      * @Assert\NotBlank(message="Your username cannot be blank")
      * @Assert\Length(
@@ -304,7 +304,7 @@ class User extends BaseUser
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotNull(message="The firstname cannot be null")
      * @Assert\NotBlank(message="The firstname cannot be blank")
-     * @Groups({"user", "me"})
+     * @Groups({"user", "me", "message"})
      * @Assert\Length(
      *      min = 2,
      *      max = 40,
@@ -325,7 +325,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user", "me"})
+     * @Groups({"user", "me", "message"})
      * @Assert\Length(
      *      min = 2,
      *      max = 40,
@@ -368,7 +368,7 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\MediaObject", cascade={"persist", "remove"})
-     * @Groups({"user:read", "me"})
+     * @Groups({"user:read", "me", "message"})
      * @ApiSubresource(maxDepth=1)
      */
     private $avatar;
@@ -387,6 +387,12 @@ class User extends BaseUser
      * @Groups({"oauth"})
      */
     private $api;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user", "me", "message"})
+     */
+    private $avatarUrl;
 
     public function __construct()
     {
@@ -571,6 +577,18 @@ class User extends BaseUser
     public function setOmniAuthMethod(?string $omniAuthMethod): self
     {
         $this->omniAuthMethod = $omniAuthMethod;
+
+        return $this;
+    }
+
+    public function getAvatarUrl(): ?string
+    {
+        return $this->avatarUrl;
+    }
+
+    public function setAvatarUrl(?string $avatarUrl): self
+    {
+        $this->avatarUrl = $avatarUrl;
 
         return $this;
     }

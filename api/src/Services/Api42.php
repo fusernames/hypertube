@@ -2,22 +2,24 @@
 
 namespace App\Services;
 
+use App\Entity\User;
 use App\Services\Curl;
+use App\Services\ApiCore;
+use Doctrine\Common\Persistence\ObjectManager;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessResponse;
 
-class Api42
+class Api42 extends ApiCore
 {
-    private $curl;
-    private $url;
-    private $user_url;
-    private $client_id;
-    private $client_secret;
-    private $redirect_uri;
-
-    public function __construct(Curl $curl)
+    /**
+     * @param Curl $curl
+     * @param UserManagerInterface $userManager
+     * @param ObjectManager $objectManager
+     */
+    public function __construct(Curl $curl, UserManagerInterface $userManager, ObjectManager $objectManager)
     {
-        $this->curl = $curl;
-
+        parent::__construct($curl, $userManager, $objectManager);
         $this->setUrl("https://api.intra.42.fr/oauth/token");
         $this->setUser_url("https://api.intra.42.fr/v2/me");
         $this->setClient_id("410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9");
@@ -25,8 +27,16 @@ class Api42
         $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/42");
     }
 
-    public function getToken(string $code)
+    /**
+     * Make a 42 API request to get a token
+     *
+     * @param string $code
+     * @param JWTManager $jwtManager
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
+    public function getToken(string $code, $jwtManager)
     {
+        $this->jwtManager = $jwtManager;
         $data = [
             "grant_type" => "authorization_code",
             "client_id" => $this->getClient_Id(),
@@ -38,82 +48,49 @@ class Api42
         
         if ($resp["code"] === 200) {
             $resp = json_decode($resp["resp"]);
+            if (isset($resp->error)) {
+                return new JsonResponse(
+                    ["code" => 401, "error" => $resp->error, "message" => $resp->error_description],
+                    401
+                );
+            }
             return $this->getUserData($resp->access_token);
         }
-        return new JsonResponse(["code" => $resp["code"], "message" => $resp["resp"]], 200);
+        return new JsonResponse(["code" => $resp["code"], "message" => $resp["resp"]], $resp["code"]);
     }
 
+    /**
+     * Ssearch the user in database and return a token
+     *
+     * @param string $token
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
     public function getUserData(string $token)
     {
         $userData = $this->curl->getData($this->getUser_url(), $token);
+
+        if ($userData["code"] === 200) {
+            $userData = json_decode($userData["resp"]);
+            $userData = [
+                "plainpassword" => $userData->id . $userData->login,
+                "username" => $userData->login,
+                "email" => $userData->email,
+                "firstname" => $userData->first_name,
+                "lastname" => $userData->last_name,
+                "avatarUrl" => $userData->image_url
+            ];
+            $this->user = $this->userManager->findUserByEmail($userData["email"]);
+            !$this->user ? $this->createUser($userData) : 0;
+            $jwt = $this->jwtManager->create($this->user);
+            !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
+            return new JWTAuthenticationSuccessResponse($jwt);
+        }
         return new JsonResponse(
             [
-                "api" => "42",
-                "code" => 200,
-                "token" => $token,
-                "userData" => $userData
+                "code" => $userData["code"],
+                "message" => $userData["resp"]
             ],
-            200
+            $userData["code"]
         );
-    }
-
-    public function setUser_url(string $user_url)
-    {
-        $this->user_url = $user_url;
-
-        return $this;
-    }
-
-    public function getUser_url(): string
-    {
-        return $this->user_url;
-    }
-
-    public function setRedirect_uri(string $redirect_uri)
-    {
-        $this->redirect_uri = $redirect_uri;
-
-        return $this;
-    }
-
-    public function getRedirect_uri(): string
-    {
-        return $this->redirect_uri;
-    }
-
-    public function setClient_secret(string $client_secret): self
-    {
-        $this->client_secret = $client_secret;
-
-        return $this;
-    }
-
-    public function getClient_secret(): string
-    {
-        return $this->client_secret;
-    }
-
-    public function setClient_id(string $client_id): self
-    {
-        $this->client_id = $client_id;
-
-        return $this;
-    }
-
-    public function getClient_Id(): string
-    {
-        return $this->client_id;
-    }
-
-    public function setUrl(string $url = null)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url;
     }
 }

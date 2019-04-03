@@ -101,7 +101,7 @@ class MediaObject
     /**
      * @var string|null
      * @ORM\Column(nullable=true)
-     * @Groups({"user", "me"})
+     * @Groups({"user", "me", "message"})
      */
     public $contentUrl;
 
@@ -147,6 +147,18 @@ class MediaObject
     public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getContentUrl(): ?string
+    {
+        return $this->contentUrl;
+    }
+
+    public function setContentUrl(?string $contentUrl): self
+    {
+        $this->contentUrl = $contentUrl;
 
         return $this;
     }
