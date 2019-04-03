@@ -103,7 +103,7 @@ class GetMovieController extends AbstractController
                 // Fseek worked -> preparing headers
                 $response->setStatusCode(StreamedResponse::HTTP_PARTIAL_CONTENT);
     
-                $response->headers->set('Content-Range', sprintf('bytes %d-%d/%d', $rangeStart - $rangeEnd, $fileSize));
+                $response->headers->set('Content-Range', sprintf('bytes %d-%d/%d', $rangeStart, $rangeEnd, $fileSize));
                 $response->headers->set('Content-Length', $length);
                 $response->headers->set('Connection', 'Close');
             } else {
