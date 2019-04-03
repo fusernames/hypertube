@@ -69,6 +69,8 @@ class Curl
 
     public function returnResponse($err, $response)
     {
+        $this->curl = curl_init();
+
         if ($err) {
             return ["code" => 400, "resp" => "cURL Error #:" . $err];
         } else {
