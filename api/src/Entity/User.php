@@ -388,6 +388,12 @@ class User extends BaseUser
      */
     private $api;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user", "me"})
+     */
+    private $avatarUrl;
+
     public function __construct()
     {
         parent::__construct();
@@ -571,6 +577,18 @@ class User extends BaseUser
     public function setOmniAuthMethod(?string $omniAuthMethod): self
     {
         $this->omniAuthMethod = $omniAuthMethod;
+
+        return $this;
+    }
+
+    public function getAvatarUrl(): ?string
+    {
+        return $this->avatarUrl;
+    }
+
+    public function setAvatarUrl(?string $avatarUrl): self
+    {
+        $this->avatarUrl = $avatarUrl;
 
         return $this;
     }
