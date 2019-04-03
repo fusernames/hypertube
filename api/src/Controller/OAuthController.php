@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class OAuthController extends Controller
 {
     /**
-     * @var [Api42
+     * @var Api42
      */
     private $api42;
 

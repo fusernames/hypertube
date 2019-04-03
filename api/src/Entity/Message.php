@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Controller\CommentMovieController;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -19,6 +20,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "pagination_client_items_per_page"=true,
  *          "maximum_items_per_page"=50,
  *          "pagination_items_per_page"=15
+ *      },
+ *      normalizationContext={
+ *          "groups"={"message"}
+ *      },
+ *      denormalizationContext={
+ *          "groups"={"message"}
  *      },
  *      itemOperations={
  *          "get",
@@ -70,6 +77,7 @@ class Message
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"message"})
      */
     private $id;
 
@@ -77,16 +85,19 @@ class Message
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Owner cannot be null")
+     * @Groups({"message"})
      */
     public $owner;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"message"})
      */
     private $updatedAt;
 
@@ -100,6 +111,7 @@ class Message
      * )
      * @Assert\NotNull(message="Message cannot be null")
      * @Assert\NotBlank(message="Message cannot be blank")
+     * @Groups({"message"})
      */
     private $message;
 
@@ -107,6 +119,7 @@ class Message
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull(message="Movie cannot be null")
+     * @Groups({"message"})
      */
     private $movie;
 
