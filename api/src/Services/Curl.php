@@ -43,17 +43,17 @@ class Curl
         ];
         $token ? $data[CURLOPT_HTTPHEADER] = "authorization: Bearer $token" : 0;
 
-        curl_setopt_array($curl, $data);
+        curl_setopt_array($this->curl, $data);
     }
 
     public function getData($url, $token)
     {
         $this->initGetCurl($url, $token);
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+        $response = curl_exec($this->curl);
+        $err = curl_error($this->curl);
 
-        curl_close($curl);
+        curl_close($this->curl);
 
         return $this->returnResponse($err, $response);
     }
