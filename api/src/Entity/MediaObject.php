@@ -101,7 +101,7 @@ class MediaObject
     /**
      * @var string|null
      * @ORM\Column(nullable=true)
-     * @Groups({"user", "me"})
+     * @Groups({"user", "me", "message"})
      */
     public $contentUrl;
 
