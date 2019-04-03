@@ -15,7 +15,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={"pagination_items_per_page"=5},
+ *      attributes={"pagination_items_per_page"=15},
  *      normalizationContext={
  *          "groups"={"message"}
  *      },

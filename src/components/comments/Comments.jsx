@@ -13,26 +13,42 @@ import CommentsBox from './CommentsBox'
 
 class Comments extends React.Component {
 
+  _isMounted = false
+
   state = {
     isFetching: false,
-    comments: []
+    comments: [],
+    page: 1,
+    display: true
+  }
+
+  addComment = (id) => {
+    this.setState({
+      page: 1,
+      comments: [],
+      display: true
+    }, () => {
+      this.fetchComments(id);
+    })
   }
 
   fetchComments = (id) => {
     this.setState({...this.state, isFetching: true})
-    req(host + '/api/movies/' + id + '/messages', {useToken: true})
+    req(host + '/api/movies/' + id + '/messages.json?order[id]=DESC&page=' + this.state.page, {useToken: true})
     .then(res => {
-         console.log(res);
-        this.setState({
+        if (res.length) {
+          this.setState({
             isFetching: false,
-            comments: res['hydra:member']
-        })
-        //dispatch les comments 
+            comments: [...this.state.comments, ...res]
+          })
+        }
+        else {
+          this.setState({
+            isFetching: false,
+            display: false
+          })
+        }
     }).catch(err => {
-      this.setState({
-        isFetching: false,
-      })
-      console.log(err)
     })
   }
 
@@ -40,21 +56,40 @@ class Comments extends React.Component {
     this.fetchComments(this.props.id)
   }
 
+  componentDidMount() {
+    this._isMounted = true
+    window.onscroll = () => {
+      if (this._isMounted === true) {
+        if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 200) {
+          if (this.state.display) {
+            this.setState({
+              isFetching: false,
+              page: this.state.page + 1
+            })
+            this.fetchComments(this.props.id)
+          }
+        }
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   render() {
     const { isFetching, comments } = this.state
-    // const { classes } = this.props
-    // const { locale } = this.props.locales
 
     return (
       <div>
-        <CommentsBox id={this.props.id} fetchComments={this.fetchComments}/>
+        <CommentsBox id={this.props.id} addComment={this.addComment}/>
         <Loading display={isFetching}/>
         <List>
         {comments.map(comment => {
             return (
                 <ListItem key={comment.id}>
                     <ListItemAvatar>
-                        <Avatar src={comment.owner.avatar.contentUrl} />
+                        <Avatar src={comment.owner.avatarUrl} />
                     </ListItemAvatar>
                     <ListItemText
                         primary={comment.owner.username}

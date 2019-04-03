@@ -15,8 +15,8 @@ class CommentsBox extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    document.querySelector("#message").value = '';
     this.setState({...this.state, isFetching: true})
-    console.log(this.props.auth.user.id)
     req(host + "/api/messages", {
         useToken: true,
         method: "POST",
@@ -28,10 +28,8 @@ class CommentsBox extends React.Component {
         }).then(res => {
           // Handle api response
           // faire un setState
-          console.log(res)
-          this.props.fetchComments(this.props.id)
+          this.props.addComment(this.props.id)
         }).catch(err => {
-          console.error(err)
           // Handle errors
         })
   }
@@ -40,7 +38,7 @@ class CommentsBox extends React.Component {
     let name = e.target.name
     this.setState({
       ...this.state,
-      [name]: e.target.value
+      [name]: e.target.value,
     })
   }
 
@@ -51,9 +49,9 @@ class CommentsBox extends React.Component {
 
     return (
       <div>
-        <Loading display={isFetching}/>
+        {/* <Loading display={isFetching}/> */}
         <form onSubmit={this.handleSubmit}>
-          <TextField
+          <TextField id="message"
               name="comment"
               label={locale.movie.comment}
               onChange={this.onChange}
