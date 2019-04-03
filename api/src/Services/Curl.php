@@ -40,7 +40,7 @@ class Curl
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_POSTFIELDS => "",
-            CURLOPT_HTTPHEADER => ["authorization: Bearer $token"]
+            CURLOPT_HTTPHEADER => ["Authorization: Bearer $token"]
         ]);
     }
 
