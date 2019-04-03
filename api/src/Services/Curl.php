@@ -40,8 +40,10 @@ class Curl
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_POSTFIELDS => "",
+            CURLOPT_HTTPHEADER => [
+                "authorization: Bearer 3c5535b93b885f571d92937d4424a327a04bee92c132a5ec6e3293a522c6bd24"
+            ]
         ];
-        $token ? $data[CURLOPT_HTTPHEADER][] = "authorization: Bearer $token" : 0;
 
         curl_setopt_array($this->curl, $data);
     }
@@ -49,6 +51,7 @@ class Curl
     public function getData($url, $token)
     {
         $this->initGetCurl($url, $token);
+
         $response = curl_exec($this->curl);
         $err = curl_error($this->curl);
 
