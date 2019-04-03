@@ -34,11 +34,11 @@ class Api42
         ];
         $resp = $this->curl->postJson($this->getUrl(), json_encode($data));
         
-        if ($resp->code === 200) {
-            $resp = json_decode($resp->resp);
+        if ($resp["code"] === 200) {
+            $resp = json_decode($resp["resp"]);
             return new JsonResponse(["api" => "42", "client_code" => $code, "code" => 200, "token" => $resp->access_token], 200);
         }
-        return new JsonResponse(["code" => $resp->code, "message" => $resp->resp], 200);
+        return new JsonResponse(["code" => $resp["code"], "message" => $resp["resp"]], 200);
     }
 
     public function setRedirect_uri(string $redirect_uri)
