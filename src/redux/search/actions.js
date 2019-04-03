@@ -27,32 +27,30 @@ export function exists(code, list, set = false) {
 
 export function formatMovies(list, callback, set = false) {
   let movies = []
-  let title = ''
-  let image = ''
-  let id = ''
-  let code = ''
+  let movie = {}
 
   for(let i in list) {
     if (list[i].images && list[i].images.banner) {
-      image = list[i].images.poster
-      title = list[i].title
-      id = list[i].imdb_id
-      code = list[i].imdb_id
+      movie = {
+        image: list[i].images.poster,
+        title: list[i].title,
+        id: list[i].imdb_id,
+        code: list[i].imdb_id,
+        year: list[i].year,
+        rating: list[i].rating.percentage / 10,
+      }
     } else if (list[i].medium_cover_image) {
-      image = list[i].medium_cover_image
-      title = list[i].title
-      code = list[i].imdb_code
-      id = list[i].id
-    } else {
-      id = ''
+      movie = {
+        image: list[i].medium_cover_image,
+        title: list[i].title,
+        code: list[i].imdb_code,
+        id: list[i].id,
+        year: list[i].year,
+        rating: list[i].rating,
+      }
     }
-    if (id && !exists(code, movies, set)) {
-      movies.push({
-        id: id,
-        code: code,
-        image: image,
-        title: title
-      })
+    if (movie.id && !exists(movie.code, movies, set)) {
+      movies.push(movie)
     }
   }
   callback(movies)
