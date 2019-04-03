@@ -21,14 +21,9 @@ class Torrents extends Component {
       method: 'post'
     }).then((res) => {
       if (res._status === 201) {
-        res.json().then(json => {
-          torrent.download = true
-          torrent.movieId = json.movieId
-          torrent.downloading = undefined
-        }).catch(err => {
-          torrent.download = false
-          if (callback) callback()
-        })
+        torrent.download = true
+        torrent.movieId = res.movieId
+        torrent.downloading = undefined
       } else if (res._status === 200) {
         torrent.download = undefined
         torrent.downloading = res.success
