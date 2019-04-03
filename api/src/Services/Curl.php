@@ -29,28 +29,27 @@ class Curl
         );
     }
 
-    public function initGetCurl(string $url, string $token = null)
+    public function initGetCurl(string $url, string $token)
     {
         $authorization = $token ? "Authorization: Bearer $token" : "";
+        $data = [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "",
+            CURLOPT_HTTPHEADER => [$authorization]
+        ];
 
-        curl_setopt_array(
-            $this->curl,
-            [
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_HTTPHEADER => [$authorization]
-            ]
-        );
+        curl_setopt_array($this->curl, $data);
     }
 
     public function getData($url, $token)
     {
         $this->initGetCurl($url, $token);
-
         $response = curl_exec($this->curl);
         $err = curl_error($this->curl);
 
