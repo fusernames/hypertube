@@ -19,7 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={"pagination_items_per_page"=10},
+ *      attributes={"pagination_items_per_page"=5},
  *      itemOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_USER')"

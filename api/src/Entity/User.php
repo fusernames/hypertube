@@ -30,11 +30,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  * @ApiResource(
- *      attributes={
- *          "pagination_client_enabled"=true,
- *          "pagination_client_items_per_page"=true,
- *          "maximum_items_per_page"=50
- *      },
+ *      attributes={"pagination_items_per_page"=5},
  *      normalizationContext={
  *          "groups"={
  *              "user",
