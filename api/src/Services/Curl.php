@@ -35,9 +35,9 @@ class Curl
         curl_close($this->curl);
     
         if ($err) {
-            return "cURL Error #:" . $err;
+            return ["code" => 400, "resp" => "cURL Error #:" . $err];
         } else {
-            return $response;
+            return ["code" => 200, "resp" => $response];
         }
     }
 }
