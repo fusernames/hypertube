@@ -13,20 +13,25 @@ class CommentsBox extends React.Component {
     comment: ''
   }
 
-  fetchComments = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     this.setState({...this.state, isFetching: true})
+    console.log(this.props.auth.user.id)
     req(host + "/api/messages", {
+        useToken: true,
         method: "POST",
         body: {
-          message: {
+              owner: '/api/users/' + this.props.auth.user.id,
               message: this.state.comment,
               movie: '/api/movies/' + this.props.id,
           }
-        }
         }).then(res => {
           // Handle api response
-          // faire un dispatch du comment pour update le tableau du comment
+          // faire un setState
+          console.log(res)
+          this.props.fetchComments(this.props.id)
         }).catch(err => {
+          console.error(err)
           // Handle errors
         })
   }
@@ -47,13 +52,15 @@ class CommentsBox extends React.Component {
     return (
       <div>
         <Loading display={isFetching}/>
-        <TextField
-            name="comment"
-            label={locale.movie.comment}
-            onChange={this.onChange}
-            margin="normal"
-            fullWidth
-        />
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+              name="comment"
+              label={locale.movie.comment}
+              onChange={this.onChange}
+              margin="normal"
+              fullWidth
+          />
+        </form>
       </div>
     )
   }
