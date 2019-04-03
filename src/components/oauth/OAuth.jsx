@@ -5,16 +5,19 @@ import queryString from 'query-string'
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
+import Cookies from 'js-cookie'
+import { getCurrentUser } from '../../redux/auth/actions'
 
 class OAuth extends React.Component {
 
   state = {
     component: <Loading />
   }
-
+  
   componentDidMount() {
     const { name } = this.props.match.params
     let token = ""
+    let auth = {}
 
     console.log(this.props.location);
 
@@ -45,6 +48,9 @@ class OAuth extends React.Component {
       }).then(res => {
         // Handle api response
         console.log(res)
+        auth.token = res.token
+        Cookies.set('jwt', auth.token)
+        this.props.dispatch(getCurrentUser())
         this.setState({
             component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
         });
