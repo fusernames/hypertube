@@ -31,30 +31,29 @@ class Curl
 
     public function initGetCurl(string $url, string $token = null)
     {
-        $data = [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_POSTFIELDS => "",
-        ];
-        $token ? $data[CURLOPT_HTTPHEADER] = "authorization: Bearer $token" : 0;
-
-        curl_setopt_array($this->curl, $data);
+        curl_setopt_array(
+            $this->curl,
+            [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+                CURLOPT_HTTPHEADER => "authorization: Bearer $token"
+            ]
+        );
     }
 
     public function getData($url, $token)
     {
         $this->initGetCurl($url, $token);
-
         $response = curl_exec($this->curl);
         $err = curl_error($this->curl);
 
         curl_close($this->curl);
-
         return $this->returnResponse($err, $response);
     }
 
@@ -65,7 +64,6 @@ class Curl
         $err = curl_error($this->curl);
     
         curl_close($this->curl);
-    
         return $this->returnResponse($err, $response);
     }
 
