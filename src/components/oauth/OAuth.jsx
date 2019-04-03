@@ -44,6 +44,7 @@ class OAuth extends React.Component {
       }
       }).then(res => {
         // Handle api response
+        console.log(res)
         this.setState({
             component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
         });

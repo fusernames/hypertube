@@ -55,9 +55,8 @@ class OAuthController extends AbstractController
 
         $resp = $this->curl->postJson("https://api.intra.42.fr/oauth/token", json_encode($data));
         $resp = json_decode($resp);
-        dump($resp);die;
         
-        return new JsonResponse(["api" => "42", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(["api" => "42", "token" => $token, "code" => 200, "data" => $resp], 200);
     }
 
     private function _github(string $token = null)
