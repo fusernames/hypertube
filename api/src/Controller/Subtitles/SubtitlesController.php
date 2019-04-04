@@ -122,9 +122,9 @@ class SubtitlesController extends AbstractController
 
         for ($i = 0; $i < sizeof($subtitles); $i++) {
             if ($eng && $fre) break;
-            if ($subtitles['data'][$i]['SubLanguageID'] === 'fre') {
+            if (!$fre && $subtitles['data'][$i]['SubLanguageID'] === 'fre') {
                 $fre = $subtitles['data'][$i]['SubDownloadLink'];
-            } else if ($subtitles['data'][$i]['SubLanguageID'] === 'eng') {
+            } else if (!$eng && $subtitles['data'][$i]['SubLanguageID'] === 'eng') {
                 $eng = $subtitles['data'][$i]['SubDownloadLink'];
             }
         }

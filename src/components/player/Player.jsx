@@ -46,7 +46,6 @@ class Player extends Component {
     switch (e.key) {
       case " ":
         player.paused ? player.play() : player.pause()
-        e.preventDefault()
         break
       case "ArrowRight":
         player.currentTime += 10
@@ -75,7 +74,7 @@ class Player extends Component {
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
-        <track label="English" kind="subtitles" srcLang="en" src={host + "/subtitles/" + this.props.movieId + "/eng.srt"} />
+        <track label="English" kind="subtitles" srcLang="en" src={host + "/subtitles/" + this.props.movieId + "/eng.vtt"} />
       </video>
     );
   }

@@ -86,18 +86,18 @@ class Comments extends React.Component {
         <Loading display={isFetching}/>
         <List>
         {comments.map(comment => {
-            return (
-                <ListItem key={comment.id}>
-                    <ListItemAvatar>
-                        <Avatar src={comment.owner.avatarUrl} />
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={comment.owner.username}
-                        secondary={comment.message}
-                    >
-                    </ListItemText>
-                </ListItem>
-            )
+          return (
+            <ListItem key={comment.id}>
+              <ListItemAvatar>
+                <Avatar src={comment.owner.avatarUrl} />
+              </ListItemAvatar>
+              <ListItemText
+                  primary={comment.owner.username}
+                  secondary={comment.message}
+              >
+              </ListItemText>
+            </ListItem>
+          )
         })}
         </List>
       </div>
