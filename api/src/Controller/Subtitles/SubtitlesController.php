@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Movie;
 
+use PharData;
 use SplFileObject;
 
 class SubtitlesController extends AbstractController
@@ -68,6 +69,10 @@ class SubtitlesController extends AbstractController
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
 
+        if (file_exists('./subtitles/' + $movie->getId() + '/fre.srt') && file_exists('./subtitles/' + $movie->getId() + '/eng.srt')) {
+            return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
+        }
+
         $filePath = $this->_downloadPath . $movie->getFileName();
         $file = new SplFileObject($filePath);
 
@@ -114,9 +119,19 @@ class SubtitlesController extends AbstractController
 
         $folder = getcwd() . '/subtitles/' . $movie->getId();
         if (!file_exists($folder)) mkdir($folder, 0777, true);
-        if ($fre) file_put_contents($folder . '/fre.srt', file_get_contents($fre));
-        if ($eng) file_put_contents($folder . '/eng.srt', file_get_contents($eng));
+        if ($fre) {
+            $freFile = $folder . '/fre.srt.gz';
+            file_put_contents($freFile, file_get_contents($fre));
+            $frePhar = new PharData($freFile);
+            $frePhar->decompress();
+        }
+        if ($eng) {
+            $engFile = $folder . '/eng.srt.gz';
+            file_put_contents($engFile, file_get_contents($eng));
+            $engPhar = new PharData($engFile);
+            $engPhar->decompress();
+        }
 
-        return new JsonResponse(['fre' => $fre, 'eng' => $eng]);
+        return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
     }
 }
