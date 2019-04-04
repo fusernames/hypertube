@@ -37,13 +37,14 @@ class SubtitlesController extends AbstractController
 
         $filePath = $this->_downloadPath . $movie->getFileName();
         $file = new SplFileObject($filePath);
-        $size = $file->getSize();
-        $file = null;
 
         // Check file existence
         if (!($file->isFile())) {
             throw $this->createNotFoundException('Error getting movie at path ' . $totalPath);
         }
+
+        $size = $file->getSize();
+        $file = null;
 
         $hash = OpenSubtitlesHash($filePath);
 
