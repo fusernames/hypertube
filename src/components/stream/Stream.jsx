@@ -9,7 +9,8 @@ class Stream extends Component {
 
   state = {
     isFetching: false,
-    startTime: null,
+    startTime: undefined,
+    statusId: -1
   }
 
   fetchStream = (id) => {
@@ -24,7 +25,8 @@ class Stream extends Component {
       if (res.length === 1) {
         this.setState({
           isFetching: false,
-          startTime: res.time
+          startTime: res[0].time,
+          statusId: res[0].id
         })
       } else {
         req(host + '/api/movie_statuses', {
@@ -38,7 +40,8 @@ class Stream extends Component {
         }).then(res => {
           this.setState({
             isFetching: false,
-            startTime: 0
+            startTime: 0,
+            statusId: res.id
           })
         }).catch(err => {
           // Handle error
@@ -57,20 +60,44 @@ class Stream extends Component {
     })
   }
 
+  updateMovieStatus = newTime => {
+    const { statusId, isFetching } = this.state
+    if (statusId === -1 || isFetching) return
+    this.setState({
+      ...this.state,
+      isFetching: true
+    })
+    req(host + '/api/movie_statuses/' + statusId, {
+      method: 'PUT',
+      body: {
+        time: parseInt(newTime)
+      },
+      useToken: true
+    }).then(res => {
+      this.setState({
+        ...this.state,
+        isFetching: false
+      })
+    }).catch(err => {
+      // Handle error
+      this.setState({
+        ...this.state,
+        isFetching: false
+      })
+    })
+  }
+
   componentWillMount() {
     this.fetchStream(this.props.match.params.id)
   }
 
-  componentDidMount() {
-    console.log(this.props.auth.user.id)
-  }
-
   render() {
-    const { startTime } = this.state;
-    const { params } = this.props.match;
+    const { startTime } = this.state
+    const { params } = this.props.match
+    if (startTime === undefined) return null
     return (
       <div>
-        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id} startTime={startTime}/>
+        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id} startTime={startTime} onChange={this.updateMovieStatus}/>
         <Comments id={params.id} />
       </div>
     );
