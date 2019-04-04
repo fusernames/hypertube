@@ -34,7 +34,7 @@ class SubtitlesController extends AbstractController
     }
 
     private function _setXmlToken() {
-        $response = $this->_xmlRequest("LogIn", ['hypertube2019', 'hypertube2019', 'fr', 'Hypertube2019']);
+        $response = $this->_xmlRequest("LogIn", ['hypertube2019', 'hypertube2019', 'fr', 'TemporaryUserAgent']);
         if ($response) {
             $this->_token = $response['token'];
         }
@@ -112,7 +112,7 @@ class SubtitlesController extends AbstractController
             }
         }
 
-        $folder = $this->_downloadPath + explode('/', $movie->getFileName())[0];
+        $folder = $this->_downloadPath . explode('/', $movie->getFileName())[0];
         if ($fre) file_put_contents($folder . '/fre.srt', file_get_contents($fre));
         if ($eng) file_put_contents($folder . '/eng.srt', file_get_contents($eng));
 
