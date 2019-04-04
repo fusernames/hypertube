@@ -108,6 +108,10 @@ class SubtitlesController extends AbstractController
             }
         }
 
+        $folder = $this->_downloadPath + explode('/', $movie->getFileName())[0];
+        file_put_contents($folder . 'fre.srt', file_get_contents($fre));
+        file_put_contents($folder . 'eng.srt', file_get_contents($eng));
+
         return new JsonResponse(['fre' => $fre, 'eng' => $eng]);
     }
 }
