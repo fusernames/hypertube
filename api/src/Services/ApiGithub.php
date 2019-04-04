@@ -6,6 +6,7 @@ use App\Services\Curl;
 use App\Services\ApiCore;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessResponse;
 
 class ApiGithub extends ApiCore
