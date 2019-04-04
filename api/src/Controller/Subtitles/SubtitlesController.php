@@ -81,19 +81,33 @@ class SubtitlesController extends AbstractController
 
         $this->_setXmlToken();
 
-        $subtitles = $this->_xmlRequest("SearchSubtitles", [$this->_token,
-            [
+        $subtitles = $this->_utf8_convert(
+            $this->_xmlRequest("SearchSubtitles", [$this->_token,
                 [
-                    'query' => $movie->getName(),
-                    'moviebytesize' => $size,
-                    'sublanguageid' => 'fre,eng'
+                    [
+                        'query' => $movie->getName(),
+                        'moviebytesize' => $size,
+                        'sublanguageid' => 'fre,eng'
+                    ]
+                ],
+                [
+                    'limit' => 50
                 ]
-            ],
-            [
-                'limit' => 50
-            ]
-        ]);
+            ])
+        );
 
-        return new JsonResponse([$this->_utf8_convert($subtitles)]);
+        $eng = null;
+        $fre = null;
+
+        for ($i = 0; $i < sizeof($subtitles); $i++) {
+            if ($eng && $fre) break;
+            if ($subtitles['data'][$i]['SubLanguageId'] === 'fre') {
+                $fre = $subtitles['data'][$i];
+            } else if ($subtitles['data'][$i]['SubLanguageId'] === 'eng') {
+                $eng = $subtitles['data'][$i];
+            }
+        }
+
+        return new JsonResponse(['fre' => $fre, 'eng' => $eng]);
     }
 }
