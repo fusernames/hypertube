@@ -49,8 +49,6 @@ class SubtitlesController extends AbstractController
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
 
-        $this->_initClient();
-
         $filePath = $this->_downloadPath . $movie->getFileName();
         $file = new SplFileObject($filePath);
 
