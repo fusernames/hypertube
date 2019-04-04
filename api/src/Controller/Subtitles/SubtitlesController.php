@@ -46,7 +46,7 @@ class SubtitlesController extends AbstractController
         $size = $file->getSize();
         $file = null;
 
-        $hash = OpenSubtitlesHash($filePath);
+        $hash = $this->OpenSubtitlesHash($filePath);
 
         $response = $this->_client->searchSubtitles([
             [
