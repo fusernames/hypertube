@@ -9,6 +9,15 @@ import { Link } from 'react-router-dom'
 
 class Torrents extends Component {
 
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
+
   state = {
     torrents:[]
   }
@@ -36,7 +45,7 @@ class Torrents extends Component {
   }
 
   setStatus = (t) => {
-    this.setState({
+    this.setStateCheck({
       ...this.state,
       torrents: t
     })
@@ -66,7 +75,7 @@ class Torrents extends Component {
     const torrents = [...this.state.torrents]
     torrents[i].downloading = 0
     torrents[i].download = undefined
-    this.setState({
+    this.setStateCheck({
       ...this.state,
       torrents: torrents
     })
@@ -82,8 +91,13 @@ class Torrents extends Component {
   }
 
   componentWillMount() {
+    this._isMounted = true
     this.fetchTorrentsStatus(this.props.torrents)
     setInterval(this.refreshStatus, 2000);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {
@@ -117,7 +131,7 @@ class Torrents extends Component {
                   {torrent.download === true &&
                     <IconButton style={{padding:'5px'}}>
                       <Typography component={Link} to={"/stream/" + torrent.movieId}>
-                        <Icon>play_arrow</Icon>                      
+                        <Icon>play_arrow</Icon>
                       </Typography>
                     </IconButton>
                   }

@@ -102,7 +102,7 @@ export function fetchAddMovies() {
   return (dispatch, getState) => {
     let list = []
     let search = getState().search
-    if (search.isFetching) return
+    if (search.isFetching || search.finished) return
 
     if (search.api === 'popcorntime') {
       let url = 'https://tv-v2.api-fetch.website/movies/' + search.page + 1 + '?'
@@ -133,9 +133,13 @@ export function fetchAddMovies() {
 }
 
 export function addMovies(res) {
+  let finished = false
+  if (res.length === 0)
+    finished = true
   return {
     type: 'ADD_MOVIES',
-    movies: res
+    movies: res,
+    finished: finished
   }
 }
 
