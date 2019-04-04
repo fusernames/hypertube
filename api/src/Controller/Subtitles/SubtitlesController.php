@@ -63,6 +63,6 @@ class SubtitlesController extends AbstractController
         $file = null;
 
         $this->_setXmlToken();
-        return new JsonResponse(['token' => $this->_token])
+        return new JsonResponse(['token' => $this->_token]);
     }
 }
