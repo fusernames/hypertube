@@ -2,9 +2,13 @@
 
 namespace App\Controller\Subtitles;
 
-use App\Entity\Movie;
-use KickAssSubtitles\OpenSubtitles\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use App\Entity\Movie;
+
+use KickAssSubtitles\OpenSubtitles\Client;
 
 class SubtitlesController extends AbstractController
 {
@@ -18,7 +22,17 @@ class SubtitlesController extends AbstractController
         ]);
     }
 
-    public function __invoke() {
+    public function __invoke(Request $request) {
         $this->_initClient();
+
+        $response = $this->_client->searchSubtitles([
+            [
+                'sublanguageid' => 'en',
+                'moviehash' => '163ce22b6261f50a',
+                'moviebytesize' => '2094235131'
+            ]
+        ]);
+
+        return new JsonResponse(['response' => $response->toArray()]);
     }
 }
