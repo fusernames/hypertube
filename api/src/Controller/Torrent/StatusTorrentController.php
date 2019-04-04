@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class StatusTorrentController extends TorrentController
 {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function __invoke(Request $request)
     {
         $transmission = new Transmission($this->transmissionConfig);

@@ -13,8 +13,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GetMovieController extends AbstractController
 {
+
+    /**
+     * @var string
+     */
     private $_downloadPath = "/var/lib/transmission-daemon/complete/";
 
+    /**
+     * @param Request $request
+     * @param [type] $id
+     * @return void
+     */
     public function __invoke(Request $request, $id) {
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);

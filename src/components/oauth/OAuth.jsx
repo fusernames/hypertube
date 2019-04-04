@@ -23,6 +23,9 @@ class OAuth extends React.Component {
 
     switch (name) {
       case "github":
+        console.log('hello github');
+        console.log(queryString.parse(this.props));
+        break;
       case "42":
         token = queryString.parse(this.props.location.search).code
         break
