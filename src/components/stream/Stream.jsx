@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import req from '../../utils/req'
+import { Typography} from '@material-ui/core'
 import host from '../../config'
 import Player from '../player/Player'
 import Comments from '../comments/Comments';
@@ -109,6 +110,7 @@ class Stream extends Component {
     if (startTime === undefined) return null
     return (
       <div>
+        <Typography variant="h5" style={{marginBottom:'15px'}}>Titre du Film</Typography>
         <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id}
             startTime={startTime}
             onChange={this.updateMovieStatus}
