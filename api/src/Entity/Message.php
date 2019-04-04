@@ -100,10 +100,9 @@ class Message
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      * @Assert\Length(
-     *      min = 1,
-     *      max = 255,
+     *      min = 1
      *      minMessage = "Message must be at least {{ limit }} characters long",
      *      maxMessage = "Message cannot be longer than {{ limit }} characters"
      * )

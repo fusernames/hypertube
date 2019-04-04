@@ -52,6 +52,7 @@ class Stream extends Component {
           })
         })
       }
+      console.log(res)
     }).catch(err => {
       // Handle error
       this.setState({
