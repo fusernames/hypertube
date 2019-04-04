@@ -69,7 +69,7 @@ class SubtitlesController extends AbstractController
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
 
-        if (file_exists('./subtitles/' + $movie->getId() + '/fre.srt') && file_exists('./subtitles/' + $movie->getId() + '/eng.srt')) {
+        if (file_exists('./subtitles/' . $movie->getId() . '/fre.srt') && file_exists('./subtitles/' . $movie->getId() . '/eng.srt')) {
             return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
         }
 
