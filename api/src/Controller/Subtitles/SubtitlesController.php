@@ -61,31 +61,31 @@ class SubtitlesController extends AbstractController
 
     function OpenSubtitlesHash($file)
     {
-    $handle = fopen($file, "rb");
-    $fsize = filesize($file);
-    
-    $hash = array(3 => 0, 
-                  2 => 0, 
-                  1 => ($fsize >> 16) & 0xFFFF, 
-                  0 => $fsize & 0xFFFF);
+        $handle = fopen($file, "rb");
+        $fsize = filesize($file);
         
-    for ($i = 0; $i < 8192; $i++)
-    {
-        $tmp = ReadUINT64($handle);
-        $hash = AddUINT64($hash, $tmp);
-    }
-    
-    $offset = $fsize - 65536;
-    fseek($handle, $offset > 0 ? $offset : 0, SEEK_SET);
-    
-    for ($i = 0; $i < 8192; $i++)
-    {
-        $tmp = ReadUINT64($handle);
-        $hash = AddUINT64($hash, $tmp);         
-    }
-    
-    fclose($handle);
-        return UINT64FormatHex($hash);
+        $hash = array(3 => 0, 
+                    2 => 0, 
+                    1 => ($fsize >> 16) & 0xFFFF, 
+                    0 => $fsize & 0xFFFF);
+            
+        for ($i = 0; $i < 8192; $i++)
+        {
+            $tmp = $this->ReadUINT64($handle);
+            $hash = $this->AddUINT64($hash, $tmp);
+        }
+        
+        $offset = $fsize - 65536;
+        fseek($handle, $offset > 0 ? $offset : 0, SEEK_SET);
+        
+        for ($i = 0; $i < 8192; $i++)
+        {
+            $tmp = $this->ReadUINT64($handle);
+            $hash = $this->AddUINT64($hash, $tmp);         
+        }
+        
+        fclose($handle);
+        return $this->UINT64FormatHex($hash);
     }
 
     function ReadUINT64($handle)
