@@ -61,7 +61,8 @@ const translations = {
     download: ["Download", "Télécharger"],
     rating: ["Rating", "Note"],
     torrents: ["Torrents", "Torrents"],
-    comment: ["Enter a comment", "Entrez un commentaire"]
+    comment: ["Enter a comment", "Entrez un commentaire"],
+    time_display: ["en", "fr"]
   },
   alerts: {
     // login

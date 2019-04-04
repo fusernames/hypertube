@@ -2,13 +2,15 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Loading from '../../utils/jsx/Loading'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Avatar from '@material-ui/core/Avatar'
 import req from '../../utils/req'
 import host from '../../config'
+import Moment from 'react-moment'
+import 'moment/locale/fr'
 import CommentsBox from './CommentsBox'
 
 class Comments extends React.Component {
@@ -78,7 +80,8 @@ class Comments extends React.Component {
   }
 
   render() {
-    const { isFetching, comments } = this.state
+    const { isFetching, comments} = this.state
+    const { time_display } = this.props.locales.locale.movie
 
     return (
       <div>
@@ -96,6 +99,7 @@ class Comments extends React.Component {
                   secondary={comment.message}
               >
               </ListItemText>
+              <Moment locale={time_display} fromNow>{comment.createdAt}</Moment>
             </ListItem>
           )
         })}
