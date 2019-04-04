@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import host from '../../config';
 
 /**
  * Component takes 2 props =>
  *    onChange -> Method called to update video time in db.
  *    startTime -> Time in seconds where the video should start.
  *    mediaUrl -> Link of the video to read.
- *    subtitles -> video subtitles yea
+ *    movieId -> ID of the movie reading, in order to set subtitles.
  */
 class Player extends Component {
 
@@ -66,7 +67,7 @@ class Player extends Component {
   }
 
   render() {
-    const { mediaUrl, subtitles } = this.props
+    const { mediaUrl } = this.props
     if (!mediaUrl) return null
     return (
       <video id="player" controls
@@ -74,7 +75,7 @@ class Player extends Component {
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
-        {subtitles.eng !== undefined && <track label="English" kind="subtitles" srcLang="en" src={subtitles.eng} />}
+        <track label="English" kind="subtitles" srcLang="en" src={host + "/subtitles/" + this.props.movieId + "/eng.srt"} />
       </video>
     );
   }
