@@ -17,6 +17,13 @@ import CommentsBox from './CommentsBox'
 class Comments extends React.Component {
 
   _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
 
   state = {
     isFetching: false,
@@ -26,7 +33,7 @@ class Comments extends React.Component {
   }
 
   addComment = (id) => {
-    this.setState({
+    this.setStateCheck({
       page: 1,
       comments: [],
       display: true
@@ -36,17 +43,17 @@ class Comments extends React.Component {
   }
 
   fetchComments = (id) => {
-    this.setState({...this.state, isFetching: true})
+    this.setStateCheck({...this.state, isFetching: true})
     req(host + '/api/movies/' + id + '/messages.json?order[id]=DESC&page=' + this.state.page, {useToken: true})
     .then(res => {
         if (res.length) {
-          this.setState({
+          this.setStateCheck({
             isFetching: false,
             comments: [...this.state.comments, ...res]
           })
         }
         else {
-          this.setState({
+          this.setStateCheck({
             isFetching: false,
             display: false
           })
@@ -56,16 +63,16 @@ class Comments extends React.Component {
   }
 
   componentWillMount() {
+    this._isMounted = true
     this.fetchComments(this.props.id)
   }
 
   componentDidMount() {
-    this._isMounted = true
     window.onscroll = () => {
       if (this._isMounted === true) {
         if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 200) {
           if (this.state.display) {
-            this.setState({
+            this.setStateCheck({
               isFetching: false,
               page: this.state.page + 1
             })
@@ -98,9 +105,9 @@ class Comments extends React.Component {
               <ListItemText
                   primary={comment.owner.username}
                   secondary={comment.message}
-              >
+                  style={{wordBreak: 'break-word'}}>
               </ListItemText>
-              <Typography>
+              <Typography style={{wordBreak: 'keep-all', position: 'absolute', top: '5px', right:'0px'}}>
                 <Moment locale={time_display} fromNow>{comment.createdAt}</Moment>
               </Typography>
             </ListItem>
