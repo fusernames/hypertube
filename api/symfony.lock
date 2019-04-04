@@ -146,6 +146,9 @@
     "jms/metadata": {
         "version": "2.0.0"
     },
+    "kickasssubtitles/open-subtitles": {
+        "version": "dev-master"
+    },
     "lcobucci/jwt": {
         "version": "3.2.5"
     },

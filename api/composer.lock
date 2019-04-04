@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dec3bed44340b45f6bbdb641d58f714e",
+    "content-hash": "80274ac7d91dcd3805922e3dbb409be9",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -2097,6 +2097,44 @@
                 "yaml"
             ],
             "time": "2018-11-09T13:57:43+00:00"
+        },
+        {
+            "name": "kickasssubtitles/open-subtitles",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kickasssubtitles/open-subtitles.git",
+                "reference": "05f812cb544dc7e0a76a74d5fa3890301816ef1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kickasssubtitles/open-subtitles/zipball/05f812cb544dc7e0a76a74d5fa3890301816ef1d",
+                "reference": "05f812cb544dc7e0a76a74d5fa3890301816ef1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KickAssSubtitles\\OpenSubtitles\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "grzesw",
+                    "email": "contact@kickasssubtitles.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP client for OpenSubtitles API",
+            "homepage": "https://github.com/kickasssubtitles/open-subtitles",
+            "time": "2019-01-19T23:19:12+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -7207,7 +7245,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kickasssubtitles/open-subtitles": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
