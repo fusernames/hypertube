@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
@@ -12,6 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
  *          "get",
  *          "put",
  *          "delete"
+ *      }
+ * )
+ * @ApiFilter(
+ *      SearchFilter::class,
+ *      properties={
+ *          "id": "exact",
+ *          "user.id": "exact",
+ *          "movie.id": "exact"
  *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MovieStatusRepository")

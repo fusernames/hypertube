@@ -14,13 +14,24 @@ class Stream extends Component {
   }
 
   fetchStream = (id) => {
-    this.setState({...this.state, isFetching: true})
-    req(host + '/api/movie_statuses/' + id , {useToken: true})
-    .then(res => {
-        this.setState({
-            isFetching: false,
-            startTime: res.time
-        })
+    this.setState({
+      ...this.state,
+      isFetching: true
+    })
+    req(host + '/api/movie_statuses', {
+      'movie.id': id,
+      useToken: true
+    }).then(res => {
+      this.setState({
+        isFetching: false,
+        startTime: res.time
+      })
+    }).catch(err => {
+      // Handle error
+      this.setState({
+        isFetching: false,
+        startTime: 0
+      })
     })
   }
 
@@ -29,10 +40,12 @@ class Stream extends Component {
   }
 
   render() {
+    const { startTime } = this.state;
+    const { params } = this.props.match;
     return (
       <div>
-        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + this.props.match.params.id} startTime={0}/>
-        <Comments id={this.props.match.params.id} />
+        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id} startTime={startTime}/>
+        <Comments id={params.id} />
       </div>
     );
   }
