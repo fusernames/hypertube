@@ -13,7 +13,7 @@ pullAndRun() {
     git pull
     git push
     echo "before"
-    ssh -i hypertube.pem -t root@hypertube.barthonet.ovh git --prefix /var/www/hypertube/ pull
+    ssh -i hypertube.pem -t root@hypertube.barthonet.ovh /var/www/hypertube/git pull
     echo "after"
     ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod
 }
