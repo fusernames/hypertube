@@ -34,10 +34,29 @@ class SubtitlesController extends AbstractController
     }
 
     private function _setXmlToken() {
-        $response = $this->_xmlRequest("LogIn", ['hypertube2019', 'hypertube2019', 'fr', 'TemporaryUserAgent']);
+        $response = $this->_xmlRequest("LogIn", ['hypertube2019', 'hypertube2019', 'fr', 'Hypertube2019']);
         if ($response) {
             $this->_token = $response['token'];
         }
+    }
+
+    private function _utf8_convert($dat)
+    {
+        if (is_string($dat)) {
+            return utf8_encode($dat);
+        } else if (is_array($dat)) {
+            $ret = [];
+            foreach ($dat as $i => $d) {
+                $ret[ $i ] = $this->_utf8_convert($d);
+            }
+            return $ret;
+        } else if (is_object($dat)) {
+            foreach ($dat as $i => $d) {
+                $dat->$i = $this->_utf8_convert($d);
+            }
+            return $dat;
+        }
+        return $dat;
     }
 
     public function __invoke($id) {
@@ -48,8 +67,6 @@ class SubtitlesController extends AbstractController
         if (!$movie) {
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
-
-        $this->_initClient();
 
         $filePath = $this->_downloadPath . $movie->getFileName();
         $file = new SplFileObject($filePath);
@@ -63,6 +80,42 @@ class SubtitlesController extends AbstractController
         $file = null;
 
         $this->_setXmlToken();
-        return new JsonResponse(['token' => $this->_token]);
+
+        if ($this->_token === null) {
+            return new JsonResponse(['error' => 'SUBTITLES_ERROR']);
+        }
+
+        $subtitles = $this->_utf8_convert(
+            $this->_xmlRequest("SearchSubtitles", [$this->_token,
+                [
+                    [
+                        'query' => $movie->getName(),
+                        'moviebytesize' => $size,
+                        'sublanguageid' => 'fre,eng'
+                    ]
+                ],
+                [
+                    'limit' => 50
+                ]
+            ])
+        );
+
+        $eng = null;
+        $fre = null;
+
+        for ($i = 0; $i < sizeof($subtitles); $i++) {
+            if ($eng && $fre) break;
+            if ($subtitles['data'][$i]['SubLanguageID'] === 'fre') {
+                $fre = $subtitles['data'][$i]['SubDownloadLink'];
+            } else if ($subtitles['data'][$i]['SubLanguageID'] === 'eng') {
+                $eng = $subtitles['data'][$i]['SubDownloadLink'];
+            }
+        }
+
+        $folder = $this->_downloadPath + explode('/', $movie->getFileName())[0];
+        if ($fre) file_put_contents($folder . '/fre.srt', file_get_contents($fre));
+        if ($eng) file_put_contents($folder . '/eng.srt', file_get_contents($eng));
+
+        return new JsonResponse(['fre' => $fre, 'eng' => $eng]);
     }
 }

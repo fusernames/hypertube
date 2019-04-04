@@ -10,6 +10,7 @@ class Stream extends Component {
   state = {
     isFetching: false,
     startTime: undefined,
+    subtitles: {},
     statusId: -1
   }
 
@@ -24,6 +25,7 @@ class Stream extends Component {
     }).then(res => {
       if (res.length === 1) {
         this.setState({
+          ...this.state,
           isFetching: false,
           startTime: res[0].time,
           statusId: res[0].id
@@ -39,6 +41,7 @@ class Stream extends Component {
           useToken: true
         }).then(res => {
           this.setState({
+            ...this.state,
             isFetching: false,
             startTime: 0,
             statusId: res.id
@@ -46,6 +49,7 @@ class Stream extends Component {
         }).catch(err => {
           // Handle error
           this.setState({
+            ...this.state,
             isFetching: false,
             startTime: 0
           })
@@ -54,6 +58,7 @@ class Stream extends Component {
     }).catch(err => {
       // Handle error
       this.setState({
+        ...this.state,
         isFetching: false,
         startTime: 0
       })
@@ -87,17 +92,36 @@ class Stream extends Component {
     })
   }
 
+  fetchSubtitles = id => {
+    req(host + '/api/movies/subtitles/' + id)
+    .then(res => {
+      this.setState({
+        ...this.state,
+        subtitles: res
+      })
+    })
+    .catch(err => {
+      // Handle error
+    })
+  }
+
   componentWillMount() {
-    this.fetchStream(this.props.match.params.id)
+    const { params } = this.props.match;
+    this.fetchStream(params.id)
+    this.fetchSubtitles(params.id)
   }
 
   render() {
-    const { startTime } = this.state
+    const { startTime, subtitles } = this.state
     const { params } = this.props.match
     if (startTime === undefined) return null
     return (
       <div>
-        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id} startTime={startTime} onChange={this.updateMovieStatus}/>
+        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id}
+            startTime={startTime}
+            onChange={this.updateMovieStatus}
+            subtitles={subtitles}
+            />
         <Comments id={params.id} />
       </div>
     );
