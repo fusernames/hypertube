@@ -60,7 +60,7 @@ class Api42 extends ApiCore
     }
 
     /**
-     * Ssearch the user in database and return a token
+     * Search the user in database then return a token if exists or JsonResponse
      *
      * @param string $token
      * @return JsonResponse|JWTAuthenticationSuccessResponse

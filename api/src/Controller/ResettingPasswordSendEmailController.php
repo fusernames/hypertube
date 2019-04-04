@@ -41,6 +41,9 @@ class ResettingPasswordSendEmailController extends AbstractController
         $this->retryTtl = 7200;
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function __invoke()
     {
         $email = json_decode($this->request->getContent())->email;

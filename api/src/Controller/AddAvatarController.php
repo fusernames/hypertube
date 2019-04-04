@@ -43,6 +43,9 @@ final class AddAvatarController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @return User
+     * 
      * @IsGranted("ROLE_USER")
      */
     public function __invoke(Request $request): User

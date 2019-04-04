@@ -11,6 +11,11 @@ use App\Entity\User;
 
 class SetLangController extends LangController
 {
+    /**
+     * @param Request $request
+     * @param TokenStorageInterface $tokenStorage
+     * @return JsonResponse
+     */
     public function __invoke(Request $request, TokenStorageInterface $tokenStorage)
     {
         if ($tokenStorage->getToken() !== null) {

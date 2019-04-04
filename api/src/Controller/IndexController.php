@@ -5,12 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Contains all front routes.
+ */
 class IndexController extends AbstractController
 {
-    /**
-     * Contains all front routes.
-     */
-
     /**
      * @Route("/", name="index")
      * @Route("/movie/{id}", name="movie")

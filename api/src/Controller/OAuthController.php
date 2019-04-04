@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Services\Api42;
+use App\Services\ApiGithub;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,11 +17,18 @@ class OAuthController extends Controller
     private $api42;
 
     /**
-     * @param Api42 $api42
+     * @var ApiGithub
      */
-    public function __construct(Api42 $api42)
+    private $apiGithub;
+
+    /**
+     * @param Api42 $api42
+     * @param ApiGithub $apiGithub
+     */
+    public function __construct(Api42 $api42, ApiGithub $apiGithub)
     {
         $this->api42 = $api42;
+        $this->apiGithub = $apiGithub;
     }
 
     /**
@@ -39,7 +47,7 @@ class OAuthController extends Controller
             case "42":
                 return $this->api42->getToken($token, $jwtManager);
             case "github":
-                return $this->_github($token);
+                return $this->apiGithub->getToken($token, $jwtManager);
             case "twitter":
                 return $this->_twitter($token);
             case "google":
@@ -49,21 +57,37 @@ class OAuthController extends Controller
         }
     }
 
+    /**
+     * @param string $token
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
     private function _facebook(string $token = null)
     {
         return new JsonResponse(["api" => "facebook", "token" => $token, "code" => 200], 200);
     }
 
+    /**
+     * @param string $token
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
     private function _github(string $token = null)
     {
         return new JsonResponse(["api" => "github", "token" => $token, "code" => 200], 200);
     }
 
+    /**
+     * @param string $token
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
     private function _twitter(string $token = null)
     {
         return new JsonResponse(["api" => "twitter", "token" => $token, "code" => 200], 200);
     }
 
+    /**
+     * @param string $token
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
     private function _google(string $token = null)
     {
         return new JsonResponse(["api" => "google", "token" => $token, "code" => 200], 200);

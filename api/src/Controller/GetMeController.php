@@ -9,6 +9,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class GetMeController
 {
+    /**
+     * @param TokenStorageInterface $tokenStorage
+     * @return User
+     */
     public function __invoke(TokenStorageInterface $tokenStorage): User
     {
         $user = $tokenStorage->getToken()->getUser();

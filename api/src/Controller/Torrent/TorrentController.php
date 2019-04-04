@@ -14,6 +14,8 @@ class TorrentController extends AbstractController
 {
     /**
      * Transmission configuration.
+     *
+     * @var array
      */
     public $transmissionConfig = [
         'host'     => 'http://127.0.0.1:9091',
@@ -22,6 +24,10 @@ class TorrentController extends AbstractController
         'password' => '12345678'
     ];
 
+    /**
+     * @param string $filename
+     * @return void
+     */
     public function encode(string $filename) {
         try {
             // Videos are fat, no timeout

@@ -42,6 +42,9 @@ final class CreateMediaObjectAction extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @return MediaObject
+     * 
      * @IsGranted("ROLE_USER")
      */
     public function __invoke(Request $request): MediaObject

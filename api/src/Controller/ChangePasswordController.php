@@ -12,14 +12,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ChangePasswordController extends AbstractController
 {
+    /**
+     * @var string
+     */
     private $currentPassword;
+
+    /**
+     * @var string
+     */
     private $passwordValid;
+
+    /**
+     * @var string
+     */
     private $newPassword;
 
     /**
-     * @param Request                       $request
-     * @param UserPasswordEncoderInterface  $encoder
-     * @param ObjectManager                 $manager
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param ObjectManager $manager
+     * @return JsonResponse
      */
     public function __invoke(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager)
     {
@@ -55,6 +67,11 @@ class ChangePasswordController extends AbstractController
 
     /**
      * Verification of the current password validity
+     *
+     * @param string $current
+     * @param UserPasswordEncoderInterface $encoder
+     * @param [type] $user
+     * @return boolean
      */
     private function setCurrentPassword(string $current, UserPasswordEncoderInterface $encoder, $user): bool
     {
@@ -66,6 +83,9 @@ class ChangePasswordController extends AbstractController
 
     /**
      * Verification of the new password validity
+     *
+     * @param string $newPassword
+     * @return boolean
      */
     private function setNewPassword(string $newPassword): bool
     {
