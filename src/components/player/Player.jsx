@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
  *    onChange -> Method called to update video time in db.
  *    startTime -> Time in seconds where the video should start.
  *    mediaUrl -> Link of the video to read.
+ *    subtitles -> video subtitles yea
  */
 class Player extends Component {
 
@@ -65,13 +66,15 @@ class Player extends Component {
   }
 
   render() {
-    if (!this.props.mediaUrl) return null;
+    const { mediaUrl, subtitles } = this.props
+    if (!mediaUrl) return null
     return (
       <video id="player" controls
           onTimeUpdate={this.handleTimeChange}
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
-        <source src={this.props.mediaUrl} />
+        <source src={mediaUrl} />
+        {subtitles.eng !== undefined && <track label="English" kind="subtitles" srcLang="en" src={subtitles.eng} />}
       </video>
     );
   }
