@@ -9,6 +9,7 @@
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "friendsofsymfony/user-bundle": "~2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "kickasssubtitles/open-subtitles": "dev-master",
         "lexik/jwt-authentication-bundle": "^2.6",
         "php-ffmpeg/php-ffmpeg": "^0.13.0",
         "sensio/framework-extra-bundle": "^5.2",
