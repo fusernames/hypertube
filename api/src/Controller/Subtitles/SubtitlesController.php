@@ -113,6 +113,7 @@ class SubtitlesController extends AbstractController
         }
 
         $folder = getcwd() . '\/subtitles\/' . $movie->getId();
+        if (!file_exists($folder)) mkdir($folder);
         if ($fre) file_put_contents($folder . '/fre.srt', file_get_contents($fre));
         if ($eng) file_put_contents($folder . '/eng.srt', file_get_contents($eng));
 
