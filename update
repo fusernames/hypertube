@@ -12,6 +12,8 @@ pullAndRun() {
     git commit -m "commit from script"
     git pull
     git push
+    ssh -i hypertube.pem -t root@hypertube.barthonet.ovh git run --prefix /var/www/hypertube/ build-prod
+    ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod
 }
 
 runProject() {
