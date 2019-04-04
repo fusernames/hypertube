@@ -63,6 +63,12 @@ class SubtitlesController extends AbstractController
         $file = null;
 
         $this->_setXmlToken();
-        return new JsonResponse(['token' => $this->_token])
+
+        $subtitles = $this->_xmlRequest("SearchSubtitles", [$this->_token, 
+            'query' => $movie->getName(),
+            'sublanguageid' => 'all'
+        ]);
+
+        return new JsonResponse(['token' => $this->_token, $subtitles]);
     }
 }
