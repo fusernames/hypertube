@@ -1,7 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import Loading from '../../utils/jsx/Loading'
 import TextField from '@material-ui/core/TextField';
 import req from '../../utils/req'
 import host from '../../config'

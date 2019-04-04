@@ -4,7 +4,6 @@ import req from '../../utils/req'
 import host from '../../config'
 import Player from '../player/Player'
 import Comments from '../comments/Comments';
-import CommentsBox from '../comments/CommentsBox';
 
 class Stream extends Component {
 
@@ -18,8 +17,7 @@ class Stream extends Component {
       ...this.state,
       isFetching: true
     })
-    req(host + '/api/movie_statuses', {
-      'movie.id': id,
+    req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=1", {
       useToken: true
     }).then(res => {
       this.setState({
