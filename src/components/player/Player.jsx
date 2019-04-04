@@ -14,11 +14,15 @@ class Player extends Component {
     currentTime: 0
   }
 
+  enableEvent = false
+  player = null
+
   componentDidMount = () => {
     let { startTime } = this.props;
-    let player = document.getElementById("player");
-    if (player.currentTime < startTime)
-      player.currentTime = startTime;
+    this.player = document.getElementById("player");
+    if (this.player.currentTime < startTime)
+      this.player.currentTime = startTime;
+    document.addEventListener('keydown', this.handleKeyPress)
   }
 
   handleTimeChange = e => {
@@ -33,10 +37,40 @@ class Player extends Component {
     })
   }
 
+  handleKeyPress = e => {
+    const { player } = this
+    if (!this.enableEvent || !this.player) return;
+    let needsPrevent = true
+    switch (e.key) {
+      case " ":
+        player.paused ? player.play() : player.pause()
+        e.preventDefault()
+        break
+      case "ArrowRight":
+        player.currentTime += 10
+        break
+      case "ArrowLeft":
+        player.currentTime -= 10
+        break
+      case "ArrowUp":
+        player.volume > .9 ? player.volume = 1 : player.volume += .1
+        break
+      case "ArrowDown":
+        player.volume < .1 ? player.volume = 0 : player.volume -= .1
+        break
+      default:
+        needsPrevent = false
+    }
+    if (needsPrevent) e.preventDefault()
+  }
+
   render() {
     if (!this.props.mediaUrl) return null;
     return (
-      <video id="player" controls onTimeUpdate={this.handleTimeChange}>
+      <video id="player" controls
+          onTimeUpdate={this.handleTimeChange}
+          onMouseEnter={() => this.enableEvent = true}
+          onMouseLeave={() => this.enableEvent = false}>
         <source src={this.props.mediaUrl} />
       </video>
     );
