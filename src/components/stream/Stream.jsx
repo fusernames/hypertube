@@ -17,13 +17,37 @@ class Stream extends Component {
       ...this.state,
       isFetching: true
     })
-    req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=1", {
+    let userId = this.props.auth.user.id
+    req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + userId, {
       useToken: true
     }).then(res => {
-      this.setState({
-        isFetching: false,
-        startTime: res.time
-      })
+      if (res.length === 1) {
+        this.setState({
+          isFetching: false,
+          startTime: res.time
+        })
+      } else {
+        req(host + '/api/movie_statuses', {
+          method: 'POST',
+          body: {
+            time: 0,
+            user: '/api/users/' + userId,
+            movie: '/api/movies/' + id
+          },
+          useToken: true
+        }).then(res => {
+          this.setState({
+            isFetching: false,
+            startTime: 0
+          })
+        }).catch(err => {
+          // Handle error
+          this.setState({
+            isFetching: false,
+            startTime: 0
+          })
+        })
+      }
     }).catch(err => {
       // Handle error
       this.setState({
@@ -35,6 +59,10 @@ class Stream extends Component {
 
   componentWillMount() {
     this.fetchStream(this.props.match.params.id)
+  }
+
+  componentDidMount() {
+    console.log(this.props.auth.user.id)
   }
 
   render() {

@@ -58,6 +58,13 @@ class MovieStatus
     private $updatedAt;
 
     /**
+     * @ORM\PrePersist
+     */
+    public function onCreate() {
+        $this->setUpdatedAt(new \DateTime()) : 0;
+    }
+    
+    /**
      * @ORM\PreUpdate
      */
     public function onUpdate() {

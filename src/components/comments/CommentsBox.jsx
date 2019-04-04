@@ -15,22 +15,32 @@ class CommentsBox extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     document.querySelector("#message").value = '';
-    this.setState({...this.state, isFetching: true})
+    if (this.state.isFetching) {
+      // Alert that already fetching ?
+      return;
+    }
+    this.setState({
+      ...this.state,
+      isFetching: true
+    })
     req(host + "/api/messages", {
-        useToken: true,
-        method: "POST",
-        body: {
-              owner: '/api/users/' + this.props.auth.user.id,
-              message: this.state.comment,
-              movie: '/api/movies/' + this.props.id,
-          }
-        }).then(res => {
-          // Handle api response
-          // faire un setState
-          this.props.addComment(this.props.id)
-        }).catch(err => {
-          // Handle errors
-        })
+      useToken: true,
+      method: "POST",
+      body: {
+        owner: '/api/users/' + this.props.auth.user.id,
+        message: this.state.comment,
+        movie: '/api/movies/' + this.props.id,
+      }
+    }).then(res => {
+      // Handle api response
+      this.setState({
+        comment: '',
+        isFetching: false
+      });
+      this.props.addComment(this.props.id)
+    }).catch(err => {
+      // Handle errors
+    })
   }
 
   onChange = (e) => {
@@ -43,19 +53,17 @@ class CommentsBox extends React.Component {
 
 
   render() {
-    const { isFetching, comment } = this.state
     const { locale } = this.props.locales
 
     return (
       <div>
-        {/* <Loading display={isFetching}/> */}
         <form onSubmit={this.handleSubmit}>
           <TextField id="message"
-              name="comment"
-              label={locale.movie.comment}
-              onChange={this.onChange}
-              margin="normal"
-              fullWidth
+            name="comment"
+            label={locale.movie.comment}
+            onChange={this.onChange}
+            margin="normal"
+            fullWidth
           />
         </form>
       </div>

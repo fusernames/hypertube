@@ -44,7 +44,7 @@ class Torrents extends Component {
 
   fetchTorrentsStatus = (torrents) => {
     let cpy = [...torrents]
-    cpy.map((torrent, i) => {
+    cpy.forEach((torrent, i) => {
       this.fetchStatus(torrent, () => {
         this.setStatus(cpy)
       })
@@ -83,7 +83,7 @@ class Torrents extends Component {
 
   componentWillMount() {
     this.fetchTorrentsStatus(this.props.torrents)
-    const intervalId = setInterval(this.refreshStatus, 2000);
+    setInterval(this.refreshStatus, 2000);
   }
 
   render() {
