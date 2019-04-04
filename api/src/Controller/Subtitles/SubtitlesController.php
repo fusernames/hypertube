@@ -40,6 +40,25 @@ class SubtitlesController extends AbstractController
         }
     }
 
+    private function _utf8_convert($dat)
+    {
+        if (is_string($dat)) {
+            return utf8_encode($dat);
+        } else if (is_array($dat)) {
+            $ret = [];
+            foreach ($dat as $i => $d) {
+                $ret[ $i ] = $this->_utf8_convert($d);
+            }
+            return $ret;
+        } else if (is_object($dat)) {
+            foreach ($dat as $i => $d) {
+                $dat->$i = $this->_utf8_convert($d);
+            }
+            return $dat;
+        }
+        return $dat;
+    }
+
     public function __invoke($id) {
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
@@ -62,11 +81,19 @@ class SubtitlesController extends AbstractController
 
         $this->_setXmlToken();
 
-        $subtitles = $this->_xmlRequest("SearchSubtitles", [$this->_token, 
-            'query' => $movie->getName(),
-            'sublanguageid' => 'all'
+        $subtitles = $this->_xmlRequest("SearchSubtitles", [$this->_token,
+            [
+                [
+                    'query' => $movie->getName(),
+                    'moviebytesize' => $size,
+                    'sublanguageid' => 'fre,eng'
+                ]
+            ],
+            [
+                'limit' => 50
+            ]
         ]);
 
-        return new JsonResponse(['token' => $this->_token, $subtitles]);
+        return new JsonResponse([$this->_utf8_convert($subtitles)]);
     }
 }
