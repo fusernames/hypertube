@@ -6,6 +6,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import req from '../../utils/req'
 import host from '../../config'
@@ -99,7 +100,9 @@ class Comments extends React.Component {
                   secondary={comment.message}
               >
               </ListItemText>
-              <Moment locale={time_display} fromNow>{comment.createdAt}</Moment>
+              <Typography>
+                <Moment locale={time_display} fromNow>{comment.createdAt}</Moment>
+              </Typography>
             </ListItem>
           )
         })}

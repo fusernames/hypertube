@@ -69,7 +69,7 @@ class Player extends Component {
     const { mediaUrl } = this.props
     if (!mediaUrl) return null
     return (
-      <video id="player" controls
+      <video id="player" controls style={{width: '100%'}}
           onTimeUpdate={this.handleTimeChange}
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
