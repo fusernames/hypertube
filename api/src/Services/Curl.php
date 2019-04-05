@@ -29,16 +29,14 @@ class Curl
     {
         $this->curl = curl_init();
         $authorization = $token ? "Authorization: Bearer $token" : "";
+        $userAgent = "User-Agent: PHP7.3";
         $data = [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_POSTFIELDS => "",
-            CURLOPT_HTTPHEADER => [$authorization]
+            CURLOPT_HTTPHEADER => [$authorization, $userAgent]
         ];
 
         curl_setopt_array($this->curl, $data);
