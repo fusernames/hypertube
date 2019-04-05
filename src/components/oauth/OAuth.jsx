@@ -29,6 +29,7 @@ class OAuth extends React.Component {
         token = queryString.parse(this.props.location.search).code
         break
       case "facebook":
+        console.log("hello facebook");
         token = queryString.parse(this.props.location.hash.replace("#", "")).access_token
         console.log(token);
         break
