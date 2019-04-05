@@ -19,7 +19,7 @@ class OAuth extends React.Component {
     let token = ""
     let auth = {}
 
-    console.log(this.props.location);
+    console.log(this.props.location.search);
 
     switch (name) {
       case "github":
