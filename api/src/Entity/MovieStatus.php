@@ -3,12 +3,19 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
+ *      normalizationContext={
+ *          "groups"={"movie_statuses"}
+ *      },
+ *      denormalizationContext={
+ *          "groups"={"movie_statuses"}
+ *      },
  *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      itemOperations={
  *          "get",
@@ -33,28 +40,33 @@ class MovieStatus
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"movie_statuses"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"movie_statuses"})
      */
     private $time;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="movieStatuses")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"movie_statuses"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="movieStatuses")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"movie_statuses"})
      */
     private $movie;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"movie_statuses"})
      */
     private $updatedAt;
 

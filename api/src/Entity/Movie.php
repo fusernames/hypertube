@@ -10,9 +10,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Controller\Torrent\StatusTorrentController;
-use App\Controller\Torrent\DownloadTorrentController;
 use App\Controller\Subtitles\SubtitlesController;
+use App\Controller\Torrent\StatusTorrentController;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\Torrent\DownloadTorrentController;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -106,21 +107,25 @@ class Movie
      *      minMessage = "Name must be at least {{ limit }} characters long",
      *      maxMessage = "Name cannot be longer than {{ limit }} characters"
      * )
+     * @Groups({"movie_statuses"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"movie_statuses"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"movie_statuses"})
      */
     private $updatedAt;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"movie_statuses"})
      */
     private $torrentLink;
 
@@ -136,11 +141,13 @@ class Movie
      *     type="integer",
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
+     * @Groups({"movie_statuses"})
      */
     private $torrentId;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"movie_statuses"})
      */
     private $fileName;
 
@@ -150,6 +157,7 @@ class Movie
      *     type="bool",
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
+     * @Groups({"movie_statuses"})
      */
     private $finished = false;
 
