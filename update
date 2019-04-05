@@ -13,22 +13,22 @@ pullAndRun() {
 #                                                              #
 ################################################################$(tput sgr 0)\n\n"
 
-    echo -e "(tput setaf 2)git add .(tput sgr 0)\n"
+    echo -e "$(tput setaf 2)git add .$(tput sgr 0)\n"
     git add .
 
-    echo -e "(tput setaf 2)git commit -m \"commit from script\"(tput sgr 0)\n"
+    echo -e "$(tput setaf 2)git commit -m \"commit from script\"$(tput sgr 0)\n"
     git commit -m "commit from script"
 
-    echo -e "(tput setaf 2)git pull(tput sgr 0)\n"
+    echo -e "$(tput setaf 2)git pull$(tput sgr 0)\n"
     git pull
 
-    echo -e "(tput setaf 2)git push(tput sgr 0)\n"
+    echo -e "$(tput setaf 2)git push$(tput sgr 0)\n"
     git push
 
-    echo -e "(tput setaf 2)ssh -i hypertube.pem -t root@hypertube.barthonet.ovh git -C /var/www/hypertube/ pull(tput sgr 0)\n"
+    echo -e "$(tput setaf 2)ssh -i hypertube.pem -t root@hypertube.barthonet.ovh git -C /var/www/hypertube/ pull$(tput sgr 0)\n"
     ssh -i hypertube.pem -t root@hypertube.barthonet.ovh git -C /var/www/hypertube/ pull
 
-    echo -e "(tput setaf 2)ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod(tput sgr 0)\n"
+    echo -e "$(tput setaf 2)ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod$(tput sgr 0)\n"
     ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod
 
     echo -e "\n$(tput setaf 2)################################################################
