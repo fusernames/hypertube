@@ -8,13 +8,22 @@ import host from '../../config'
 
 class Profile extends Component {
 
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
+
   state = {}
 
   fetchUser(id) {
     const { dispatch } = this.props
     req(host + '/api/users/' + id, {useToken: true})
     .then(res => {
-      this.setState({
+      this.setStateCheck({
         username: res.username,
         firstname: res.firstname,
         lastname: res.lastname,
@@ -27,7 +36,12 @@ class Profile extends Component {
   }
 
   componentWillMount() {
+    this._isMounted = true
     this.fetchUser(this.props.match.params.id)
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {

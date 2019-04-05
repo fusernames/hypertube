@@ -8,6 +8,15 @@ import host from '../../config'
 
 class Informations extends React.Component {
 
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
+
   state = {
     form: {
       username: '',
@@ -24,7 +33,7 @@ class Informations extends React.Component {
     const { dispatch } = this.props
     req(host + '/api/users/me', {useToken: true})
     .then(res => {
-      this.setState({
+      this.setStateCheck({
         ...this.state,
         form : {
           username: res.username,
@@ -45,7 +54,7 @@ class Informations extends React.Component {
     const body = {...this.state.form}
 
     checkForm(body, this.validate, (errors, nbErrors) => {
-      this.setState({...this.state, formErros: errors})
+      this.setStateCheck({...this.state, formErros: errors})
       if (!nbErrors) {
         req(host + '/api/users/' + auth.user.id, {
           method: 'put',
@@ -84,14 +93,14 @@ class Informations extends React.Component {
 
   onChange = (e) => {
     let name = e.target.name
-    this.setState({
+    this.setStateCheck({
       ...this.state,
       form: {
         ...this.state.form,
         [name]: e.target.value
       }
     }, () => {
-      this.setState({
+      this.setStateCheck({
         formErrors: {
           ...this.state.formErrors,
           [name]: this.validate(name)
@@ -105,14 +114,19 @@ class Informations extends React.Component {
     let reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onload = () => {
-      this.setState({...this.state, image: reader.result}, () => {
-        this.setState({...this.state, file})
+      this.setStateCheck({...this.state, image: reader.result}, () => {
+        this.setStateCheck({...this.state, file})
       })
     }
   }
 
   componentWillMount() {
+    this._isMounted = true
     this.fetchUser()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render () {

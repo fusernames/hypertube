@@ -5,7 +5,8 @@ const initialState = {
   genre: '',
   sort: '',
   api: 'yts',
-  isFetching: false
+  isFetching: false,
+  finished: false
 }
 
 function searchReducer(state = initialState, action) {
@@ -19,6 +20,7 @@ function searchReducer(state = initialState, action) {
       ...state,
       movies: action.movies,
       isFetching: false,
+      finished: false
     }
   } else if (action.type === 'SET_OPTIONS') {
     return {
@@ -38,6 +40,7 @@ function searchReducer(state = initialState, action) {
       ],
       page: state.page + 1,
       isFetching: false,
+      finished: action.finished
     }
   } else {
     return state

@@ -100,13 +100,7 @@ class Message
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *      min = 1,
-     *      max = 255,
-     *      minMessage = "Message must be at least {{ limit }} characters long",
-     *      maxMessage = "Message cannot be longer than {{ limit }} characters"
-     * )
+     * @ORM\Column(type="text")
      * @Assert\NotNull(message="Message cannot be null")
      * @Assert\NotBlank(message="Message cannot be blank")
      * @Groups({"message"})

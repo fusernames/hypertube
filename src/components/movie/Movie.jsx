@@ -8,6 +8,15 @@ import req from '../../utils/req'
 import Torrents from './Torrents'
 
 class Movie extends React.Component {
+  
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
 
   state = {
     movie: {
@@ -43,10 +52,10 @@ class Movie extends React.Component {
 
   fetchMovie = (id) => {
     if (id[0] === 't') {
-      this.setState({...this.state, isFetching: true})
+      this.setStateCheck({...this.state, isFetching: true})
       req('https://tv-v2.api-fetch.website/movie/' + id)
       .then(res => {
-        this.setState({
+        this.setStateCheck({
           isFetching: false,
           movie: {
             image: res.images.poster,
@@ -62,11 +71,11 @@ class Movie extends React.Component {
         })
       })
     } else {
-      this.setState({...this.state, isFetching: true})
+      this.setStateCheck({...this.state, isFetching: true})
       req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
       .then(res => {
         res = res.data.movie
-        this.setState({
+        this.setStateCheck({
           isFetching: false,
           movie: {
             isFetching: false,
@@ -86,8 +95,13 @@ class Movie extends React.Component {
   }
 
   componentWillMount() {
+    this._isMounted = true
     const id = this.props.match.params.id
     this.fetchMovie(id)
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {

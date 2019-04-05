@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Movie;
 
-use PharData;
 use SplFileObject;
 
 class SubtitlesController extends AbstractController
@@ -60,6 +59,19 @@ class SubtitlesController extends AbstractController
         return $dat;
     }
 
+    private function _unzip($fileName) {
+        $buffSize = 4096;
+        $outputName = str_replace('.gz', '', $fileName);
+        // Opening files
+        $file = gzopen($fileName, 'rb');
+        $outputFile = fopen($outputName, 'wb');
+        while (!gzeof($file)) {
+            fwrite($outputFile, gzread($file, $buffSize));
+        }
+        fclose($outputFile);
+        gzclose($file);
+    }
+
     public function __invoke($id) {
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
@@ -69,7 +81,7 @@ class SubtitlesController extends AbstractController
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
 
-        if (file_exists('./subtitles/' + $movie->getId() + '/fre.srt') && file_exists('./subtitles/' + $movie->getId() + '/eng.srt')) {
+        if (file_exists('./subtitles/' . $movie->getId() . '/fre.srt') && file_exists('./subtitles/' . $movie->getId() . '/eng.srt')) {
             return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
         }
 
@@ -110,9 +122,9 @@ class SubtitlesController extends AbstractController
 
         for ($i = 0; $i < sizeof($subtitles); $i++) {
             if ($eng && $fre) break;
-            if ($subtitles['data'][$i]['SubLanguageID'] === 'fre') {
+            if (!$fre && $subtitles['data'][$i]['SubLanguageID'] === 'fre') {
                 $fre = $subtitles['data'][$i]['SubDownloadLink'];
-            } else if ($subtitles['data'][$i]['SubLanguageID'] === 'eng') {
+            } else if (!$eng && $subtitles['data'][$i]['SubLanguageID'] === 'eng') {
                 $eng = $subtitles['data'][$i]['SubDownloadLink'];
             }
         }
@@ -122,14 +134,12 @@ class SubtitlesController extends AbstractController
         if ($fre) {
             $freFile = $folder . '/fre.srt.gz';
             file_put_contents($freFile, file_get_contents($fre));
-            $frePhar = new PharData($freFile);
-            $frePhar->decompress();
+            $this->_unzip($freFile);
         }
         if ($eng) {
             $engFile = $folder . '/eng.srt.gz';
             file_put_contents($engFile, file_get_contents($eng));
-            $engPhar = new PharData($engFile);
-            $engPhar->decompress();
+            $this->_unzip($engFile);
         }
 
         return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
