@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import req from '../../utils/req'
 import host from '../../config'
-import Moment from 'react-moment'
-import 'moment/locale/fr'
+// import Moment from 'react-moment'
+// import 'moment/locale/fr'
 import CommentsBox from './CommentsBox'
 
 class Comments extends React.Component {
@@ -108,7 +108,7 @@ class Comments extends React.Component {
                   style={{wordBreak: 'break-word'}}>
               </ListItemText>
               <Typography style={{wordBreak: 'keep-all', position: 'absolute', top: '5px', right:'0px'}}>
-                <Moment locale={time_display} fromNow>{comment.createdAt}</Moment>
+                {/* <Moment locale={time_display} fromNow>{comment.createdAt}</Moment> */}
               </Typography>
             </ListItem>
           )
