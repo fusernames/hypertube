@@ -49,14 +49,11 @@ class Api42 extends ApiCore
         if ($resp["code"] === 200) {
             $resp = json_decode($resp["resp"]);
             if (isset($resp->error)) {
-                return new JsonResponse(
-                    ["code" => 401, "error" => $resp->error, "message" => $resp->error_description],
-                    401
-                );
+                return $this->displayError(401, $resp->error_description, $resp->error);
             }
             return $this->getUserData($resp->access_token);
         }
-        return new JsonResponse(["code" => $resp["code"], "message" => $resp["resp"]], $resp["code"]);
+        return $this->displayError($resp["code"], $resp["resp"]);
     }
 
     /**
@@ -85,12 +82,6 @@ class Api42 extends ApiCore
             !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
             return new JWTAuthenticationSuccessResponse($jwt);
         }
-        return new JsonResponse(
-            [
-                "code" => $userData["code"],
-                "message" => $userData["resp"]
-            ],
-            $userData["code"]
-        );
+        return $this->displayError($userData["code"], $userData["resp"]);
     }
 }

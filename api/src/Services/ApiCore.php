@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Services\Curl;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -65,6 +66,23 @@ class ApiCore
         $this->jwtManager = null;
         $this->userManager = $userManager;
         $this->objectManager = $objectManager;
+    }
+
+    /**
+     * @param integer $code
+     * @param string $message
+     * @return JsonResponse
+     */
+    public function displayError(int $code, string $message, $err = null): JsonResponse
+    {
+        return new JsonResponse(
+            [
+                "message" => $message,
+                "code" => $code,
+                "error" => $err
+            ],
+            $code
+        );
     }
 
     /**

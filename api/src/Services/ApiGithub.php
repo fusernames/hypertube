@@ -19,11 +19,11 @@ class ApiGithub extends ApiCore
     public function __construct(Curl $curl, UserManagerInterface $userManager, ObjectManager $objectManager)
     {
         parent::__construct($curl, $userManager, $objectManager);
-        $this->setUrl("https://api.intra.42.fr/oauth/token");
-        $this->setUser_url("https://api.intra.42.fr/v2/me");
-        $this->setClient_id("410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9");
-        $this->setClient_secret("0e156668ef0c973c8fa8526fc683f26ce42801788756de614a307eee406ce1b8");
-        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/42");
+        $this->setUrl("https://github.com/login/oauth/access_token");
+        $this->setUser_url("https://api.github.com/user");
+        $this->setClient_id("419e2d89b672ff004243");
+        $this->setClient_secret("92199f0bad146feada6328e12e14021dd91a4ea9");
+        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/github");
     }
 
     /**
@@ -35,6 +35,56 @@ class ApiGithub extends ApiCore
      */
     public function getToken(string $code, $jwtManager)
     {
-        return new JsonResponse(["http-code" => 200, "code" => $code], 200);
+        $this->jwtManager = $jwtManager;
+        $data = [
+            "client_id" => $this->getClient_Id(),
+            "client_secret" => $this->getClient_secret(),
+            "redirect_uri" => $this->getRedirect_uri(),
+            "code" => $code
+        ];
+        $resp = $this->curl->postJson($this->getUrl(), json_encode($data));
+
+        if ($resp["code"] === 200) {
+            $resp = explode("&", $resp["resp"]);
+            foreach($resp as $key => $value) {
+                $resp[$key] = explode("=", $value);
+                switch ($resp[$key][0]) {
+                    case "error_description":
+                        return $this->displayError(401, str_replace("+", " ", $resp[$key][1]));
+                    case "access_token":
+                        return $this->getUserData($resp[$key][1]);
+                }
+            }
+        }
+        return $this->displayError(401, "The code passed is incorrect or expired.");
+    }
+
+    /**
+     * Search the user in database then return a token if exists or JsonResponse
+     *
+     * @param string $token
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
+     */
+    public function getUserData(string $token)
+    {
+        $userData = $this->curl->getData($this->getUser_url(), $token);
+
+        if ($userData["code"] === 200) {
+            $userData = json_decode($userData["resp"]);
+            $userData = [
+                "plainpassword" => $userData->login . $userData->id,
+                "username" => $userData->login,
+                "email" => $userData->email ?? $userData->id . $userData->login . "@hypertube.com",
+                "firstname" => isset($userData->first_name) ? $userData->first_name : $userData->login,
+                "lastname" => isset($userData->last_name) ? $userData->last_name : $userData->login,
+                "avatarUrl" => $userData->avatar_url
+            ];
+            $this->user = $this->userManager->findUserByEmail($userData["email"]);
+            !$this->user ? $this->createUser($userData) : 0;
+            $jwt = $this->jwtManager->create($this->user);
+            !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
+            return new JWTAuthenticationSuccessResponse($jwt);
+        }
+        return $this->displayError(userData["code"], $userData["resp"]);
     }
 }
