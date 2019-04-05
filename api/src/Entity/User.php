@@ -52,7 +52,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *                  "groups"={"me"}
  *              },
  *              "normalization_context"={
- *                  "groups"={"me"}
+ *                  "groups"={"me", "user:read"}
  *              },
  *              "controller"=GetMeController::class,
  *              "defaults"={"_api_receive"=false}
@@ -386,7 +386,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user", "me", "message"})
+     * @Groups({"user:read", "me:read", "message"})
      */
     private $avatarUrl;
 

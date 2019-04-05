@@ -19,11 +19,11 @@ class ApiFacebook extends ApiCore
     public function __construct(Curl $curl, UserManagerInterface $userManager, ObjectManager $objectManager)
     {
         parent::__construct($curl, $userManager, $objectManager);
-        $this->setUrl("https://github.com/login/oauth/access_token");
+        $this->setUrl("https://graph.facebook.com/v3.2/oauth/access_token");
         $this->setUser_url("https://api.github.com/user");
-        $this->setClient_id("419e2d89b672ff004243");
-        $this->setClient_secret("92199f0bad146feada6328e12e14021dd91a4ea9");
-        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/github");
+        $this->setClient_id("915807418753565");
+        $this->setClient_secret("bd4d7dc40ecbabdb08f7d5df4557acdb");
+        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/facebook/");
     }
 
     /**
