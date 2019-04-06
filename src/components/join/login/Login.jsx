@@ -45,8 +45,8 @@ class Login extends React.Component {
       window.location = 'https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=https://hypertube.barthonet.ovh/oauth/facebook/&display=popup&response_type=token';
     } else if (name === "Github") {
       window.location = 'https://github.com/login/oauth/authorize?client_id=419e2d89b672ff004243';
-    } else if (name === "Gmail" && false) {
-      window.location = 'Manque url gmail';
+    } else if (name === "Gmail") {
+      window.location = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com&response_type=code&redirect_uri=https://hypertube.barthonet.ovh/oauth/gmail&scope=https://www.googleapis.com/auth/userinfo.profile';
     } else {
       console.log("Error opening OAuth for", name)
     }
