@@ -62,7 +62,8 @@ const translations = {
     rating: ["Rating", "Note"],
     torrents: ["Torrents", "Torrents"],
     comment: ["Enter a comment", "Entrez un commentaire"],
-    time_display: ["en", "fr"]
+    time_display: ["en", "fr"],
+    view: ["viewed", "vu"]
   },
   alerts: {
     // login
