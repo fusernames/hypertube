@@ -11,7 +11,8 @@ class Stream extends Component {
   state = {
     isFetching: false,
     startTime: undefined,
-    statusId: -1
+    statusId: -1,
+    name: ''
   }
 
   fetchStream = (id) => {
@@ -27,7 +28,8 @@ class Stream extends Component {
         this.setState({
           isFetching: false,
           startTime: res[0].time,
-          statusId: res[0].id
+          statusId: res[0].id,
+          name: res[0].movie.name
         })
       } else {
         req(host + '/api/movie_statuses', {
@@ -110,7 +112,7 @@ class Stream extends Component {
     if (startTime === undefined) return null
     return (
       <div>
-        <Typography variant="h5" style={{marginBottom:'15px'}}>Titre du Film</Typography>
+        <Typography variant="h5" style={{marginBottom:'15px'}}>{this.state.name}</Typography>
         <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id}
             startTime={startTime}
             onChange={this.updateMovieStatus}
