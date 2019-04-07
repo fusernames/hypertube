@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Services\Api42;
 use App\Services\ApiGithub;
+use App\Services\ApiGoogle;
 use App\Services\ApiFacebook;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,15 +29,22 @@ class OAuthController extends Controller
     private $apiFacebook;
 
     /**
+     * @var ApiGoogle $apiGoogle
+     */
+    private $apiGoogle;
+
+    /**
      * @param Api42 $api42
      * @param ApiGithub $apiGithub
      * @param ApiFacebook $apiFacebook
+     * @param ApiGoogle $apiGoogle
      */
-    public function __construct(Api42 $api42, ApiGithub $apiGithub, ApiFacebook $apiFacebook)
+    public function __construct(Api42 $api42, ApiGithub $apiGithub, ApiFacebook $apiFacebook, ApiGoogle $apiGoogle)
     {
         $this->api42 = $api42;
         $this->apiGithub = $apiGithub;
         $this->apiFacebook = $apiFacebook;
+        $this->apiGoogle = $apiGoogle;
     }
 
     /**
@@ -59,7 +67,7 @@ class OAuthController extends Controller
             case "twitter":
                 return $this->_twitter($token);
             case "gmail":
-                return $this->_google($token);
+                return $this->apiGoogle->getToken($token, $jwtManager);
             default:
                 return new JsonResponse(["error" => "Invalid or unknow OAuth api", "code" => 400], 400);
         }

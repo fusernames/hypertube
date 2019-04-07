@@ -95,8 +95,10 @@ class ApiCore
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
         $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
-        if (!$withEmail && !$withUsername) {
+        if ($withEmail === null && $withUsername === null) {
             $this->createUser($userData);
+            $this->objectManager->persist($this->user);
+            $this->objectManager->flush();
             $jwt = $this->jwtManager->create($this->user);
             return new JWTAuthenticationSuccessResponse($jwt);
         } else if ($withEmail && $withUsername && $withEmail->getId() === $withUsername->getId()) {
@@ -125,9 +127,10 @@ class ApiCore
             ->setEmail($userData["email"])
             ->setFirstname($userData["firstname"])
             ->setLastname($userData["lastname"])
-            ->setUserAvatar($userData["avatarUrl"])
             ->setOAuthAccess(true)
             ;
+        isset($userData["lang"]) ? $this->user->setLang($userData["lang"]) : 0;
+        $this->setUserAvatar($userData["avatarUrl"]);
     }
 
     /**

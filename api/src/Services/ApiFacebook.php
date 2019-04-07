@@ -55,7 +55,7 @@ class ApiFacebook extends ApiCore
         $me = $response->getGraphUser();
         $userData = [
             "plainpassword" => $me->getId() . $me->getFirstname() . "facebookhypertube",
-            "username" => $me->getName(),
+            "username" => $me->getId() . "-" . $me->getName(),
             "email" => $me->getId() . "-" . $me->getFirstname() . "-facebook@hypertube.com",
             "firstname" => $me->getFirstname(),
             "lastname" => $me->getLastname(),

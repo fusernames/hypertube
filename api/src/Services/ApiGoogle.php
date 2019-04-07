@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\User;
 use App\Services\Curl;
 use App\Services\ApiCore;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,7 +10,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessResponse;
 
-class ApiGithub extends ApiCore
+class ApiGoogle extends ApiCore
 {
     /**
      * @param Curl $curl
@@ -19,15 +20,15 @@ class ApiGithub extends ApiCore
     public function __construct(Curl $curl, UserManagerInterface $userManager, ObjectManager $objectManager)
     {
         parent::__construct($curl, $userManager, $objectManager);
-        $this->setUrl("https://github.com/login/oauth/access_token");
-        $this->setUser_url("https://api.github.com/user");
-        $this->setClient_id("419e2d89b672ff004243");
-        $this->setClient_secret("92199f0bad146feada6328e12e14021dd91a4ea9");
-        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/github");
+        $this->setUrl("https://www.googleapis.com/oauth2/v4/token");
+        $this->setUser_url("https://www.googleapis.com/oauth2/v1/userinfo?alt=json");
+        $this->setClient_id("39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com");
+        $this->setClient_secret("MfrqQ_-ZgG7kZWHQnAn9cz1b");
+        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/gmail");
     }
 
     /**
-     * Make a Github API request to get a token
+     * Make a 42 API request to get a token
      *
      * @param string $code
      * @param JWTManager $jwtManager
@@ -37,26 +38,22 @@ class ApiGithub extends ApiCore
     {
         $this->jwtManager = $jwtManager;
         $data = [
+            "grant_type" => "authorization_code",
             "client_id" => $this->getClient_Id(),
             "client_secret" => $this->getClient_secret(),
             "redirect_uri" => $this->getRedirect_uri(),
             "code" => $code
         ];
         $resp = $this->curl->postJson($this->getUrl(), json_encode($data));
-
+        
         if ($resp["code"] === 200) {
-            $resp = explode("&", $resp["resp"]);
-            foreach($resp as $key => $value) {
-                $resp[$key] = explode("=", $value);
-                switch ($resp[$key][0]) {
-                    case "error_description":
-                        return $this->displayError(401, str_replace("+", " ", $resp[$key][1]));
-                    case "access_token":
-                        return $this->getUserData($resp[$key][1]);
-                }
+            $resp = json_decode($resp["resp"]);
+            if (isset($resp->error)) {
+                return $this->displayError(401, $resp->error_description, $resp->error);
             }
+            return $this->getUserData($resp->access_token);
         }
-        return $this->displayError(401, "The code passed is incorrect or expired.");
+        return $this->displayError($resp["code"], $resp["resp"]);
     }
 
     /**
@@ -72,15 +69,16 @@ class ApiGithub extends ApiCore
         if ($userData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
             $userData = [
-                "plainpassword" => $userData->login . $userData->id . "githubhypertube",
-                "username" => $userData->id . "-" . $userData->login,
-                "email" => $userData->id . "-" . $userData->login . "-github@hypertube.com",
-                "firstname" => isset($userData->first_name) ? $userData->first_name : $userData->login,
-                "lastname" => isset($userData->last_name) ? $userData->last_name : $userData->login,
-                "avatarUrl" => $userData->avatar_url
+                "plainpassword" => $userData->id . $userData->family_name . "gmailhypertube",
+                "username" => $userData->id . "-" . $userData->name,
+                "email" => $userData->id . "-" . $userData->family_name . "-gmail@hypertube.com",
+                "firstname" => $userData->given_name,
+                "lastname" => $userData->family_name,
+                "avatarUrl" => $userData->picture,
+                "lang" => $userData->locale
             ];
             return $this->findUser($userData);
         }
-        return $this->displayError(userData["code"], $userData["resp"]);
+        return $this->displayError($userData["code"], $userData["resp"]);
     }
 }

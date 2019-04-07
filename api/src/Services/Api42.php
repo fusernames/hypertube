@@ -70,7 +70,7 @@ class Api42 extends ApiCore
             $userData = json_decode($userData["resp"]);
             $userData = [
                 "plainpassword" => $userData->id . $userData->login . "42hypertube",
-                "username" => $userData->login,
+                "username" => $userData->id . "-" . $userData->login,
                 "email" => $userData->id . "-" . $userData->login . "-42@hypertube.com",
                 "firstname" => $userData->first_name,
                 "lastname" => $userData->last_name,
