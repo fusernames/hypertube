@@ -89,21 +89,12 @@ class ApiCore
      * Creates a new user if the search returns null with the API data
      *
      * @param array $userData
-     * @return bool
+     * @return void
      */
-    public function createUser(array $userData): bool
+    public function createUser(array $userData)
     {
         $this->user = new User();
 
-        $user = $this->userManager->findUserBy(
-            [
-                "email" => $userData["email"],
-                "username" => $userData["username"]
-            ]
-        );
-        if ($user) {
-            return false;
-        }
         $this->user->setPlainPassword($userData["plainpassword"])
             ->setUsername($userData["username"])
             ->setEmail($userData["email"])
@@ -111,7 +102,6 @@ class ApiCore
             ->setLastname($userData["lastname"])
             ;
         $this->setUserAvatar($userData["avatarUrl"]);
-        return true;
     }
 
     /**

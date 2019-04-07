@@ -76,10 +76,13 @@ class Api42 extends ApiCore
                 "lastname" => $userData->last_name,
                 "avatarUrl" => $userData->image_url
             ];
-            $this->user = $this->userManager->findUserByEmail($userData["email"]);
-            if (!$this->user && !$this->createUser($userData)) {
-                return $this->displayError(403, "An error occurred during the registration process.");
-            }
+            $this->user = $this->userManager->findUser(
+                [
+                    "email" => $userData["email"],
+                    "username" => $userData["username"]
+                ]
+            );
+            !$this->user ? $this->createUser($userData) : 0;
             $jwt = $this->jwtManager->create($this->user);
             !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
             return new JWTAuthenticationSuccessResponse($jwt);
