@@ -100,6 +100,11 @@ class ApiCore
             $this->createUser($userData);
             $jwt = $this->jwtManager->create($this->user);
             return new JWTAuthenticationSuccessResponse($jwt);
+        } else if ($withEmail && $withUsername && $withEmail->getId() === $withUsername->getId()) {
+            $jwt = $this->jwtManager->create($withEmail);
+            return new JWTAuthenticationSuccessResponse($jwt);
+        } else {
+            return $this->displayError(403, "An error occurred during the registration process.");
         }
 
         return new JsonResponse(
