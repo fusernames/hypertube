@@ -64,6 +64,6 @@ class ApiFacebook extends ApiCore
             "lastname" => $me->getLastname(),
             "avatarUrl" => $me["picture"]["url"]
         ];
-        return $this->findUser($userData);
+        return $this->findUser($userData, $jwtManager);
     }
 }

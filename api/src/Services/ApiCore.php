@@ -67,6 +67,7 @@ class ApiCore
         $this->jwtManager = null;
         $this->userManager = $userManager;
         $this->objectManager = $objectManager;
+        $this->jwtManager = $this->container->get('lexik_jwt_authentication.jwt_manager');
     }
 
     /**
@@ -91,17 +92,17 @@ class ApiCore
      * @param string $username
      * @return JsonResponse|JWTAuthenticationSuccessResponse
      */
-    public function findUser(array $userData)
+    public function findUser(array $userData, $jwtManager)
     {
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
         $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
         if (!$withEmail && !$withUsername) {
             $this->createUser($userData);
-            $jwt = $this->jwtManager->create($this->user);
+            $jwt = $jwtManager->create($this->user);
             return new JWTAuthenticationSuccessResponse($jwt);
         } else if ($withEmail && $withUsername && $withEmail->getId() === $withUsername->getId()) {
-            $jwt = $this->jwtManager->create($withEmail);
+            $jwt = $jwtManager->create($withEmail);
             return new JWTAuthenticationSuccessResponse($jwt);
         } else {
             return $this->displayError(403, "An error occurred during the registration process.", "Registration process failed.");

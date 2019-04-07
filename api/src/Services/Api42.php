@@ -76,12 +76,7 @@ class Api42 extends ApiCore
                 "lastname" => $userData->last_name,
                 "avatarUrl" => $userData->image_url
             ];
-            return $this->findUser($userData);
-            // $this->user = $this->findUser($userData["email"], $userData["username"]);
-            // !$this->user ? $this->createUser($userData) : 0;
-            // $jwt = $this->jwtManager->create($this->user);
-            // !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
-            // return new JWTAuthenticationSuccessResponse($jwt);
+            return $this->findUser($userData, $this->jwtManager);
         }
         return $this->displayError($userData["code"], $userData["resp"]);
     }
