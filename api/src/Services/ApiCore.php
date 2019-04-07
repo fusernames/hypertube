@@ -86,14 +86,14 @@ class ApiCore
     }
 
     /**
-     * @param string $email
+     * @param array $email
      * @param string $username
      * @return JsonResponse
      */
-    public function findUser(string $email, string $username)
+    public function findUser(array $userData)
     {
-        $withEmail = $this->userManager->findUserByEmail($email);
-        $withUsername = $this->userManager->findUserByUsername($username);
+        $withEmail = $this->userManager->findUserByEmail($userData["email"]);
+        $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
         return new JsonResponse(
             [
@@ -110,9 +110,9 @@ class ApiCore
      * Creates a new user if the search returns null with the API data
      *
      * @param array $userData
-     * @return void
+     * @return bool
      */
-    public function createUser(array $userData)
+    public function createUser(array $userData): bool
     {
         $this->user = new User();
 
