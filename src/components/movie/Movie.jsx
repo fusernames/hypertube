@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon';
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
+import host from '../../config'
 import Torrents from './Torrents'
 
 class Movie extends React.Component {
@@ -23,6 +24,7 @@ class Movie extends React.Component {
       genres: [],
       torrents: []
     },
+    viewed: false,
     isFetching: false
   }
 
@@ -94,6 +96,19 @@ class Movie extends React.Component {
     }
   }
 
+  getViewed = (id) => {
+    this.setStateCheck({...this.state, isFetching: true})
+    req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + this.props.auth.user.id, {useToken: true})
+    .then(res => {
+      if (res[0] && res[0].time > 0) {
+        this.setStateCheck({
+          ...this.state,
+          viewed: true
+        })
+      }
+      })
+  }
+
   componentWillMount() {
     this._isMounted = true
     const id = this.props.match.params.id
@@ -110,7 +125,6 @@ class Movie extends React.Component {
     const { locale } = this.props.locales
 
     if (!movie.title) return null
-
     return (
       <div>
         <Loading display={isFetching}/>
@@ -118,6 +132,8 @@ class Movie extends React.Component {
         <Grid container spacing={16}>
           <Grid item xs={12} sm={5} md={5}>
             <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>
+            {this.state.viewed &&
+            <p style={{fontSize: '40px', color: 'white'}}>{locale.movie.view}</p>}
           </Grid>
           <Grid item xs={12} sm={7} md={7}>
             <Grid container spacing={8}>
@@ -171,7 +187,7 @@ class Movie extends React.Component {
               }
               <Grid item xs={12}>
                 <div className={classes.paper}>
-                  <Torrents torrents={movie.torrents}/>
+                  <Torrents torrents={movie.torrents} onChange={this.getViewed}/>
                 </div>
               </Grid>
             </Grid>

@@ -49,6 +49,11 @@ class Torrents extends Component {
       ...this.state,
       torrents: t
     })
+    for (let torrent of this.state.torrents) {
+      if (torrent.movieId) {
+        this.props.onChange(torrent.movieId)
+      }
+    }
   }
 
   fetchTorrentsStatus = (torrents) => {
@@ -81,7 +86,6 @@ class Torrents extends Component {
     })
     const torrent = torrents[i]
     const { url, magnet } = torrent
-    console.log(torrent)
     let body = (magnet ? {torrent_magnet: magnet} : {torrent_url: url})
     req(host + '/api/movies/torrent/download', {
       useToken: true,

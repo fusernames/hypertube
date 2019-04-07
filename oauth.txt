@@ -73,3 +73,23 @@ OAUTH Facebook ->
 
     Then => 
         PAS TROUVÉ FB C DLA MERDE
+
+OAUTH Gmail ->
+    Client id = 39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com
+    Client secret = MfrqQ_-ZgG7kZWHQnAn9cz1b
+
+    To get code => https://accounts.google.com/o/oauth2/v2/auth?client_id=39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com&response_type=code&redirect_uri=https://hypertube.barthonet.ovh/oauth/gmail&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/gmail.readonly&access_type=offline
+
+    To get token =>
+
+        curl -F code=USERS_CODE
+        -F client_id=39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com
+        -F client_secret=MfrqQ_-ZgG7kZWHQnAn9cz1b
+        -F grant_type=authorization_code
+        -F redirect_uri=https://hypertube.barthonet.ovh/oauth/gmail
+        -X POST https://www.googleapis.com/oauth2/v4/token
+
+    Then =>
+        With bearer
+        Mail -> https://www.googleapis.com/gmail/v1/users/me/profile
+        Rest -> https://www.googleapis.com/oauth2/v1/userinfo\?alt\=json

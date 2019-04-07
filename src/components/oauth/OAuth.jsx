@@ -22,11 +22,10 @@ class OAuth extends React.Component {
     console.log(this.props.location);
 
     switch (name) {
+      case "gmail":
+      case "42":
       case "github":
         token = queryString.parse(this.props.location.search).code;
-        break;
-      case "42":
-        token = queryString.parse(this.props.location.search).code
         break
       case "facebook":
         console.log("hello facebook");
@@ -34,9 +33,6 @@ class OAuth extends React.Component {
         console.log(token);
         break
       case "twitter":
-        // Handle
-        break
-      case "gmail":
         // Handle
         break
       default:
