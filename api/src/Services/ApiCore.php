@@ -88,12 +88,18 @@ class ApiCore
     /**
      * @param array $email
      * @param string $username
-     * @return JsonResponse
+     * @return JsonResponse|JWTAuthenticationSuccessResponse
      */
     public function findUser(array $userData)
     {
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
         $withUsername = $this->userManager->findUserByUsername($userData["username"]);
+
+        if (!$withEmail && !$withUsername) {
+            $this->createUser($userData);
+            $jwt = $this->jwtManager->create($this->user);
+            return new JWTAuthenticationSuccessResponse($jwt);
+        }
 
         return new JsonResponse(
             [
@@ -110,9 +116,9 @@ class ApiCore
      * Creates a new user if the search returns null with the API data
      *
      * @param array $userData
-     * @return bool
+     * @return void
      */
-    public function createUser(array $userData): bool
+    public function createUser(array $userData)
     {
         $this->user = new User();
 
