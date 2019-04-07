@@ -74,7 +74,7 @@ class ApiGithub extends ApiCore
             $userData = [
                 "plainpassword" => $userData->login . $userData->id,
                 "username" => $userData->login,
-                "email" => $userData->email ?? $userData->id . $userData->login . "@hypertube.com",
+                "email" => $userData->id . "-" . $userData->login . "-github@hypertube.com",
                 "firstname" => isset($userData->first_name) ? $userData->first_name : $userData->login,
                 "lastname" => isset($userData->last_name) ? $userData->last_name : $userData->login,
                 "avatarUrl" => $userData->avatar_url

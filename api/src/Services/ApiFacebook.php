@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Services\Curl;
+use Facebook\Facebook;
 use App\Services\ApiCore;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -11,6 +12,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessRespon
 
 class ApiFacebook extends ApiCore
 {
+    private $fb;
+
     /**
      * @param Curl $curl
      * @param UserManagerInterface $userManager
@@ -19,11 +22,13 @@ class ApiFacebook extends ApiCore
     public function __construct(Curl $curl, UserManagerInterface $userManager, ObjectManager $objectManager)
     {
         parent::__construct($curl, $userManager, $objectManager);
-        $this->setUrl("https://graph.facebook.com/v3.2/oauth/access_token");
-        $this->setUser_url("https://api.github.com/user");
-        $this->setClient_id("915807418753565");
-        $this->setClient_secret("bd4d7dc40ecbabdb08f7d5df4557acdb");
-        $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/facebook/");
+        $this->setUser_url('/me?fields=id,first_name,last_name,gender,email,picture.type(large),name');
+        
+        $this->fb = new Facebook([
+            'app_id' => '915807418753565',
+            'app_secret' => 'bd4d7dc40ecbabdb08f7d5df4557acdb',
+            'default_graph_version' => 'v3.2'
+        ]);
     }
 
     /**
@@ -35,57 +40,32 @@ class ApiFacebook extends ApiCore
      */
     public function getToken(string $code, $jwtManager)
     {
-        return new JsonResponse(["api"=> "facebook", "code" => $code], 200);
-        $this->jwtManager = $jwtManager;
-        $data = [
-            "client_id" => $this->getClient_Id(),
-            "client_secret" => $this->getClient_secret(),
-            "redirect_uri" => $this->getRedirect_uri(),
-            "code" => $code
+        $access_token = $this->fb->getOAuth2Client()->getLongLivedAccessToken($code);
+
+        try {
+            // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+            // If you provided a 'default_access_token', the '{access-token}' is optional.
+            $response = $this->fb->get($this->getUser_url(), $access_token);
+        } catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        // When Graph returns an error
+            return $this->displayError(403, 'Graph returned an error: ' . $e->getMessage());
+        } catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        // When validation fails or other local issues
+            return $this->displayError(403, 'Facebook SDK returned an error: ' . $e->getMessage());
+        }
+        $me = $response->getGraphUser();
+        $userData = [
+            "plainpassword" => "hypertube". $me->getId() . $me->getFirstname(),
+            "username" => $me->getName(),
+            "email" => $me->getId() . "-" . $me->getFirstname() . "-facebook@hypertube.com",
+            "firstname" => $me->getFirstname(),
+            "lastname" => $me->getLastname(),
+            "avatarUrl" => $me["picture"]["url"]
         ];
-        $resp = $this->curl->postJson($this->getUrl(), json_encode($data));
-
-        if ($resp["code"] === 200) {
-            $resp = explode("&", $resp["resp"]);
-            foreach($resp as $key => $value) {
-                $resp[$key] = explode("=", $value);
-                switch ($resp[$key][0]) {
-                    case "error_description":
-                        return $this->displayError(401, str_replace("+", " ", $resp[$key][1]));
-                    case "access_token":
-                        return $this->getUserData($resp[$key][1]);
-                }
-            }
-        }
-        return $this->displayError(401, "The code passed is incorrect or expired.");
-    }
-
-    /**
-     * Search the user in database then return a token if exists or JsonResponse
-     *
-     * @param string $token
-     * @return JsonResponse|JWTAuthenticationSuccessResponse
-     */
-    public function getUserData(string $token)
-    {
-        $userData = $this->curl->getData($this->getUser_url(), $token);
-
-        if ($userData["code"] === 200) {
-            $userData = json_decode($userData["resp"]);
-            $userData = [
-                "plainpassword" => $userData->login . $userData->id,
-                "username" => $userData->login,
-                "email" => $userData->email ?? $userData->id . $userData->login . "@hypertube.com",
-                "firstname" => isset($userData->first_name) ? $userData->first_name : $userData->login,
-                "lastname" => isset($userData->last_name) ? $userData->last_name : $userData->login,
-                "avatarUrl" => $userData->avatar_url
-            ];
-            $this->user = $this->userManager->findUserByEmail($userData["email"]);
-            !$this->user ? $this->createUser($userData) : 0;
-            $jwt = $this->jwtManager->create($this->user);
-            !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
-            return new JWTAuthenticationSuccessResponse($jwt);
-        }
-        return $this->displayError(userData["code"], $userData["resp"]);
+        $this->user = $this->userManager->findUserByEmail($userData["email"]);
+        !$this->user ? $this->createUser($userData) : 0;
+        $jwt = $jwtManager->create($this->user);
+        !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
+        return new JWTAuthenticationSuccessResponse($jwt);
     }
 }
