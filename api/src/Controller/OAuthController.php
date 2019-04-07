@@ -58,7 +58,7 @@ class OAuthController extends Controller
                 return $this->apiGithub->getToken($token, $jwtManager);
             case "twitter":
                 return $this->_twitter($token);
-            case "google":
+            case "gmail":
                 return $this->_google($token);
             default:
                 return new JsonResponse(["error" => "Invalid or unknow OAuth api", "code" => 400], 400);

@@ -44,7 +44,6 @@ class ApiFacebook extends ApiCore
 
         try {
             // Get the \Facebook\GraphNodes\GraphUser object for the current user.
-            // If you provided a 'default_access_token', the '{access-token}' is optional.
             $response = $this->fb->get($this->getUser_url(), $code);
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
         // When Graph returns an error
