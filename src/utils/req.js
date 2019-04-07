@@ -33,7 +33,6 @@ const req = (url, options) => {
         if (response.status >= 500)
           store.dispatch(enqueueSnackbar(response.statusText, 'error'))
         reject(response)
-        response.json().then(json => console.error(json))
       }
     })
     .catch(err => {
