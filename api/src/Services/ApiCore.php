@@ -87,8 +87,7 @@ class ApiCore
     }
 
     /**
-     * @param array $email
-     * @param string $username
+     * @param array $userData
      * @return JsonResponse|JWTAuthenticationSuccessResponse
      */
     public function findUser(array $userData)
@@ -103,18 +102,11 @@ class ApiCore
         } else if ($withEmail && $withUsername && $withEmail->getId() === $withUsername->getId()) {
             $jwt = $this->jwtManager->create($withEmail);
             return new JWTAuthenticationSuccessResponse($jwt);
-        } else {
-            return $this->displayError(403, "An error occurred during the registration process.", "Registration process failed.");
         }
-
-        return new JsonResponse(
-            [
-                "email" => $withEmail,
-                "emailId" => $withEmail ? $withEmail->getId() : null,
-                "username" =>$withUsername,
-                "usernameId" => $withUsername ? $withUsername->getId() : null
-            ],
-            200
+        return $this->displayError(
+            403,
+            "An error occurred during the registration process.",
+            "Registration process failed."
         );
     }
 
@@ -133,8 +125,9 @@ class ApiCore
             ->setEmail($userData["email"])
             ->setFirstname($userData["firstname"])
             ->setLastname($userData["lastname"])
+            ->setUserAvatar($userData["avatarUrl"])
+            ->setOAuthAccess(true)
             ;
-        $this->setUserAvatar($userData["avatarUrl"]);
     }
 
     /**

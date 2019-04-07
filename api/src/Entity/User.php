@@ -390,6 +390,11 @@ class User extends BaseUser
      */
     private $avatarUrl;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $oAuthAccess;
+
     public function __construct()
     {
         parent::__construct();
@@ -404,6 +409,7 @@ class User extends BaseUser
        !$this->getCreatedAt() ? $this->setCreatedAt(new \DateTime()) : 0;
        !$this->getUpdatedAt() ? $this->setUpdatedAt(new \DateTime()) : 0;
        $this->enabled = true;
+       $this->getOAuthAccess() === null ? $this->setOAuthAccess(false) : 0;
        !$this->lang ? $this->lang = 'EN' : 0;
     }
 
@@ -585,6 +591,18 @@ class User extends BaseUser
     public function setAvatarUrl(?string $avatarUrl): self
     {
         $this->avatarUrl = $avatarUrl;
+
+        return $this;
+    }
+
+    public function getOAuthAccess(): ?bool
+    {
+        return $this->oAuthAccess;
+    }
+
+    public function setOAuthAccess(?bool $oAuthAccess): self
+    {
+        $this->oAuthAccess = $oAuthAccess;
 
         return $this;
     }
