@@ -95,7 +95,15 @@ class ApiCore
         $withEmail = $this->userManager->findUserByEmail($email);
         $withUsername = $this->userManager->findUserByUsername($username);
 
-        return new JsonResponse(["email" => $withEmail, "username" =>$withUsername], 200);
+        return new JsonResponse(
+            [
+                "email" => $withEmail,
+                "emailId" => $withEmail->getId(),
+                "username" =>$withUsername,
+                "username" => $withUsername->getId()
+            ],
+            200
+        );
     }
 
     /**
