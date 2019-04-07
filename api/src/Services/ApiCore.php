@@ -100,7 +100,7 @@ class ApiCore
                 "email" => $withEmail,
                 "emailId" => $withEmail ? $withEmail->getId() : null,
                 "username" =>$withUsername,
-                "username" => $withUsername ? $withUsername->getId() : null
+                "usernameId" => $withUsername ? $withUsername->getId() : null
             ],
             200
         );
