@@ -72,7 +72,7 @@ class ApiGithub extends ApiCore
         if ($userData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
             $userData = [
-                "plainpassword" => $userData->login . $userData->id,
+                "plainpassword" => $userData->login . $userData->id . "githubhypertube",
                 "username" => $userData->login,
                 "email" => $userData->id . "-" . $userData->login . "-github@hypertube.com",
                 "firstname" => isset($userData->first_name) ? $userData->first_name : $userData->login,
