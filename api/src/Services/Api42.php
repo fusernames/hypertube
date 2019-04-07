@@ -76,12 +76,7 @@ class Api42 extends ApiCore
                 "lastname" => $userData->last_name,
                 "avatarUrl" => $userData->image_url
             ];
-            $this->user = $this->userManager->findUser(
-                [
-                    "email" => $userData["email"],
-                    "username" => $userData["username"]
-                ]
-            );
+            $this->user = $this->findUser($userData["email"], $userData["username"]);
             !$this->user ? $this->createUser($userData) : 0;
             $jwt = $this->jwtManager->create($this->user);
             !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
