@@ -40,12 +40,14 @@ class ApiFacebook extends ApiCore
      */
     public function getToken(string $code, $jwtManager)
     {
-        $access_token = $this->fb->getOAuth2Client()->getLongLivedAccessToken($code);
+        // $oauth2client = $this->fb->getOAuth2Client();
+        // dump($oauth2client);
+        // $access_token = $oauth2client->getLongLivedAccessToken($code);
 
         try {
             // Get the \Facebook\GraphNodes\GraphUser object for the current user.
             // If you provided a 'default_access_token', the '{access-token}' is optional.
-            $response = $this->fb->get($this->getUser_url(), $access_token);
+            $response = $this->fb->get($this->getUser_url(), $code);
         } catch(\Facebook\Exceptions\FacebookResponseException $e) {
         // When Graph returns an error
             return $this->displayError(403, 'Graph returned an error: ' . $e->getMessage());

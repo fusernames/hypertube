@@ -86,6 +86,20 @@ class ApiCore
     }
 
     /**
+     * @param string $email
+     * @param string $username
+     * @return boolean
+     */
+    public function findUser(string $email, string $username):bool
+    {
+        $withEmail = $this->userManager->findUserByEmail($email);
+        $withUsername = $this->userManager->findUserByUsername($username);
+
+        dump($withEmail);
+        dump($withUsername);die;
+    }
+
+    /**
      * Creates a new user if the search returns null with the API data
      *
      * @param array $userData
