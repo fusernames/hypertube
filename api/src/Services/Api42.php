@@ -76,7 +76,7 @@ class Api42 extends ApiCore
                 "lastname" => $userData->last_name,
                 "avatarUrl" => $userData->image_url
             ];
-            return $this->findUser($userData, $this->jwtManager);
+            return $this->findUser($userData);
         }
         return $this->displayError($userData["code"], $userData["resp"]);
     }

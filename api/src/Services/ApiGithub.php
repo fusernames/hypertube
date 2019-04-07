@@ -79,7 +79,7 @@ class ApiGithub extends ApiCore
                 "lastname" => isset($userData->last_name) ? $userData->last_name : $userData->login,
                 "avatarUrl" => $userData->avatar_url
             ];
-            return $this->findUser($userData, $this->jwtManager);
+            return $this->findUser($userData);
         }
         return $this->displayError(userData["code"], $userData["resp"]);
     }

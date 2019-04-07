@@ -40,6 +40,7 @@ class ApiFacebook extends ApiCore
      */
     public function getToken(string $code, $jwtManager)
     {
+        $this->jwtManager = $jwtManager;
         // $oauth2client = $this->fb->getOAuth2Client();
         // dump($oauth2client);
         // $access_token = $oauth2client->getLongLivedAccessToken($code);
@@ -64,6 +65,6 @@ class ApiFacebook extends ApiCore
             "lastname" => $me->getLastname(),
             "avatarUrl" => $me["picture"]["url"]
         ];
-        return $this->findUser($userData, $jwtManager);
+        return $this->findUser($userData);
     }
 }
