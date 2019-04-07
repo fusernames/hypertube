@@ -88,9 +88,9 @@ class ApiCore
     /**
      * @param string $email
      * @param string $username
-     * @return boolean
+     * @return void
      */
-    public function findUser(string $email, string $username):bool
+    public function findUser(string $email, string $username)
     {
         $withEmail = $this->userManager->findUserByEmail($email);
         $withUsername = $this->userManager->findUserByUsername($username);
