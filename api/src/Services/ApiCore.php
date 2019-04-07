@@ -104,7 +104,7 @@ class ApiCore
             $jwt = $this->jwtManager->create($withEmail);
             return new JWTAuthenticationSuccessResponse($jwt);
         } else {
-            return $this->displayError(403, "An error occurred during the registration process.");
+            return $this->displayError(403, "An error occurred during the registration process.", "Registration process failed.");
         }
 
         return new JsonResponse(
