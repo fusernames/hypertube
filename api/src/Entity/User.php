@@ -392,6 +392,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"user:read", "me:read", "message"})
      */
     private $oAuthAccess;
 
