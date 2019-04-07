@@ -88,7 +88,7 @@ class ApiCore
     /**
      * @param string $email
      * @param string $username
-     * @return void
+     * @return JsonResponse
      */
     public function findUser(string $email, string $username)
     {
