@@ -98,9 +98,9 @@ class ApiCore
         return new JsonResponse(
             [
                 "email" => $withEmail,
-                "emailId" => $withEmail->getId(),
+                "emailId" => $withEmail ? $withEmail->getId() : null,
                 "username" =>$withUsername,
-                "username" => $withUsername->getId()
+                "username" => $withUsername ? $withUsername->getId() : null
             ],
             200
         );
