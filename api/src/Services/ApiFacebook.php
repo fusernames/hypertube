@@ -64,10 +64,6 @@ class ApiFacebook extends ApiCore
             "lastname" => $me->getLastname(),
             "avatarUrl" => $me["picture"]["url"]
         ];
-        $this->user = $this->userManager->findUserByEmail($userData["email"]);
-        !$this->user ? $this->createUser($userData) : 0;
-        $jwt = $jwtManager->create($this->user);
-        !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
-        return new JWTAuthenticationSuccessResponse($jwt);
+        return $this->findUser($userData);
     }
 }

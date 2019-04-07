@@ -79,11 +79,7 @@ class ApiGithub extends ApiCore
                 "lastname" => isset($userData->last_name) ? $userData->last_name : $userData->login,
                 "avatarUrl" => $userData->avatar_url
             ];
-            $this->user = $this->userManager->findUserByEmail($userData["email"]);
-            !$this->user ? $this->createUser($userData) : 0;
-            $jwt = $this->jwtManager->create($this->user);
-            !$this->user->getAvatarUrl() ? $this->setUserAvatar($userData["avatarUrl"]) : 0;
-            return new JWTAuthenticationSuccessResponse($jwt);
+            return $this->findUser($userData);
         }
         return $this->displayError(userData["code"], $userData["resp"]);
     }
