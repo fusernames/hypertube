@@ -39,7 +39,10 @@ class OAuthController extends Controller
      * @param ApiFacebook $apiFacebook
      * @param ApiGoogle $apiGoogle
      */
-    public function __construct(Api42 $api42, ApiGithub $apiGithub, ApiFacebook $apiFacebook, ApiGoogle $apiGoogle)
+    public function __construct(Api42 $api42,
+                                ApiGithub $apiGithub,
+                                ApiFacebook $apiFacebook,
+                                ApiGoogle $apiGoogle)
     {
         $this->api42 = $api42;
         $this->apiGithub = $apiGithub;
@@ -69,7 +72,13 @@ class OAuthController extends Controller
             case "gmail":
                 return $this->apiGoogle->getToken($token, $jwtManager);
             default:
-                return new JsonResponse(["error" => "Invalid or unknow OAuth api", "code" => 400], 400);
+                return new JsonResponse(
+                    [
+                        "error" => "Invalid or unknow OAuth api",
+                        "code" => 400
+                    ],
+                    400
+                );
         }
     }
 
@@ -79,15 +88,15 @@ class OAuthController extends Controller
      */
     private function _twitter(string $token = null)
     {
-        return new JsonResponse(["api" => "twitter", "token" => $token, "code" => 200], 200);
-    }
-
-    /**
-     * @param string $token
-     * @return JsonResponse|JWTAuthenticationSuccessResponse
-     */
-    private function _google(string $token = null)
-    {
-        return new JsonResponse(["api" => "google", "token" => $token, "code" => 200], 200);
+        return new JsonResponse(
+            [
+                "api" => "twitter",
+                "access_code" => $token,
+                "error" => "An error occurred during the authentication process.",
+                "message" => "The features related to the twitter API are not yet operational.",
+                "code" => 403
+            ],
+            403
+        );
     }
 }
