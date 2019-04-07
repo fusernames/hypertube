@@ -9,7 +9,7 @@ import host from '../../config'
 import Torrents from './Torrents'
 
 class Movie extends React.Component {
-  
+
   _isMounted = false
   setStateCheck = (state, callback) => {
     if (this._isMounted === true) {
@@ -100,13 +100,14 @@ class Movie extends React.Component {
     this.setStateCheck({...this.state, isFetching: true})
     req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + this.props.auth.user.id, {useToken: true})
     .then(res => {
-      if (res[0] && res[0].time > 0) {
-        this.setStateCheck({
-          ...this.state,
-          viewed: true
-        })
-      }
+      console.log(res)
+      let viewed = ((res[0] && res[0].time > 0) ? true : false)
+      this.setStateCheck({
+        ...this.state,
+        viewed: viewed,
+        isFetching: false
       })
+    })
   }
 
   componentWillMount() {
@@ -120,9 +121,10 @@ class Movie extends React.Component {
   }
 
   render() {
-    const { movie, isFetching } = this.state
+    const { movie, isFetching, viewed } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
+    console.log(viewed)
 
     if (!movie.title) return null
     return (
@@ -130,10 +132,9 @@ class Movie extends React.Component {
         <Loading display={isFetching}/>
         <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
-          <Grid item xs={12} sm={5} md={5}>
+          <Grid item xs={12} sm={5} md={5} style={{position:'relative'}}>
+            {viewed && <Icon color="primary" style={{position:'absolute', top:'15px', left:'15px'}}>visibility</Icon>}
             <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>
-            {this.state.viewed &&
-            <p style={{fontSize: '40px', color: 'white'}}>{locale.movie.view}</p>}
           </Grid>
           <Grid item xs={12} sm={7} md={7}>
             <Grid container spacing={8}>
