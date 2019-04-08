@@ -397,7 +397,7 @@ class User extends BaseUser
     private $oAuthAccess;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OmniAuthInfos", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\OmniAuthInfos", mappedBy="user", cascade={"all"})
      */
     private $omniAuthInfos;
 

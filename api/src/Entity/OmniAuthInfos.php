@@ -17,7 +17,7 @@ class OmniAuthInfos
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="omniAuthInfos", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="omniAuthInfos")
      */
     private $user;
 

@@ -112,12 +112,32 @@ class ApiCore
         } else if ($withOauthId) {
             $jwt = $this->jwtManager->create($withOauthId->getUser());
             return new JWTAuthenticationSuccessResponse($jwt);
+        } else if ($withEmail) {
+            $this->user = $withEmail;
+            $this->addOauthInfo($userData);
+            $this->objectManager->persist($this->user);
+            $this->objectManager->flush();
+            $jwt = $this->jwtManager->create($withEmail);
+            return new JWTAuthenticationSuccessResponse($jwt);
         }
         return $this->displayError(
             403,
             "An error occurred during the registration process.",
             "Registration process failed."
         );
+    }
+
+    /**
+     * Adds oauth info for current user.
+     * 
+     * @param array $userData
+     * @return void
+     */
+    public function addOauthInfo(array $userData) {
+        $oauthInfos = new OmniAuthInfos();
+        $oauthInfos->setOauthId($userData["id"])
+            ->setName($this->getName());
+        $this->user->addOmniAuthInfo($oauthInfos);
     }
 
     /**
@@ -138,10 +158,7 @@ class ApiCore
             ->setOAuthAccess(true)
         ;
 
-        $oauthInfos = new OmniAuthInfos();
-        $oauthInfos->setOauthId($userData["id"])
-            ->setName($this->getName());
-        $this->user->addOmniAuthInfo($oauthInfos);
+        $this->addOauthInfo($userData);
         
         isset($userData["lang"]) ? $this->user->setLang($userData["lang"]) : 0;
         $this->setUserAvatar($userData["avatarUrl"]);
