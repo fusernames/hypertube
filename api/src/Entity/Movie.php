@@ -11,6 +11,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Controller\Subtitles\SubtitlesController;
+use App\Controller\Subtitles\GetSubtitleController;
 use App\Controller\Torrent\StatusTorrentController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\Torrent\DownloadTorrentController;
@@ -53,10 +54,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "path"="/movies/file/{id}",
  *              "controller"=GetMovieController::class
  *          },
- *          "get-subtitles"={
+ *          "dl-subtitles"={
  *              "method"="GET",
  *              "path"="/movies/subtitles/{id}",
  *              "controller"=SubtitlesController::class
+ *          },
+ *          "get-subtitle"={
+ *              "method"="GET",
+ *              "path"="/movies/subtitles/{id}/{lang}",
+ *              "controller"=GetSubtitleController::class
  *          }
  *      }
  * )
