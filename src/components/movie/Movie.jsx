@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
-import { browserHistory } from 'react-router'
 import Torrents from './Torrents'
 
 class Movie extends React.Component {
@@ -210,7 +209,9 @@ class Movie extends React.Component {
 const styles = theme => ({
   img: {
     borderRadius:'5px',
-    overflow:'hidden'
+    overflow:'hidden',
+    fontFamily: 'Roboto, Arial',
+    color: 'rgba(255,255,255,0.9)'
   },
   paper: {
     background: theme.palette.secondary.dark,

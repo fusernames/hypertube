@@ -25,7 +25,7 @@ export function login(data, callback) {
       .catch(err => {
         console.log('ERRR', err)
         dispatch(fetching(false))
-        if (err._status == 401) {
+        if (err._status === 401) {
           dispatch(alert('LOGIN_ERROR', 'error'))
         }
       })
