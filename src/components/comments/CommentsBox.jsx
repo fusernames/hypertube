@@ -9,7 +9,7 @@ class CommentsBox extends React.Component {
 
   state = {
     isFetching: false,
-    comment: ''
+    comment: '',
   }
 
   handleSubmit = (e) => {
@@ -23,24 +23,32 @@ class CommentsBox extends React.Component {
       ...this.state,
       isFetching: true
     })
-    req(host + "/api/messages", {
-      useToken: true,
-      method: "POST",
-      body: {
-        owner: '/api/users/' + this.props.auth.user.id,
-        message: this.state.comment,
-        movie: '/api/movies/' + this.props.id,
-      }
-    }).then(res => {
-      // Handle api response
+    if (this.state.comment.replace(/\s/g, '').length) {
+      console.log(this.state.comment)
+      req(host + "/api/messages", {
+        useToken: true,
+        method: "POST",
+        body: {
+          owner: '/api/users/' + this.props.auth.user.id,
+          message: this.state.comment,
+          movie: '/api/movies/' + this.props.id,
+        }
+      }).then(res => {
+        // Handle api response
+        this.setState({
+          comment: '',
+          isFetching: false
+        });
+        this.props.addComment(this.props.id)
+      }).catch(err => {
+        // Handle errors
+      })
+    } else {
       this.setState({
         comment: '',
         isFetching: false
       });
-      this.props.addComment(this.props.id)
-    }).catch(err => {
-      // Handle errors
-    })
+    }
   }
 
   onChange = (e) => {
