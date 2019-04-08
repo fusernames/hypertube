@@ -69,6 +69,7 @@ class Player extends Component {
   render() {
     const { mediaUrl } = this.props
     if (!mediaUrl) return null
+    console.log(this.props)
     return (
       <video id="player" controls style={{width: '100%'}}
           onTimeUpdate={this.handleTimeChange}
@@ -76,7 +77,7 @@ class Player extends Component {
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
         <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + this.props.movieId + '/eng'} />
-        <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + this.props.movieId + '/fre'} />
+        <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + this.props.movieId + '/fre'} default={this.props.locales.code === "fr"}/>
       </video>
     );
   }
