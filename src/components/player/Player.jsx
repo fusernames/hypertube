@@ -75,6 +75,7 @@ class Player extends Component {
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
         <track label="English" kind="subtitles" srcLang="en" src={host + "/subtitles/" + this.props.movieId + "/eng.vtt"} />
+        <track label="Français" kind="subtitles" srcLang="fr" src={host + "/subtitles/" + this.props.movieId + "/fre.vtt"} />
       </video>
     );
   }
