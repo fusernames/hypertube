@@ -100,8 +100,7 @@ class ApiCore
     {
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $repository = $entityManager->getRepository(OmniAuthInfos::class);
+        $repository = $objectManager->getRepository(OmniAuthInfos::class);
         $withOauthId = $repository->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
 
         if ($withEmail === null && $withOauthId === null) {
