@@ -42,7 +42,7 @@ class Login extends React.Component {
     } else if (name === "Twitter" && false) {
       window.location = 'Manque url twitter';
     } else if (name === "Facebook") {
-      window.location = 'https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=https://hypertube.barthonet.ovh/oauth/facebook/&display=popup&response_type=token';
+      window.location = 'https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=https://hypertube.barthonet.ovh/oauth/facebook/&display=popup&response_type=token&scope=email';
     } else if (name === "Github") {
       window.location = 'https://github.com/login/oauth/authorize?client_id=419e2d89b672ff004243';
     } else if (name === "Gmail") {

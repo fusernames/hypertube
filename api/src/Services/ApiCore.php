@@ -105,10 +105,18 @@ class ApiCore
 
         if ($withEmail === null && $withOauthId === null) {
             $this->createUser($userData);
-            $this->objectManager->persist($this->user);
-            $this->objectManager->flush();
-            $jwt = $this->jwtManager->create($this->user);
-            return new JWTAuthenticationSuccessResponse($jwt);
+            if ($this->user) {
+                $this->objectManager->persist($this->user);
+                $this->objectManager->flush();
+                $jwt = $this->jwtManager->create($this->user);
+                return new JWTAuthenticationSuccessResponse($jwt);
+            } else {
+                return $this->displayError(
+                    403,
+                    "An error occurred during the registration process.",
+                    "Registration process failed."
+                );
+            }
         } else if ($withOauthId) {
             $jwt = $this->jwtManager->create($withOauthId->getUser());
             return new JWTAuthenticationSuccessResponse($jwt);
@@ -150,6 +158,10 @@ class ApiCore
     {
         $this->user = new User();
 
+        if ($userData['email'] === null) {
+            $this->user = null;
+            return;
+        }
         $this->user->setPlainPassword($userData["plainpassword"])
             ->setUsername($userData["username"])
             ->setEmail($userData["email"])
