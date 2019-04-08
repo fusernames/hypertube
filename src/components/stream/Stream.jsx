@@ -4,7 +4,8 @@ import req from '../../utils/req'
 import { Typography} from '@material-ui/core'
 import host from '../../config'
 import Player from '../player/Player'
-import Comments from '../comments/Comments';
+import Icon from '@material-ui/core/Icon'
+import Comments from '../comments/Comments'
 
 class Stream extends Component {
 
@@ -106,12 +107,18 @@ class Stream extends Component {
     this.fetchSubtitles(params.id)
   }
 
+  navigateBack = () => {
+    this.goBack();
+  }
+
   render() {
     const { startTime } = this.state
     const { params } = this.props.match
     if (startTime === undefined) return null
     return (
       <div>
+        <Icon onClick={() => this.props.history.goBack()}
+         color="primary" style={{position:'absolute', top:'80px', left:'40px'}}>keyboard_arrow_left</Icon>
         <Typography variant="h5" style={{marginBottom:'15px'}}>{this.state.name}</Typography>
         <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id}
             startTime={startTime}

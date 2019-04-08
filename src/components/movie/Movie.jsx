@@ -2,7 +2,7 @@ import React from 'react'
 import { Typography, Grid } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import Icon from '@material-ui/core/Icon';
+import Icon from '@material-ui/core/Icon'
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
