@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\User;
+use App\Entity\OmniAuthInfos;
 use App\Services\Curl;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -54,6 +55,10 @@ class ApiCore
      * @var JWTManager
      */
     protected $jwtManager;
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @param Curl $curl
@@ -128,7 +133,13 @@ class ApiCore
             ->setFirstname($userData["firstname"])
             ->setLastname($userData["lastname"])
             ->setOAuthAccess(true)
-            ;
+        ;
+
+        $oauthInfos = new OmniAuthInfos();
+        $oauthInfos->setOauthId($userData["id"])
+            ->setName($this->getName());
+        $this->user->addOmniAuthInfo($oauthInfos);
+        
         isset($userData["lang"]) ? $this->user->setLang($userData["lang"]) : 0;
         $this->setUserAvatar($userData["avatarUrl"]);
     }
@@ -239,5 +250,24 @@ class ApiCore
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $name
+     * @return self
+     */
+    public function setName(string $name = null): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

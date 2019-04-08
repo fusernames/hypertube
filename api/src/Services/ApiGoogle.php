@@ -25,6 +25,7 @@ class ApiGoogle extends ApiCore
         $this->setClient_id("39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com");
         $this->setClient_secret("MfrqQ_-ZgG7kZWHQnAn9cz1b");
         $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/gmail");
+        $this->setName("gmail");
     }
 
     /**
@@ -69,6 +70,7 @@ class ApiGoogle extends ApiCore
         if ($userData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
             $userData = [
+                "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->family_name . "gmailhypertube",
                 "username" => $userData->id . "-" . $userData->name,
                 "email" => $userData->id . "-" . $userData->family_name . "-gmail@hypertube.com",

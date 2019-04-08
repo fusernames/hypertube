@@ -24,6 +24,7 @@ class ApiGithub extends ApiCore
         $this->setClient_id("419e2d89b672ff004243");
         $this->setClient_secret("92199f0bad146feada6328e12e14021dd91a4ea9");
         $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/github");
+        $this->setName("github");
     }
 
     /**
@@ -72,6 +73,7 @@ class ApiGithub extends ApiCore
         if ($userData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
             $userData = [
+                "id" => $userData->id,
                 "plainpassword" => $userData->login . $userData->id . "githubhypertube",
                 "username" => $userData->id . "-" . $userData->login,
                 "email" => $userData->id . "-" . $userData->login . "-github@hypertube.com",

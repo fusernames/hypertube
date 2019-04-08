@@ -29,6 +29,7 @@ class ApiFacebook extends ApiCore
             'app_secret' => 'bd4d7dc40ecbabdb08f7d5df4557acdb',
             'default_graph_version' => 'v3.2'
         ]);
+        $this->setName("facebook");
     }
 
     /**
@@ -54,6 +55,7 @@ class ApiFacebook extends ApiCore
         }
         $me = $response->getGraphUser();
         $userData = [
+            "id" => $me->getId(),
             "plainpassword" => $me->getId() . $me->getFirstname() . "facebookhypertube",
             "username" => $me->getId() . "-" . $me->getName(),
             "email" => $me->getId() . "-" . $me->getFirstname() . "-facebook@hypertube.com",
