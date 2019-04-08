@@ -72,8 +72,8 @@ class Api42 extends ApiCore
             $userData = [
                 "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->login . "42hypertube",
-                "username" => $userData->id . "-" . $userData->login,
-                "email" => $userData->id . "-" . $userData->login . "-42@hypertube.com",
+                "username" => $userData->login,
+                "email" => $userData->email,
                 "firstname" => $userData->first_name,
                 "lastname" => $userData->last_name,
                 "avatarUrl" => $userData->image_url
