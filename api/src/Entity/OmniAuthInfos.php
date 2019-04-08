@@ -26,6 +26,11 @@ class OmniAuthInfos
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $oauthId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class OmniAuthInfos
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getOauthId(): ?int
+    {
+        return $this->oauthId;
+    }
+
+    public function setOauthId(int $oauthId): self
+    {
+        $this->oauthId = $oauthId;
 
         return $this;
     }
