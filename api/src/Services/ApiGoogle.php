@@ -75,7 +75,7 @@ class ApiGoogle extends ApiCore
         $userData = $this->curl->getData($this->getUser_url(), $token);
         $mailData = $this->curl->getData($this->mailUrl, $token);
 
-        if ($userData["code"] === 200) {
+        if ($userData["code"] === 200 && $mailData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
             $userData = [
                 "id" => $userData->id,
