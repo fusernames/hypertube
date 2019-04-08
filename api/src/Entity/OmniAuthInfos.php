@@ -27,7 +27,7 @@ class OmniAuthInfos
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=32)
      */
     private $oauthId;
 
@@ -60,12 +60,12 @@ class OmniAuthInfos
         return $this;
     }
 
-    public function getOauthId(): ?int
+    public function getOauthId(): ?string
     {
         return $this->oauthId;
     }
 
-    public function setOauthId(int $oauthId): self
+    public function setOauthId(string $oauthId): self
     {
         $this->oauthId = $oauthId;
 

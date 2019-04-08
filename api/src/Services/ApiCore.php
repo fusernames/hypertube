@@ -143,7 +143,7 @@ class ApiCore
      */
     public function addOauthInfo(array $userData) {
         $oauthInfos = new OmniAuthInfos();
-        $oauthInfos->setOauthId(intval($userData["id"]))
+        $oauthInfos->setOauthId($userData["id"])
             ->setName($this->getName());
         $this->user->addOmniAuthInfo($oauthInfos);
     }
