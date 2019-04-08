@@ -23,7 +23,6 @@ class Profile extends Component {
     const { dispatch } = this.props
     req(host + '/api/users/' + id, {useToken: true})
     .then(res => {
-      console.log(res)
       this.setStateCheck({
         username: res.username,
         firstname: res.firstname,
