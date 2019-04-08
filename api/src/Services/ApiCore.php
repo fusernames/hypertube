@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\User;
 use App\Entity\OmniAuthInfos;
 use App\Services\Curl;
+use App\Repository\OmniAuthInfosRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -98,16 +99,19 @@ class ApiCore
     public function findUser(array $userData)
     {
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
-        $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
-        if ($withEmail === null && $withUsername === null) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository(OmniAuthInfos::class);
+        $withOauthId = $repository->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
+
+        if ($withEmail === null && $withOauthId === null) {
             $this->createUser($userData);
             $this->objectManager->persist($this->user);
             $this->objectManager->flush();
             $jwt = $this->jwtManager->create($this->user);
             return new JWTAuthenticationSuccessResponse($jwt);
-        } else if ($withEmail && $withUsername && $withEmail->getId() === $withUsername->getId()) {
-            $jwt = $this->jwtManager->create($withEmail);
+        } else if ($withOauthId) {
+            $jwt = $this->jwtManager->create($withOauthId->getUser());
             return new JWTAuthenticationSuccessResponse($jwt);
         }
         return $this->displayError(
