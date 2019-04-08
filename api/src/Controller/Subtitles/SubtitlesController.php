@@ -93,6 +93,8 @@ class SubtitlesController extends AbstractController
             // A line is a timestamp line if the second line above it is an empty line
             if ($index === 1 || trim($lines[$index - 2]) === '') {
                 $lines[$index] = str_replace(',', '.', $lines[$index]);
+            } else if (!mb_detect_encoding($lines[$index], 'UTF-8', true)) {
+                $lines[$index] = utf8_encode($lines[$index]);
             }
         }
         // Insert VTT header and concatenate all lines in the new vtt file
@@ -147,8 +149,9 @@ class SubtitlesController extends AbstractController
         $eng = null;
         $fre = null;
 
-        for ($i = 0; $i < sizeof($subtitles); $i++) {
+        for ($i = 0; $i < sizeof($subtitles['data']); $i++) {
             if ($eng && $fre) break;
+            if ($subtitles['data'][$i]['MovieFPS'] != 23.976) continue;
             if (!$fre && $subtitles['data'][$i]['SubLanguageID'] === 'fre') {
                 $fre = $subtitles['data'][$i]['SubDownloadLink'];
             } else if (!$eng && $subtitles['data'][$i]['SubLanguageID'] === 'eng') {
