@@ -71,6 +71,9 @@ const translations = {
     LOGIN_ERROR: ["Invalid password or username", "Mot de passe ou nom d'utilisateur invalide"],
     // register
     REGISTER_SUCCESS: ["You have successfully register", "Inscription réussie"],
+    REGISTER_USERNAME_TOOK: ["This username is already took", "Ce nom d'utilisateur existe déjà"],
+    REGISTER_EMAIL_TOOK: ["This email is already took", "Cet email existe déjà"],
+    REGISTER_BAD_PICTURE: ["You can't upload this file", "Vous ne pouvez pas importer ce fichier"],
     // reset
     RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
     // user

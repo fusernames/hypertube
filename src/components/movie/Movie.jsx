@@ -101,7 +101,6 @@ class Movie extends React.Component {
     this.setStateCheck({...this.state, isFetching: true})
     req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + this.props.auth.user.id, {useToken: true})
     .then(res => {
-      console.log(res)
       let viewed = ((res[0] && res[0].time > 0) ? true : false)
       this.setStateCheck({
         ...this.state,
@@ -129,7 +128,6 @@ class Movie extends React.Component {
     const { movie, isFetching, viewed } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
-    console.log(viewed)
 
     if (!movie.title) return null
     return (

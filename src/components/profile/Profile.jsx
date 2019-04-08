@@ -23,7 +23,6 @@ class Profile extends Component {
     const { dispatch } = this.props
     req(host + '/api/users/' + id, {useToken: true})
     .then(res => {
-      console.log(this._isMounted, res)
       this.setStateCheck({
         username: res.username,
         firstname: res.firstname,
@@ -31,7 +30,7 @@ class Profile extends Component {
         avatar: res.avatar
       })
     }).catch(err => {
-      if (err.status === 404)
+      if (err._status === 404)
         dispatch(alert('USER_NOT_FOUND', 'error'))
     })
   }

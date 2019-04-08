@@ -44,12 +44,23 @@ class Register extends React.Component {
               body: data,
               useToken: true,
               contentType: false
+            }).catch(err => {
+              if (err._status >= 400 && err._status < 500) {
+                dispatch(alert('REGISTER_BAD_PICTURE', 'error'))
+              }
             })
           }))
           dispatch(alert('REGISTER_SUCCESS', 'success'))
         })
         .catch(err => {
-          //
+          console.log('err', err)
+          if (err._status === 400) {
+            if (err.violations[0].propertyPath === 'username') {
+              dispatch(alert('REGISTER_USERNAME_TOOK', 'error'))
+            } else if (err.violations[0].propertyPath === 'email') {
+              dispatch(alert('REGISTER_EMAIL_TOOK', 'error'))
+            }
+          }
         })
       }
     })
@@ -61,9 +72,9 @@ class Register extends React.Component {
     if (name === 'username')
       return validator.notNull().minLen(3).maxLen(20).errors
     else if (name === 'firstname')
-      return validator.notNull().isAlphabetic().maxLen(40).errors
+      return validator.notNull().isAlphabetic().minLen(2).maxLen(40).errors
     else if (name === 'lastname')
-      return validator.notNull().isAlphabetic().maxLen(40).errors
+      return validator.notNull().isAlphabetic().minLen(2).maxLen(40).errors
     else if (name === 'email')
       return validator.isEmail().errors
     else if (name === 'password')

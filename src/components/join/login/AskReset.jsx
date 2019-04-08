@@ -21,7 +21,7 @@ class Resetpw extends React.Component {
       dispatch(alert('RESET_SENT', 'success'))
     })
     .catch(err => {
-      if (err.status === 403)
+      if (err._status === 403)
         dispatch(alert('USER_NOT_FOUND', 'error'))
     })
     toggleAskReset();

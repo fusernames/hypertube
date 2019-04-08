@@ -24,7 +24,6 @@ class CommentsBox extends React.Component {
       isFetching: true
     })
     if (this.state.comment.replace(/\s/g, '').length) {
-      console.log(this.state.comment)
       req(host + "/api/messages", {
         useToken: true,
         method: "POST",

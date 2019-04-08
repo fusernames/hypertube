@@ -43,7 +43,7 @@ class Informations extends React.Component {
         }
       })
     }).catch(err => {
-      if (err.status === 404)
+      if (err._status === 404)
         dispatch(alert('USER_NOT_FOUND', 'error'))
     })
   }
