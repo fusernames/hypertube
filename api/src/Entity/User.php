@@ -396,11 +396,17 @@ class User extends BaseUser
      */
     private $oAuthAccess;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OmniAuthInfos", mappedBy="user")
+     */
+    private $omniAuthInfos;
+
     public function __construct()
     {
         parent::__construct();
         $this->messages = new ArrayCollection();
         $this->movieStatuses = new ArrayCollection();
+        $this->omniAuthInfos = new ArrayCollection();
     }
 
     /**
@@ -604,6 +610,37 @@ class User extends BaseUser
     public function setOAuthAccess(?bool $oAuthAccess): self
     {
         $this->oAuthAccess = $oAuthAccess;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OmniAuthInfos[]
+     */
+    public function getOmniAuthInfos(): Collection
+    {
+        return $this->omniAuthInfos;
+    }
+
+    public function addOmniAuthInfo(OmniAuthInfos $omniAuthInfo): self
+    {
+        if (!$this->omniAuthInfos->contains($omniAuthInfo)) {
+            $this->omniAuthInfos[] = $omniAuthInfo;
+            $omniAuthInfo->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOmniAuthInfo(OmniAuthInfos $omniAuthInfo): self
+    {
+        if ($this->omniAuthInfos->contains($omniAuthInfo)) {
+            $this->omniAuthInfos->removeElement($omniAuthInfo);
+            // set the owning side to null (unless already changed)
+            if ($omniAuthInfo->getUser() === $this) {
+                $omniAuthInfo->setUser(null);
+            }
+        }
 
         return $this;
     }
