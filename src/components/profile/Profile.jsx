@@ -23,11 +23,12 @@ class Profile extends Component {
     const { dispatch } = this.props
     req(host + '/api/users/' + id, {useToken: true})
     .then(res => {
+      console.log(this._isMounted, res)
       this.setStateCheck({
         username: res.username,
         firstname: res.firstname,
         lastname: res.lastname,
-        avatar: res.avatar.contentUrl
+        avatar: res.avatar
       })
     }).catch(err => {
       if (err.status === 404)
