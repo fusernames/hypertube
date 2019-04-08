@@ -6,9 +6,11 @@ import Icon from '@material-ui/core/Icon';
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
+import { browserHistory } from 'react-router'
 import Torrents from './Torrents'
 
 class Movie extends React.Component {
+
 
   _isMounted = false
   setStateCheck = (state, callback) => {
@@ -120,6 +122,10 @@ class Movie extends React.Component {
     this._isMounted = false
   }
 
+  navigateBack = () => {
+    this.goBack();
+  }
+
   render() {
     const { movie, isFetching, viewed } = this.state
     const { classes } = this.props
@@ -130,6 +136,8 @@ class Movie extends React.Component {
     return (
       <div>
         <Loading display={isFetching}/>
+        <Icon onClick={() => this.props.history.goBack()}
+         color="primary" style={{position:'absolute', top:'80px', left:'40px'}}>keyboard_arrow_left</Icon>
         <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
         <Grid container spacing={16}>
           <Grid item xs={12} sm={5} md={5} style={{position:'relative'}}>
