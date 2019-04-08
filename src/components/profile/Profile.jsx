@@ -23,11 +23,12 @@ class Profile extends Component {
     const { dispatch } = this.props
     req(host + '/api/users/' + id, {useToken: true})
     .then(res => {
+      console.log(res)
       this.setStateCheck({
         username: res.username,
         firstname: res.firstname,
         lastname: res.lastname,
-        avatar: res.avatar
+        avatar: res.avatarUrl
       })
     }).catch(err => {
       if (err._status === 404)
@@ -57,7 +58,7 @@ class Profile extends Component {
           <Grid item xs={12} sm={7}>
             <div
               className={classes.avatar}
-              style={{backgroundImage:'url(' + host + '/media/' + avatar + ')'}}
+              style={{backgroundImage:'url(' + avatar + ')'}}
             >
             </div>
           </Grid>

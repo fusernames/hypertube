@@ -53,7 +53,6 @@ class Register extends React.Component {
           dispatch(alert('REGISTER_SUCCESS', 'success'))
         })
         .catch(err => {
-          console.log('err', err)
           if (err._status === 400) {
             if (err.violations[0].propertyPath === 'username') {
               dispatch(alert('REGISTER_USERNAME_TOOK', 'error'))
