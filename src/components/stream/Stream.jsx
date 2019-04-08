@@ -116,8 +116,8 @@ class Stream extends Component {
     return (
       <div>
         <div style={{display: 'flex', alignItems:'center', marginBottom:'8px' }}>
-          <IconButton style={{marginRight:'5px'}}>
-            <Icon onClick={() => this.props.history.goBack()} color="primary">keyboard_arrow_left</Icon>
+          <IconButton style={{marginRight:'5px'}} onClick={() => this.props.history.goBack()} >
+            <Icon color="primary">keyboard_arrow_left</Icon>
           </IconButton>
           <Typography variant="h5" inline>{name}</Typography>
         </div>

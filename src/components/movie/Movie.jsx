@@ -135,8 +135,8 @@ class Movie extends React.Component {
         <Loading display={isFetching}/>
         <Grid container spacing={8}>
           <Grid item xs={12} style={{display: 'flex', alignItems:'center'}}>
-            <IconButton style={{marginRight:'5px'}}>
-              <Icon onClick={() => this.props.history.goBack()} color="primary">keyboard_arrow_left</Icon>
+            <IconButton style={{marginRight:'5px'}} onClick={() => this.props.history.goBack()}>
+              <Icon color="primary">keyboard_arrow_left</Icon>
             </IconButton>
             <Typography variant="h5" inline>{movie.title}</Typography>
           </Grid>
