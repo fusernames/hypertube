@@ -77,18 +77,22 @@ class ApiGoogle extends ApiCore
 
         if ($userData["code"] === 200 && $mailData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
+            $mailData = json_decode($mailData["resp"]);
             $userData = [
                 "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->family_name . "gmailhypertube",
                 "username" => $userData->name,
-                "email" => $mailData,
+                "email" => $mailData->emailAddress,
                 "firstname" => $userData->given_name,
                 "lastname" => $userData->family_name,
                 "avatarUrl" => $userData->picture,
                 "lang" => $userData->locale
             ];
             return $this->findUser($userData);
+        } else if ($userData["code"] !== 200) {
+            return $this->displayError($userData["code"], $userData["resp"]);
+        } else {
+            return $this->displayError($mailData["code"], $mailData["resp"]);
         }
-        return $this->displayError($userData["code"], $userData["resp"]);
     }
 }
