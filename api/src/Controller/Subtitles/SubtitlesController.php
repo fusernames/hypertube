@@ -93,7 +93,7 @@ class SubtitlesController extends AbstractController
             // A line is a timestamp line if the second line above it is an empty line
             if ($index === 1 || trim($lines[$index - 2]) === '') {
                 $lines[$index] = str_replace(',', '.', $lines[$index]);
-            } else {
+            } else if (!mb_detect_encoding($lines[$index], 'UTF-8', true)) {
                 $lines[$index] = utf8_encode($lines[$index]);
             }
         }
