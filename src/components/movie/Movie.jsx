@@ -1,8 +1,7 @@
 import React from 'react'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid, Icon, IconButton } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import Icon from '@material-ui/core/Icon'
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
@@ -136,10 +135,13 @@ class Movie extends React.Component {
     return (
       <div>
         <Loading display={isFetching}/>
-        <Icon onClick={() => this.props.history.goBack()}
-         color="primary" style={{position:'absolute', top:'80px', left:'40px'}}>keyboard_arrow_left</Icon>
-        <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
-        <Grid container spacing={16}>
+        <Grid container spacing={8}>
+          <Grid item xs={12} style={{display: 'flex', alignItems:'center'}}>
+            <IconButton style={{marginRight:'5px'}}>
+              <Icon onClick={() => this.props.history.goBack()} color="primary">keyboard_arrow_left</Icon>
+            </IconButton>
+            <Typography variant="h5" inline>{movie.title}</Typography>
+          </Grid>
           <Grid item xs={12} sm={5} md={5} style={{position:'relative'}}>
             {viewed && <Icon color="primary" style={{position:'absolute', top:'15px', left:'15px'}}>visibility</Icon>}
             <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>

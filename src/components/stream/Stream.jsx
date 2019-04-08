@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import req from '../../utils/req'
-import { Typography} from '@material-ui/core'
+import { Typography, Icon, IconButton } from '@material-ui/core'
 import host from '../../config'
 import Player from '../player/Player'
-import Icon from '@material-ui/core/Icon'
 import Comments from '../comments/Comments'
 
 class Stream extends Component {
@@ -112,14 +111,17 @@ class Stream extends Component {
   }
 
   render() {
-    const { startTime } = this.state
+    const { startTime, name } = this.state
     const { params } = this.props.match
     if (startTime === undefined) return null
     return (
       <div>
-        <Icon onClick={() => this.props.history.goBack()}
-         color="primary" style={{position:'absolute', top:'80px', left:'40px'}}>keyboard_arrow_left</Icon>
-        <Typography variant="h5" style={{marginBottom:'15px'}}>{this.state.name}</Typography>
+        <div style={{display: 'flex', alignItems:'center', marginBottom:'8px' }}>
+          <IconButton style={{marginRight:'5px'}}>
+            <Icon onClick={() => this.props.history.goBack()} color="primary">keyboard_arrow_left</Icon>
+          </IconButton>
+          <Typography variant="h5" inline>{name}</Typography>
+        </div>
         <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id}
             startTime={startTime}
             onChange={this.updateMovieStatus}

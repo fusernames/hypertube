@@ -133,10 +133,8 @@ class Torrents extends Component {
                     </IconButton>
                   }
                   {torrent.download === true &&
-                    <IconButton style={{padding:'5px'}}>
-                      <Typography component={Link} to={"/stream/" + torrent.movieId}>
-                        <Icon>play_arrow</Icon>
-                      </Typography>
+                    <IconButton style={{padding:'5px'}} component={Link} to={"/stream/" + torrent.movieId}>
+                        <Icon >play_arrow</Icon>
                     </IconButton>
                   }
                   {torrent.downloading !== undefined &&
