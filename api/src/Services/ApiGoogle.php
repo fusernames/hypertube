@@ -81,7 +81,7 @@ class ApiGoogle extends ApiCore
                 "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->family_name . "gmailhypertube",
                 "username" => $userData->name,
-                "email" => $mailData->mail,
+                "email" => $mailData,
                 "firstname" => $userData->given_name,
                 "lastname" => $userData->family_name,
                 "avatarUrl" => $userData->picture,
