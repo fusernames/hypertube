@@ -72,7 +72,7 @@ class ApiGoogle extends ApiCore
             $userData = [
                 "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->family_name . "gmailhypertube",
-                "username" => $userData->id . "-" . $userData->name,
+                "username" => $userData->name,
                 "email" => $userData->id . "-" . $userData->family_name . "-gmail@hypertube.com",
                 "firstname" => $userData->given_name,
                 "lastname" => $userData->family_name,
