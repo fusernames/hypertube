@@ -41,7 +41,8 @@ class Player extends Component {
 
   handleKeyPress = e => {
     const { player } = this
-    if (!this.enableEvent || !this.player) return;
+    if (!this.enableEvent || !this.player) return
+    if (document.activeElement.tagName === "INPUT") return
     let needsPrevent = true
     switch (e.key) {
       case " ":
