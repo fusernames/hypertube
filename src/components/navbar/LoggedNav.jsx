@@ -1,13 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { IconButton, Badge, Tooltip, Menu, MenuItem, Paper, Popper, Typography } from '@material-ui/core'
+import { IconButton, Badge, Tooltip, Menu, MenuItem, Paper, Popper, Typography, Icon } from '@material-ui/core'
 import { Notifications as NotificationsIcon } from '@material-ui/icons'
 import { Cancel as CancelIcon } from '@material-ui/icons'
 import { Person as PersonIcon } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles'
 import { logout } from '../../redux/auth/actions'
-import Notifications from './Notifications'
 
 class LoggedNav extends React.Component {
 
@@ -54,21 +53,15 @@ class LoggedNav extends React.Component {
 
     return (
       <div>
-        <IconButton color="primary" onClick={this.togglePopper}>
-          <Badge badgeContent={17} color="secondary">
-            <NotificationsIcon/>
-          </Badge>
-        </IconButton>
-        <Popper id={''} open={openPopper} anchorEl={anchorPopper}>
-          <Paper style={{padding: '22px 10px 10px 10px'}}>
-            <Typography>Notifs here</Typography>
-          </Paper>
-        </Popper>
+        <Tooltip title={locale.navbar.movies} placement="bottom">
+          <IconButton color="primary" component={Link} to="/movies">
+            <Icon>local_movies</Icon>
+          </IconButton>
+        </Tooltip>
         <IconButton color="primary" onClick={this.openSubMenu}>
           <PersonIcon/>
         </IconButton>
         <SubMenu />
-        <Notifications />
         <Tooltip title={locale.navbar.logout} placement="bottom">
           <IconButton color="primary" onClick={() => { dispatch(logout()) }}>
             <CancelIcon/>

@@ -20,6 +20,7 @@ const translations = {
     profile: ["Profile", "Profil"],
     my_account: ["My account", "Mon compte"],
     home: ["Home", "Accueil"],
+    movies: ["Your movies", "Vos films"]
   },
   login: {
     btn: ["Log In", "Se connecter"],
