@@ -69,7 +69,6 @@ class Player extends Component {
   render() {
     const { mediaUrl } = this.props
     if (!mediaUrl) return null
-    console.log(this.props)
     return (
       <video id="player" controls style={{width: '100%'}}
           onTimeUpdate={this.handleTimeChange}
