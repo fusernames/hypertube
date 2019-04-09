@@ -67,7 +67,7 @@ class Player extends Component {
   }
 
   render() {
-    const { mediaUrl } = this.props
+    const { mediaUrl, movieId, locales } = this.props
     if (!mediaUrl) return null
     return (
       <video id="player" controls style={{width: '100%'}}
@@ -75,8 +75,12 @@ class Player extends Component {
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
-        <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + this.props.movieId + '/eng'} />
-        <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + this.props.movieId + '/fre'} default={this.props.locales.code === "fr"}/>
+        {host + '/subtitles/' + movieId + '/eng.vtt' &&
+          <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + movieId + '/eng'} />
+        }
+        {host + '/subtitles/' + movieId + '/fre.vtt' &&
+          <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + movieId + '/fre'} default={locales.code === "fr"}/>
+        }
       </video>
     );
   }
