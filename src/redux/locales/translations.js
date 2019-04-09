@@ -20,6 +20,7 @@ const translations = {
     profile: ["Profile", "Profil"],
     my_account: ["My account", "Mon compte"],
     home: ["Home", "Accueil"],
+    movies: ["Your movies", "Vos films"]
   },
   login: {
     btn: ["Log In", "Se connecter"],
@@ -71,13 +72,18 @@ const translations = {
     LOGIN_ERROR: ["Invalid password or username", "Mot de passe ou nom d'utilisateur invalide"],
     // register
     REGISTER_SUCCESS: ["You have successfully register", "Inscription réussie"],
+    REGISTER_USERNAME_TOOK: ["This username is already took", "Ce nom d'utilisateur existe déjà"],
+    REGISTER_EMAIL_TOOK: ["This email is already took", "Cet email existe déjà"],
+    REGISTER_BAD_PICTURE: ["You can't upload this file", "Vous ne pouvez pas importer ce fichier"],
     // reset
     RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
     // user
     USER_NOT_FOUND: ["User not found", "Utilisateur non trouvé"],
     USER_EDIT_SUCCESS: ["Your informations has been updated", "Vos informations ont bien étés éditées"],
     USER_BAD_PASSWORD: ["This password is not correct", "Le mot de passe n'est pas correct"],
-    USER_EDIT_PASSWORD_SUCCESS: ["Password updated successfully", "Votre mot de passe a bien été mis à jour"]
+    USER_EDIT_PASSWORD_SUCCESS: ["Password updated successfully", "Votre mot de passe a bien été mis à jour"],
+    // oauth
+    OAUTH_ERROR: ["This account is already register", "Ce compte existe déjà"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],

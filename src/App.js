@@ -14,6 +14,7 @@ import LoggedRoute from './utils/jsx/LoggedRoute'
 import { getCurrentUser } from './redux/auth/actions'
 import OAuth from './components/oauth/OAuth'
 import Stream from './components/stream/Stream'
+import Movies from './components/movies/Movies'
 
 const theme = createMuiTheme({
   palette: {
@@ -55,6 +56,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/oauth/:name" component={OAuth} />
             <LoggedRoute path="/movie/:id" component={Movie} />
+            <LoggedRoute path="/movies" component={Movies} />
             <LoggedRoute path="/user/:id" component={Profile} />
             <LoggedRoute path="/account" component={Account} />
             <LoggedRoute path="/stream/:id" component={Stream} />

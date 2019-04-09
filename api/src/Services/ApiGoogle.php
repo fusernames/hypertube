@@ -13,6 +13,12 @@ use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessRespon
 class ApiGoogle extends ApiCore
 {
     /**
+     * Specific to gmail, url that returns the user's mail.
+     * @var string
+     */
+    private $mailUrl;
+
+    /**
      * @param Curl $curl
      * @param UserManagerInterface $userManager
      * @param ObjectManager $objectManager
@@ -25,6 +31,8 @@ class ApiGoogle extends ApiCore
         $this->setClient_id("39760124824-ehshl281mip2ejm0f9l5vkgdb672j16g.apps.googleusercontent.com");
         $this->setClient_secret("MfrqQ_-ZgG7kZWHQnAn9cz1b");
         $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/gmail");
+        $this->mailUrl = "https://www.googleapis.com/gmail/v1/users/me/profile";
+        $this->setName("gmail");
     }
 
     /**
@@ -65,20 +73,26 @@ class ApiGoogle extends ApiCore
     public function getUserData(string $token)
     {
         $userData = $this->curl->getData($this->getUser_url(), $token);
+        $mailData = $this->curl->getData($this->mailUrl, $token);
 
-        if ($userData["code"] === 200) {
+        if ($userData["code"] === 200 && $mailData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
+            $mailData = json_decode($mailData["resp"]);
             $userData = [
+                "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->family_name . "gmailhypertube",
-                "username" => $userData->id . "-" . $userData->name,
-                "email" => $userData->id . "-" . $userData->family_name . "-gmail@hypertube.com",
+                "username" => $userData->name,
+                "email" => $mailData->emailAddress,
                 "firstname" => $userData->given_name,
                 "lastname" => $userData->family_name,
                 "avatarUrl" => $userData->picture,
                 "lang" => $userData->locale
             ];
             return $this->findUser($userData);
+        } else if ($userData["code"] !== 200) {
+            return $this->displayError($userData["code"], $userData["resp"]);
+        } else {
+            return $this->displayError($mailData["code"], $mailData["resp"]);
         }
-        return $this->displayError($userData["code"], $userData["resp"]);
     }
 }

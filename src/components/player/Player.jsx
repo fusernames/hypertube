@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import host from '../../config';
+import host from '../../config'
 
 /**
  * Component takes 2 props =>
@@ -11,9 +11,22 @@ import host from '../../config';
  */
 class Player extends Component {
 
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
+
   state = {
     oldTime: 0,
-    currentTime: 0
+    currentTime: 0,
+    subtitles: {
+      fre: null,
+      eng: null
+    }
   }
 
   enableEvent = false
@@ -25,23 +38,59 @@ class Player extends Component {
     if (this.player.currentTime < startTime)
       this.player.currentTime = startTime;
     document.addEventListener('keydown', this.handleKeyPress)
+    this.fetchSubtitles()
   }
 
   handleTimeChange = e => {
-    this.setState({
+    this.setStateCheck({
       currentTime: e.target.currentTime,
     }, () => {
       let { currentTime, oldTime } = this.state;
       if (Math.abs(currentTime - oldTime) > 5 && this.props.onChange) {
-        this.setState({ oldTime: currentTime });
+        this.setStateCheck({ oldTime: currentTime });
         this.props.onChange(currentTime);
       }
     })
   }
 
+  fetchSubtitles = (redo = true) => {
+    const { movieId } = this.props
+    const { fre, eng } = this.state.subtitles
+    fetch(host + '/api/movies/subtitles/' + movieId + '/eng')
+    .then(res => {
+      this.setStateCheck({
+        ...this.state,
+        subtitles: {
+          ...this.state.subtitles,
+          eng: res.status === 200
+        }
+      })
+    })
+    .catch(err => {
+      // Handle err
+    })
+    fetch(host + '/api/movies/subtitles/' + movieId + '/fre')
+    .then(res => {
+      this.setStateCheck({
+        ...this.state,
+        subtitles: {
+          ...this.state.subtitles,
+          fre: res.status === 200
+        }
+      })
+    })
+    .catch(err => {
+      // Handle err
+    })
+    if (!fre && !eng && redo) {
+      setTimeout(() => this.fetchSubtitles(false), 2500);
+    }
+  }
+
   handleKeyPress = e => {
     const { player } = this
-    if (!this.enableEvent || !this.player) return;
+    if (!this.enableEvent || !this.player) return
+    if (document.activeElement.tagName === "INPUT") return
     let needsPrevent = true
     switch (e.key) {
       case " ":
@@ -65,8 +114,17 @@ class Player extends Component {
     if (needsPrevent) e.preventDefault()
   }
 
+  componentWillMount() {
+    this._isMounted = true
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   render() {
-    const { mediaUrl } = this.props
+    const { mediaUrl, movieId, locales } = this.props
+    const { fre, eng } = this.state.subtitles
     if (!mediaUrl) return null
     return (
       <video id="player" controls style={{width: '100%'}}
@@ -74,7 +132,8 @@ class Player extends Component {
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
-        <track label="English" kind="subtitles" srcLang="en" src={host + "/subtitles/" + this.props.movieId + "/eng.vtt"} />
+        {eng && <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + movieId + '/eng'} />}
+        {fre && <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + movieId + '/fre'} default={locales.code === "fr"}/>}
       </video>
     );
   }

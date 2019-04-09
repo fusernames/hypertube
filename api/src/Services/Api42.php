@@ -25,6 +25,7 @@ class Api42 extends ApiCore
         $this->setClient_id("410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9");
         $this->setClient_secret("0e156668ef0c973c8fa8526fc683f26ce42801788756de614a307eee406ce1b8");
         $this->setRedirect_uri("https://hypertube.barthonet.ovh/oauth/42");
+        $this->setName("42");
     }
 
     /**
@@ -69,9 +70,10 @@ class Api42 extends ApiCore
         if ($userData["code"] === 200) {
             $userData = json_decode($userData["resp"]);
             $userData = [
+                "id" => $userData->id,
                 "plainpassword" => $userData->id . $userData->login . "42hypertube",
-                "username" => $userData->id . "-" . $userData->login,
-                "email" => $userData->id . "-" . $userData->login . "-42@hypertube.com",
+                "username" => $userData->login,
+                "email" => $userData->email,
                 "firstname" => $userData->first_name,
                 "lastname" => $userData->last_name,
                 "avatarUrl" => $userData->image_url

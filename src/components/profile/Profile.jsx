@@ -27,10 +27,10 @@ class Profile extends Component {
         username: res.username,
         firstname: res.firstname,
         lastname: res.lastname,
-        avatar: res.avatar.contentUrl
+        avatar: res.avatarUrl
       })
     }).catch(err => {
-      if (err.status === 404)
+      if (err._status === 404)
         dispatch(alert('USER_NOT_FOUND', 'error'))
     })
   }
@@ -57,7 +57,7 @@ class Profile extends Component {
           <Grid item xs={12} sm={7}>
             <div
               className={classes.avatar}
-              style={{backgroundImage:'url(' + host + '/media/' + avatar + ')'}}
+              style={{backgroundImage:'url(' + avatar + ')'}}
             >
             </div>
           </Grid>

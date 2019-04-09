@@ -2,12 +2,7 @@ import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Drawer from '@material-ui/core/Drawer'
-import { List, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core'
-import { NotificationsTwoTone as NotificationsIcon } from '@material-ui/icons'
-import { CancelTwoTone as CancelIcon } from '@material-ui/icons'
-import { PersonTwoTone as PersonIcon } from '@material-ui/icons'
-import { SettingsTwoTone as SettingsIcon } from '@material-ui/icons'
-import { HomeTwoTone as HomeIcon } from '@material-ui/icons'
+import { List, ListItem, ListItemText, ListItemIcon, Divider, Icon } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { logout } from '../../redux/auth/actions'
 
@@ -22,25 +17,25 @@ class SideNav extends React.Component {
         <div className={classes.list}>
           <List>
             <ListItem button key={locale.navbar.home} component={Link} to="/">
-              <ListItemIcon><HomeIcon/></ListItemIcon>
+              <ListItemIcon><Icon>home</Icon></ListItemIcon>
               <ListItemText primary={locale.navbar.home} />
             </ListItem>
             <Divider />
-            <ListItem button key={locale.navbar.notifications}>
-              <ListItemIcon><NotificationsIcon/></ListItemIcon>
-              <ListItemText className={classes.itemText} primary={locale.navbar.notifications} />
+            <ListItem button key={locale.navbar.movies} component={Link} to="/movies">
+              <ListItemIcon><Icon>local_movies</Icon></ListItemIcon>
+              <ListItemText primary={locale.navbar.movies} />
             </ListItem>
             <ListItem button key={locale.navbar.profile} component={Link} to="/user/me">
-              <ListItemIcon><PersonIcon/></ListItemIcon>
+              <ListItemIcon><Icon>person</Icon></ListItemIcon>
               <ListItemText primary={locale.navbar.profile} />
             </ListItem>
             <ListItem button key={locale.navbar.my_account} component={Link} to="/account">
-              <ListItemIcon><SettingsIcon/></ListItemIcon>
+              <ListItemIcon><Icon>settings</Icon></ListItemIcon>
               <ListItemText primary={locale.navbar.my_account} />
             </ListItem>
             <Divider />
             <ListItem button key={locale.navbar.logout} onClick={() => { dispatch(logout()) }}>
-              <ListItemIcon><CancelIcon/></ListItemIcon>
+              <ListItemIcon><Icon>cancel</Icon></ListItemIcon>
               <ListItemText primary={locale.navbar.logout} />
             </ListItem>
           </List>

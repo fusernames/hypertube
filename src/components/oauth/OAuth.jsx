@@ -7,34 +7,31 @@ import req from '../../utils/req'
 import host from '../../config'
 import Cookies from 'js-cookie'
 import { getCurrentUser } from '../../redux/auth/actions'
+import { alert } from '../../redux/snackbars/actions'
 
 class OAuth extends React.Component {
 
   state = {
     component: <Loading />
   }
-  
+
   componentDidMount() {
     const { name } = this.props.match.params
+    const { dispatch } = this.props
     let token = ""
     let auth = {}
 
-    console.log(this.props.location);
-
     switch (name) {
       case "gmail":
-        token = queryString.parse(this.props.location.search).code;
-        console.log(token);
-        break;
       case "42":
       case "github":
         token = queryString.parse(this.props.location.search).code;
         break
+      case "trello":
+        token = queryString.parse(this.props.location.hash.replace("#", "")).token
+        break
       case "facebook":
         token = queryString.parse(this.props.location.hash.replace("#", "")).access_token
-        break
-      case "twitter":
-        // Handle
         break
       default:
         break
@@ -56,7 +53,8 @@ class OAuth extends React.Component {
             component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
         });
       }).catch(err => {
-        // Handle errors
+        if (err._status === 403)
+          dispatch(alert('OAUTH_ERROR', 'error'))
       })
     } else {
       window.location = host

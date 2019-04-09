@@ -1,14 +1,14 @@
 import React from 'react'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid, Icon, IconButton } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import Icon from '@material-ui/core/Icon';
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
 import Torrents from './Torrents'
 
 class Movie extends React.Component {
+
 
   _isMounted = false
   setStateCheck = (state, callback) => {
@@ -100,7 +100,6 @@ class Movie extends React.Component {
     this.setStateCheck({...this.state, isFetching: true})
     req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + this.props.auth.user.id, {useToken: true})
     .then(res => {
-      console.log(res)
       let viewed = ((res[0] && res[0].time > 0) ? true : false)
       this.setStateCheck({
         ...this.state,
@@ -120,18 +119,26 @@ class Movie extends React.Component {
     this._isMounted = false
   }
 
+  navigateBack = () => {
+    this.goBack();
+  }
+
   render() {
     const { movie, isFetching, viewed } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
-    console.log(viewed)
 
     if (!movie.title) return null
     return (
       <div>
         <Loading display={isFetching}/>
-        <Typography variant="h5" style={{marginBottom:'15px'}}>{movie.title}</Typography>
-        <Grid container spacing={16}>
+        <Grid container spacing={8}>
+          <Grid item xs={12} style={{display: 'flex', alignItems:'center'}}>
+            <IconButton style={{marginRight:'5px'}} onClick={() => this.props.history.goBack()}>
+              <Icon color="primary">keyboard_arrow_left</Icon>
+            </IconButton>
+            <Typography variant="h5" inline>{movie.title}</Typography>
+          </Grid>
           <Grid item xs={12} sm={5} md={5} style={{position:'relative'}}>
             {viewed && <Icon color="primary" style={{position:'absolute', top:'15px', left:'15px'}}>visibility</Icon>}
             <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>
@@ -202,7 +209,9 @@ class Movie extends React.Component {
 const styles = theme => ({
   img: {
     borderRadius:'5px',
-    overflow:'hidden'
+    overflow:'hidden',
+    fontFamily: 'Roboto, Arial',
+    color: 'rgba(255,255,255,0.9)'
   },
   paper: {
     background: theme.palette.secondary.dark,

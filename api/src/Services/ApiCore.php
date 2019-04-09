@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Entity\User;
+use App\Entity\OmniAuthInfos;
 use App\Services\Curl;
+use App\Repository\OmniAuthInfosRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,6 +56,10 @@ class ApiCore
      * @var JWTManager
      */
     protected $jwtManager;
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @param Curl $curl
@@ -95,21 +101,61 @@ class ApiCore
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
         $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
-        if ($withEmail === null && $withUsername === null) {
+        $oAuthInfosRepo = $this->objectManager->getRepository(OmniAuthInfos::class);
+        $withOauthId = $oAuthInfosRepo->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
+
+        if ($withEmail === null && $withOauthId === null) {
+            if ($withUsername) {
+                return $this->displayError(
+                    403,
+                    "An error occurred during the registration process.",
+                    "USERNAME_TAKEN"
+                );
+            }
             $this->createUser($userData);
+            if ($this->user) {
+                $this->addOauthInfo($userData);
+                $this->objectManager->persist($this->user);
+                $this->objectManager->flush();
+                $jwt = $this->jwtManager->create($this->user);
+                return new JWTAuthenticationSuccessResponse($jwt);
+            } else {
+                return $this->displayError(
+                    403,
+                    "An error occurred during the registration process.",
+                    "MAIL_EMPTY"
+                );
+            }
+        } else if ($withOauthId) {
+            $jwt = $this->jwtManager->create($withOauthId->getUser());
+            return new JWTAuthenticationSuccessResponse($jwt);
+        } else if ($withEmail) {            
+            $this->user = $withEmail;
+
+            $withOauthName = $oAuthInfosRepo->findOneBy(["name" => $this->getName(), "user" => $this->user]);
+            if ($withOauthName) {
+                return $this->displayError(403, "Oauth already used.", "ALREADY_USED_FOR_EMAIL");
+            }
+
+            $this->addOauthInfo($userData);
             $this->objectManager->persist($this->user);
             $this->objectManager->flush();
-            $jwt = $this->jwtManager->create($this->user);
-            return new JWTAuthenticationSuccessResponse($jwt);
-        } else if ($withEmail && $withUsername && $withEmail->getId() === $withUsername->getId()) {
             $jwt = $this->jwtManager->create($withEmail);
             return new JWTAuthenticationSuccessResponse($jwt);
         }
-        return $this->displayError(
-            403,
-            "An error occurred during the registration process.",
-            "Registration process failed."
-        );
+    }
+
+    /**
+     * Adds oauth info for current user.
+     * 
+     * @param array $userData
+     * @return void
+     */
+    public function addOauthInfo(array $userData) {
+        $oauthInfos = new OmniAuthInfos();
+        $oauthInfos->setOauthId($userData["id"])
+            ->setName($this->getName());
+        $this->user->addOmniAuthInfo($oauthInfos);
     }
 
     /**
@@ -122,13 +168,20 @@ class ApiCore
     {
         $this->user = new User();
 
+        if ($userData['email'] === null) {
+            $this->user = null;
+            return;
+        }
         $this->user->setPlainPassword($userData["plainpassword"])
             ->setUsername($userData["username"])
             ->setEmail($userData["email"])
             ->setFirstname($userData["firstname"])
             ->setLastname($userData["lastname"])
             ->setOAuthAccess(true)
-            ;
+        ;
+
+        $this->addOauthInfo($userData);
+        
         isset($userData["lang"]) ? $this->user->setLang($userData["lang"]) : 0;
         $this->setUserAvatar($userData["avatarUrl"]);
     }
@@ -239,5 +292,24 @@ class ApiCore
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    /**
+     * @param string $name
+     * @return self
+     */
+    public function setName(string $name = null): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

@@ -6,6 +6,7 @@ use App\Services\Api42;
 use App\Services\ApiGithub;
 use App\Services\ApiGoogle;
 use App\Services\ApiFacebook;
+use App\Services\ApiTrello;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,20 +35,28 @@ class OAuthController extends Controller
     private $apiGoogle;
 
     /**
+     * @var ApiTrello $apiTrello
+     */
+    private $apiTrello;
+
+    /**
      * @param Api42 $api42
      * @param ApiGithub $apiGithub
      * @param ApiFacebook $apiFacebook
      * @param ApiGoogle $apiGoogle
+     * @param ApiTrello $apiTrello
      */
     public function __construct(Api42 $api42,
                                 ApiGithub $apiGithub,
                                 ApiFacebook $apiFacebook,
-                                ApiGoogle $apiGoogle)
+                                ApiGoogle $apiGoogle,
+                                ApiTrello $apiTrello)
     {
         $this->api42 = $api42;
         $this->apiGithub = $apiGithub;
         $this->apiFacebook = $apiFacebook;
         $this->apiGoogle = $apiGoogle;
+        $this->apiTrello = $apiTrello;
     }
 
     /**
@@ -67,8 +76,8 @@ class OAuthController extends Controller
                 return $this->api42->getToken($token, $jwtManager);
             case "github":
                 return $this->apiGithub->getToken($token, $jwtManager);
-            case "twitter":
-                return $this->_twitter($token);
+            case "trello":
+                return $this->apiTrello->getUserData($token, $jwtManager);
             case "gmail":
                 return $this->apiGoogle->getToken($token, $jwtManager);
             default:
@@ -80,23 +89,5 @@ class OAuthController extends Controller
                     400
                 );
         }
-    }
-
-    /**
-     * @param string $token
-     * @return JsonResponse|JWTAuthenticationSuccessResponse
-     */
-    private function _twitter(string $token = null)
-    {
-        return new JsonResponse(
-            [
-                "api" => "twitter",
-                "access_code" => $token,
-                "error" => "An error occurred during the authentication process.",
-                "message" => "The features related to the twitter API are not yet operational.",
-                "code" => 403
-            ],
-            403
-        );
     }
 }

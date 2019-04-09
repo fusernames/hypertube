@@ -25,7 +25,7 @@ class Curl
         );
     }
 
-    public function initGetCurl(string $url, string $token)
+    public function initGetCurl(string $url, $token)
     {
         $this->curl = curl_init();
         $authorization = $token ? "Authorization: Bearer $token" : "";
