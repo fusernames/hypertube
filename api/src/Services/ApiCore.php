@@ -101,15 +101,15 @@ class ApiCore
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
         $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
-        $repository = $this->objectManager->getRepository(OmniAuthInfos::class);
-        $withOauthId = $repository->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
+        $oAuthInfosRepo = $this->objectManager->getRepository(OmniAuthInfos::class);
+        $withOauthId = $oAuthInfosRepo->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
 
         if ($withEmail === null && $withOauthId === null) {
             if ($withUsername) {
                 return $this->displayError(
                     403,
                     "An error occurred during the registration process.",
-                    "Registration process failed."
+                    "USERNAME_TAKEN"
                 );
             }
             $this->createUser($userData);
@@ -123,14 +123,20 @@ class ApiCore
                 return $this->displayError(
                     403,
                     "An error occurred during the registration process.",
-                    "Registration process failed."
+                    "MAIL_EMPTY"
                 );
             }
         } else if ($withOauthId) {
             $jwt = $this->jwtManager->create($withOauthId->getUser());
             return new JWTAuthenticationSuccessResponse($jwt);
-        } else if ($withEmail) {
+        } else if ($withEmail) {            
             $this->user = $withEmail;
+
+            $withOauthName = $oAuthInfosRepo->findOneBy(["name" => $this->getName(), "user" => $this->user]);
+            if ($withOauthName) {
+                return $this->displayError(403, "Oauth already used.", "ALREADY_USED_FOR_EMAIL");
+            }
+
             $this->addOauthInfo($userData);
             $this->objectManager->persist($this->user);
             $this->objectManager->flush();
