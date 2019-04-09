@@ -44,8 +44,9 @@ class Player extends Component {
     })
   }
 
-  fetchSubtitles = () => {
+  fetchSubtitles = (redo = true) => {
     const { movieId } = this.props
+    const { fre, eng } = this.state.subtitles
     fetch(host + '/api/movies/subtitles/' + movieId + '/eng')
     .then(res => {
       this.setState({
@@ -72,6 +73,9 @@ class Player extends Component {
     .catch(err => {
       // Handle err
     })
+    if (!fre && !eng && redo) {
+      setTimeout(() => this.fetchSubtitles(false), 2500);
+    }
   }
 
   handleKeyPress = e => {
