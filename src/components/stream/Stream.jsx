@@ -8,6 +8,15 @@ import Comments from '../comments/Comments'
 
 class Stream extends Component {
 
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
+
   state = {
     isFetching: false,
     startTime: undefined,
@@ -16,7 +25,7 @@ class Stream extends Component {
   }
 
   fetchStream = (id) => {
-    this.setState({
+    this.setStateCheck({
       ...this.state,
       isFetching: true
     })
@@ -25,7 +34,7 @@ class Stream extends Component {
       useToken: true
     }).then(res => {
       if (res.length === 1) {
-        this.setState({
+        this.setStateCheck({
           isFetching: false,
           startTime: res[0].time,
           statusId: res[0].id,
@@ -41,14 +50,14 @@ class Stream extends Component {
           },
           useToken: true
         }).then(res => {
-          this.setState({
+          this.setStateCheck({
             isFetching: false,
             startTime: 0,
             statusId: res.id
           })
         }).catch(err => {
           // Handle error
-          this.setState({
+          this.setStateCheck({
             ...this.state,
             isFetching: false,
             startTime: 0
@@ -57,7 +66,7 @@ class Stream extends Component {
       }
     }).catch(err => {
       // Handle error
-      this.setState({
+      this.setStateCheck({
         ...this.state,
         isFetching: false,
         startTime: 0
@@ -68,7 +77,7 @@ class Stream extends Component {
   updateMovieStatus = newTime => {
     const { statusId, isFetching } = this.state
     if (statusId === -1 || isFetching) return
-    this.setState({
+    this.setStateCheck({
       ...this.state,
       isFetching: true
     })
@@ -79,13 +88,13 @@ class Stream extends Component {
       },
       useToken: true
     }).then(() => {
-      this.setState({
+      this.setStateCheck({
         ...this.state,
         isFetching: false
       })
     }).catch(err => {
       // Handle error
-      this.setState({
+      this.setStateCheck({
         ...this.state,
         isFetching: false
       })
@@ -111,10 +120,15 @@ class Stream extends Component {
   }
 
   componentWillMount() {
+    this._isMounted = true
     const { params } = this.props.match;
     this.fetchStream(params.id)
     this.fetchSubtitles(params.id)
     this.fetchMovie(params.id)
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   navigateBack = () => {

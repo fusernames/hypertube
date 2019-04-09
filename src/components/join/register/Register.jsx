@@ -103,12 +103,14 @@ class Register extends React.Component {
 
   onFileChange = (e) => {
     const file = e.target.files[0]
-    let reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => {
-      this.setState({...this.state, image: reader.result}, () => {
-        this.setState({...this.state, file: file})
-      })
+    if (file) {
+      let reader = new FileReader()
+      reader.onload = () => {
+        this.setState({...this.state, image: reader.result}, () => {
+          this.setState({...this.state, file: file})
+        })
+      }
+      reader.readAsDataURL(file)
     }
   }
 

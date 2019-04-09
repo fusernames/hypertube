@@ -11,6 +11,15 @@ import host from '../../config'
  */
 class Player extends Component {
 
+  _isMounted = false
+  setStateCheck = (state, callback) => {
+    if (this._isMounted === true) {
+      this.setState(state, () => {
+        if (callback) callback()
+      })
+    }
+  }
+
   state = {
     oldTime: 0,
     currentTime: 0,
@@ -33,12 +42,12 @@ class Player extends Component {
   }
 
   handleTimeChange = e => {
-    this.setState({
+    this.setStateCheck({
       currentTime: e.target.currentTime,
     }, () => {
       let { currentTime, oldTime } = this.state;
       if (Math.abs(currentTime - oldTime) > 5 && this.props.onChange) {
-        this.setState({ oldTime: currentTime });
+        this.setStateCheck({ oldTime: currentTime });
         this.props.onChange(currentTime);
       }
     })
@@ -49,7 +58,7 @@ class Player extends Component {
     const { fre, eng } = this.state.subtitles
     fetch(host + '/api/movies/subtitles/' + movieId + '/eng')
     .then(res => {
-      this.setState({
+      this.setStateCheck({
         ...this.state,
         subtitles: {
           ...this.state.subtitles,
@@ -62,7 +71,7 @@ class Player extends Component {
     })
     fetch(host + '/api/movies/subtitles/' + movieId + '/fre')
     .then(res => {
-      this.setState({
+      this.setStateCheck({
         ...this.state,
         subtitles: {
           ...this.state.subtitles,
@@ -103,6 +112,14 @@ class Player extends Component {
         needsPrevent = false
     }
     if (needsPrevent) e.preventDefault()
+  }
+
+  componentWillMount() {
+    this._isMounted = true
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {
