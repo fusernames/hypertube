@@ -13,6 +13,7 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="index")
      * @Route("/movie/{id}", name="movie")
+     * @Route("/movies", name="movies")
      * @Route("/stream/{id}", name="stream")
      * @Route("/user/{id}", name="profile")
      * @Route("/account", name="account")
