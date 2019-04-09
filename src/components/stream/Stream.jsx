@@ -78,7 +78,7 @@ class Stream extends Component {
         time: parseInt(newTime)
       },
       useToken: true
-    }).then(res => {
+    }).then(() => {
       this.setState({
         ...this.state,
         isFetching: false
@@ -99,10 +99,22 @@ class Stream extends Component {
     })
   }
 
+  fetchMovie = id => {
+    req(host + '/api/movies/' + id, { useToken: true })
+    .then(res => {
+      if (!res.finished) {
+        window.location = host
+      }
+    }).catch(err => {
+      // Handle error
+    })
+  }
+
   componentWillMount() {
     const { params } = this.props.match;
     this.fetchStream(params.id)
     this.fetchSubtitles(params.id)
+    this.fetchMovie(params.id)
   }
 
   navigateBack = () => {
