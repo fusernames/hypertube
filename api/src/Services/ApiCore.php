@@ -99,13 +99,21 @@ class ApiCore
     public function findUser(array $userData)
     {
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
+        $withUsername = $this->userManager->findUserByEmail($userData["username"]);
 
         $repository = $this->objectManager->getRepository(OmniAuthInfos::class);
         $withOauthId = $repository->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
 
-        if ($withEmail === null && $withOauthId === null) {
+        if ($withUsername) {
+            return $this->displayError(
+                403,
+                "An error occurred during the registration process.",
+                "Registration process failed."
+            );
+        } else if ($withEmail === null && $withOauthId === null) {
             $this->createUser($userData);
             if ($this->user) {
+                $this->addOauthInfo($userData);
                 $this->objectManager->persist($this->user);
                 $this->objectManager->flush();
                 $jwt = $this->jwtManager->create($this->user);
@@ -128,11 +136,6 @@ class ApiCore
             $jwt = $this->jwtManager->create($withEmail);
             return new JWTAuthenticationSuccessResponse($jwt);
         }
-        return $this->displayError(
-            403,
-            "An error occurred during the registration process.",
-            "Registration process failed."
-        );
     }
 
     /**
