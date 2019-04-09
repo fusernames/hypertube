@@ -77,7 +77,7 @@ class OAuthController extends Controller
             case "github":
                 return $this->apiGithub->getToken($token, $jwtManager);
             case "trello":
-                return $this->apiTrello->getToken($token, $jwtManager);
+                return $this->apiTrello->getUserData($token, $jwtManager);
             case "gmail":
                 return $this->apiGoogle->getToken($token, $jwtManager);
             default:
