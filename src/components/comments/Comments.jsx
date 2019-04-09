@@ -100,8 +100,8 @@ class Comments extends React.Component {
         <List>
         {comments.map(comment => {
           return (
-            <ListItem key={comment.id} component={Link} to={'/user/'}>
-              <ListItemAvatar>
+            <ListItem key={comment.id}>
+              <ListItemAvatar component={Link} to={'/user/' + comment.owner.id}>
                 <Avatar src={comment.owner.avatarUrl} />
               </ListItemAvatar>
               <ListItemText
