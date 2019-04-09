@@ -99,7 +99,7 @@ class ApiCore
     public function findUser(array $userData)
     {
         $withEmail = $this->userManager->findUserByEmail($userData["email"]);
-        $withUsername = $this->userManager->findUserByEmail($userData["username"]);
+        $withUsername = $this->userManager->findUserByUsername($userData["username"]);
 
         $repository = $this->objectManager->getRepository(OmniAuthInfos::class);
         $withOauthId = $repository->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
