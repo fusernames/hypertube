@@ -66,7 +66,7 @@ final class AddAvatarController extends AbstractController
             // Prevent the serialization of the file property
             $mediaObject->file = null;
             $path = "https://hypertube.barthonet.ovh/media/" . $mediaObject->contentUrl;
-            $user->setAvatarUrl($path);
+            $user->setAvatarUrl(str_replace(' ', '%20', $path));
             $em->flush();
 
             return $user;

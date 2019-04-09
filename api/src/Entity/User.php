@@ -586,12 +586,12 @@ class User extends BaseUser
 
     public function getAvatarUrl(): ?string
     {
-        return $this->avatarUrl;
+        return str_replace(' ', '%20', $this->avatarUrl);
     }
 
     public function setAvatarUrl(?string $avatarUrl): self
     {
-        $this->avatarUrl = $avatarUrl;
+        $this->avatarUrl = str_replace(' ', '%20', $avatarUrl);
 
         return $this;
     }
