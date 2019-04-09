@@ -39,8 +39,8 @@ class Login extends React.Component {
   openWindow = (name) => {
     if (name === "42") {
       window.location = 'https://api.intra.42.fr/oauth/authorize?client_id=410d148df61a4dc6e462bba98b4beda91b3bb56582a44a2a29775a9e0e3cb2d9&redirect_uri=https%3A%2F%2Fhypertube.barthonet.ovh%2Foauth%2F42&response_type=code';
-    } else if (name === "Twitter" && false) {
-      window.location = 'Manque url twitter';
+    } else if (name === "Trello") {
+      window.location = 'https://trello.com/1/authorize?expiration=1day&name=Hypertube&scope=read&response_type=token&key=f6543a57156d53fff214955eb886d264&return_url=https://hypertube.barthonet.ovh/oauth/trello&scope=account';
     } else if (name === "Facebook") {
       window.location = 'https://www.facebook.com/v3.2/dialog/oauth?client_id=915807418753565&redirect_uri=https://hypertube.barthonet.ovh/oauth/facebook/&display=popup&response_type=token&scope=email';
     } else if (name === "Github") {
@@ -106,8 +106,8 @@ class Login extends React.Component {
           </Grid>
           <Grid item xs={12} sm={6}>
             <MuiThemeProvider theme={twitter}>
-              <Button variant="contained" color="primary" onClick={() => this.openWindow("Twitter")} fullWidth>
-                Twitter
+              <Button variant="contained" color="primary" onClick={() => this.openWindow("Trello")} fullWidth>
+                Trello
               </Button>
             </MuiThemeProvider>
           </Grid>

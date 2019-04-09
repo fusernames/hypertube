@@ -83,6 +83,6 @@ class ApiGithub extends ApiCore
             ];
             return $this->findUser($userData);
         }
-        return $this->displayError(userData["code"], $userData["resp"]);
+        return $this->displayError($userData["code"], $userData["resp"]);
     }
 }

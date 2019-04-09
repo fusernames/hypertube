@@ -19,22 +19,17 @@ class OAuth extends React.Component {
     let token = ""
     let auth = {}
 
-    console.log(this.props.location);
-
     switch (name) {
       case "gmail":
-        token = queryString.parse(this.props.location.search).code;
-        console.log(token);
-        break;
       case "42":
       case "github":
         token = queryString.parse(this.props.location.search).code;
         break
+      case "trello":
+        token = queryString.parse(this.props.location.hash.replace("#", "")).token
+        break
       case "facebook":
         token = queryString.parse(this.props.location.hash.replace("#", "")).access_token
-        break
-      case "twitter":
-        // Handle
         break
       default:
         break
