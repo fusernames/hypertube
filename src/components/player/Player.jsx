@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import host from '../../config';
+import host from '../../config'
 
 /**
  * Component takes 2 props =>
@@ -13,7 +13,11 @@ class Player extends Component {
 
   state = {
     oldTime: 0,
-    currentTime: 0
+    currentTime: 0,
+    subtitles: {
+      fre: null,
+      eng: null
+    }
   }
 
   enableEvent = false
@@ -25,6 +29,7 @@ class Player extends Component {
     if (this.player.currentTime < startTime)
       this.player.currentTime = startTime;
     document.addEventListener('keydown', this.handleKeyPress)
+    this.fetchSubtitles()
   }
 
   handleTimeChange = e => {
@@ -36,6 +41,36 @@ class Player extends Component {
         this.setState({ oldTime: currentTime });
         this.props.onChange(currentTime);
       }
+    })
+  }
+
+  fetchSubtitles = () => {
+    const { movieId } = this.props
+    fetch(host + '/api/movies/subtitles/' + movieId + '/eng')
+    .then(res => {
+      this.setState({
+        ...this.state,
+        subtitles: {
+          ...this.state.subtitles,
+          eng: res.status === 200
+        }
+      })
+    })
+    .catch(err => {
+      // Handle err
+    })
+    fetch(host + '/api/movies/subtitles/' + movieId + '/fre')
+    .then(res => {
+      this.setState({
+        ...this.state,
+        subtitles: {
+          ...this.state.subtitles,
+          fre: res.status === 200
+        }
+      })
+    })
+    .catch(err => {
+      // Handle err
     })
   }
 
@@ -68,6 +103,7 @@ class Player extends Component {
 
   render() {
     const { mediaUrl, movieId, locales } = this.props
+    const { fre, eng } = this.state.subtitles
     if (!mediaUrl) return null
     return (
       <video id="player" controls style={{width: '100%'}}
@@ -75,12 +111,8 @@ class Player extends Component {
           onMouseEnter={() => this.enableEvent = true}
           onMouseLeave={() => this.enableEvent = false}>
         <source src={mediaUrl} />
-        {host + '/subtitles/' + movieId + '/eng.vtt' &&
-          <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + movieId + '/eng'} />
-        }
-        {host + '/subtitles/' + movieId + '/fre.vtt' &&
-          <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + movieId + '/fre'} default={locales.code === "fr"}/>
-        }
+        {eng && <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + movieId + '/eng'} />}
+        {fre && <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + movieId + '/fre'} default={locales.code === "fr"}/>}
       </video>
     );
   }
