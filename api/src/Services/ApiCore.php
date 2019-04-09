@@ -104,13 +104,14 @@ class ApiCore
         $repository = $this->objectManager->getRepository(OmniAuthInfos::class);
         $withOauthId = $repository->findOneBy(["oauthId" => $userData["id"], "name" => $this->getName()]);
 
-        if ($withUsername) {
-            return $this->displayError(
-                403,
-                "An error occurred during the registration process.",
-                "Registration process failed."
-            );
-        } else if ($withEmail === null && $withOauthId === null) {
+        if ($withEmail === null && $withOauthId === null) {
+            if ($withUsername) {
+                return $this->displayError(
+                    403,
+                    "An error occurred during the registration process.",
+                    "Registration process failed."
+                );
+            }
             $this->createUser($userData);
             if ($this->user) {
                 $this->addOauthInfo($userData);
