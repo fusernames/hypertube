@@ -61,7 +61,7 @@ class Movies extends Component {
                   secondary={Math.round(movie.time / 60) + ' min'}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton color="primary" component={Link} to={"/stream/" + movie.movie.torrentId}>
+                  <IconButton color="primary" component={Link} to={"/stream/" + movie.movie.id}>
                     <Icon>play_circle_outline</Icon>
                   </IconButton>
                 </ListItemSecondaryAction>
