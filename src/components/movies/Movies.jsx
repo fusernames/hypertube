@@ -47,6 +47,9 @@ class Movies extends Component {
     const { movies } = this.state
     return (
       <div>
+        <IconButton style={{marginRight:'5px'}} onClick={() => this.props.history.goBack()} >
+          <Icon color="primary">keyboard_arrow_left</Icon>
+        </IconButton>
         <List>
           {movies.map((movie, i) => {
             return (

@@ -81,7 +81,9 @@ const translations = {
     USER_NOT_FOUND: ["User not found", "Utilisateur non trouvé"],
     USER_EDIT_SUCCESS: ["Your informations has been updated", "Vos informations ont bien étés éditées"],
     USER_BAD_PASSWORD: ["This password is not correct", "Le mot de passe n'est pas correct"],
-    USER_EDIT_PASSWORD_SUCCESS: ["Password updated successfully", "Votre mot de passe a bien été mis à jour"]
+    USER_EDIT_PASSWORD_SUCCESS: ["Password updated successfully", "Votre mot de passe a bien été mis à jour"],
+    // oauth
+    OAUTH_ERROR: ["This account is already register", "Ce compte existe déjà"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],

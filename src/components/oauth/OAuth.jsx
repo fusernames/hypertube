@@ -7,15 +7,17 @@ import req from '../../utils/req'
 import host from '../../config'
 import Cookies from 'js-cookie'
 import { getCurrentUser } from '../../redux/auth/actions'
+import { alert } from '../../redux/snackbars/actions'
 
 class OAuth extends React.Component {
 
   state = {
     component: <Loading />
   }
-  
+
   componentDidMount() {
     const { name } = this.props.match.params
+    const { dispatch } = this.props
     let token = ""
     let auth = {}
 
@@ -51,7 +53,8 @@ class OAuth extends React.Component {
             component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
         });
       }).catch(err => {
-        // Handle errors
+        if (err._status === 403)
+          dispatch(alert('OAUTH_ERROR', 'error'))
       })
     } else {
       window.location = host

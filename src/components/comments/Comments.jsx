@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Loading from '../../utils/jsx/Loading'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -90,6 +91,7 @@ class Comments extends React.Component {
   render() {
     const { isFetching, comments} = this.state
     const { time_display } = this.props.locales.locale.movie
+    console.log(comments)
 
     return (
       <div>
@@ -98,7 +100,7 @@ class Comments extends React.Component {
         <List>
         {comments.map(comment => {
           return (
-            <ListItem key={comment.id}>
+            <ListItem key={comment.id} component={Link} to={'/user/'}>
               <ListItemAvatar>
                 <Avatar src={comment.owner.avatarUrl} />
               </ListItemAvatar>
