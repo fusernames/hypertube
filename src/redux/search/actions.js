@@ -1,5 +1,6 @@
 import store from '../store'
 import req from '../../utils/req'
+import { alert } from '../snackbars/actions'
 
 function translateGenre(genre) {
   switch(genre) {
@@ -82,6 +83,9 @@ export function fetchMovies(options = {}) {
         formatMovies(res, (movies) => {
           dispatch(setMovies(movies))
         }, true)
+      }).catch(err => {
+        if (err._status < 500)
+          dispatch(alert('API_ERROR', 'error'))
       })
     } else if (api === 'yts') {
       let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
@@ -95,6 +99,9 @@ export function fetchMovies(options = {}) {
         formatMovies(list, (movies) => {
           dispatch(setMovies(movies))
         }, true)
+      }).catch(err => {
+        if (err._status < 500)
+          dispatch(alert('API_ERROR', 'error'))
       })
     }
   }
@@ -116,6 +123,9 @@ export function fetchAddMovies() {
         formatMovies(res, (movies) => {
           dispatch(addMovies(movies))
         })
+      }).catch(err => {
+        if (err._status < 500)
+          dispatch(alert('API_ERROR', 'error'))
       })
     } else if (search.api === 'yts') {
       let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=50&page=' + search.page
@@ -129,6 +139,9 @@ export function fetchAddMovies() {
         formatMovies(list, (movies) => {
           dispatch(addMovies(movies))
         })
+      }).catch(err => {
+        if (err._status < 500)
+          dispatch(alert('API_ERROR', 'error'))
       })
     }
   }

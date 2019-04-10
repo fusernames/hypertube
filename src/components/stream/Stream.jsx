@@ -5,6 +5,7 @@ import { Typography, Icon, IconButton } from '@material-ui/core'
 import host from '../../config'
 import Player from '../player/Player'
 import Comments from '../comments/Comments'
+import { alert } from '../../redux/snackbars/actions'
 
 class Stream extends Component {
 
@@ -25,6 +26,7 @@ class Stream extends Component {
   }
 
   fetchStream = (id) => {
+    const { dispatch } = this.props
     this.setStateCheck({
       ...this.state,
       isFetching: true
@@ -56,7 +58,9 @@ class Stream extends Component {
             statusId: res.id
           })
         }).catch(err => {
-          // Handle error
+          if (err._status < 500) {
+            dispatch(alert('AJAX_ERROR', 'error'))
+          }
           this.setStateCheck({
             ...this.state,
             isFetching: false,
@@ -65,7 +69,6 @@ class Stream extends Component {
         })
       }
     }).catch(err => {
-      // Handle error
       this.setStateCheck({
         ...this.state,
         isFetching: false,
@@ -75,6 +78,7 @@ class Stream extends Component {
   }
 
   updateMovieStatus = newTime => {
+    const { dispatch } = this.props
     const { statusId, isFetching } = this.state
     if (statusId === -1 || isFetching) return
     this.setStateCheck({
@@ -93,7 +97,6 @@ class Stream extends Component {
         isFetching: false
       })
     }).catch(err => {
-      // Handle error
       this.setStateCheck({
         ...this.state,
         isFetching: false
@@ -109,21 +112,24 @@ class Stream extends Component {
   }
 
   fetchMovie = id => {
+    const { dispatch } = this.props
     req(host + '/api/movies/' + id, { useToken: true })
     .then(res => {
       if (!res.finished) {
         window.location = host
       }
+      this.fetchStream(id)
+      this.fetchSubtitles(id)
     }).catch(err => {
-      // Handle error
+      if (err._status < 500) {
+        dispatch(alert('MOVIE_NOT_FOUND', 'error'))
+      }
     })
   }
 
   componentWillMount() {
     this._isMounted = true
     const { params } = this.props.match;
-    this.fetchStream(params.id)
-    this.fetchSubtitles(params.id)
     this.fetchMovie(params.id)
   }
 

@@ -83,7 +83,11 @@ const translations = {
     USER_BAD_PASSWORD: ["This password is not correct", "Le mot de passe n'est pas correct"],
     USER_EDIT_PASSWORD_SUCCESS: ["Password updated successfully", "Votre mot de passe a bien été mis à jour"],
     // oauth
-    OAUTH_ERROR: ["This account is already register", "Ce compte existe déjà"]
+    OAUTH_ERROR: ["This account is already register", "Ce compte existe déjà"],
+    // other
+    API_ERROR: ["Error while fetching extern API", "Erreur pendant le chagrement de l'api externe"],
+    AJAX_ERROR: ["Error while fetching datas", "Erreur lors de chargement des donnees"],
+    MOVIE_NOT_FOUND: ["This movie does not exists", "Ce film n'éxiste pas"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],
