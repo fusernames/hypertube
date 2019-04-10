@@ -77,7 +77,7 @@ class Register extends React.Component {
     else if (name === 'email')
       return validator.isEmail().errors
     else if (name === 'password')
-      return validator.notNull().minLen(5).errors
+      return validator.notNull().minLen(5).isPassword().errors
     else if (name === 'repassword')
       return validator.sameAs(this.state.form.password).errors
   }

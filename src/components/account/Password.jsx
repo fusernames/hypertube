@@ -24,7 +24,7 @@ class Password extends Component {
     if (name === 'password')
       return validator.notNull().errors
     else if (name === 'newpassword')
-      return validator.notNull().minLen(5).errors
+      return validator.notNull().minLen(5).isPassword().errors
     else if (name === 'repassword')
       return validator.sameAs(this.state.form.newpassword).errors
   }

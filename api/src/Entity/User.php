@@ -237,6 +237,7 @@ class User extends BaseUser
      *     type="string",
      *     message="The value {{ value }} is not a valid {{ type }}."
      * )
+     * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
      */
     protected $plainPassword;
 
