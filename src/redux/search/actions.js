@@ -61,6 +61,7 @@ export function fetchMovies(options = {}) {
 
     let { word, genre, sort, api } = options
     let search = getState().search
+    if (sort === undefined && word !== undefined) sort = 'title'
     if (word === undefined) word = search.word
     if (genre === undefined) genre = search.genre
     if (sort === undefined) sort = search.sort
@@ -77,6 +78,7 @@ export function fetchMovies(options = {}) {
       if (sort) url += '&sort=' + sort
       dispatch(fetching())
       req(url).then(res => {
+        console.log(res)
         formatMovies(res, (movies) => {
           dispatch(setMovies(movies))
         }, true)
