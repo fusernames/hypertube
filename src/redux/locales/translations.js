@@ -96,7 +96,7 @@ const translations = {
     IS_NULL: ["Can't be null", "Ne peut pas être nul"],
     INVALID_EMAIL: ["Invalid email", "Email invalide"],
     NOT_ALPHABETIC: ["Must be alphabetic", "Doit être alphabétique"],
-    INVALID_PASSWORD: ["Invalid password", "Mot de passe invalide"]
+    INVALID_PASSWORD: ["Invalid password, must contain at least 8 characters, one uppercase letter and a number ", "Mot de passe invalide, le mot de passe doit etre de 8 caracteres minimum et contenir au moins 1 majuscule et 1 chiffre"]
   },
   genres: {
     action: ['Action', 'Action'],
