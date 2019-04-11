@@ -47,6 +47,8 @@ class MovieStatus
     /**
      * @ORM\Column(type="integer")
      * @Groups({"movie_statuses"})
+     * @Assert\NotNull(message="Time cannot be null")
+     * @Assert\NotBlank(message="Time cannot be blank")
      */
     private $time;
 
@@ -54,6 +56,8 @@ class MovieStatus
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="movieStatuses")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"movie_statuses"})
+     * @Assert\NotNull(message="User cannot be null")
+     * @Assert\NotBlank(message="User cannot be blank")
      */
     private $user;
 
@@ -61,6 +65,8 @@ class MovieStatus
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="movieStatuses")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"movie_statuses"})
+     * @Assert\NotNull(message="Movie cannot be null")
+     * @Assert\NotBlank(message="Movie cannot be blank")
      */
     private $movie;
 
