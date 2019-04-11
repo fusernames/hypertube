@@ -88,7 +88,7 @@ export function fetchMovies(options = {}) {
           dispatch(alert('API_ERROR', 'error'))
       })
     } else if (api === 'yts') {
-      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40'
       if (word) url += '&query_term=' + word
       if (genre) url += '&genre=' + translateGenre(genre)
       if (sort) url += '&sort_by=' + sort
@@ -128,7 +128,7 @@ export function fetchAddMovies() {
           dispatch(alert('API_ERROR', 'error'))
       })
     } else if (search.api === 'yts') {
-      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=50&page=' + search.page
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page
       if (search.word) url += '&query_term=' + search.word
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
       if (search.sort) url += '&sort_by=' + search.sort

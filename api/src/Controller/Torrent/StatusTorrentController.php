@@ -27,7 +27,7 @@ class StatusTorrentController extends TorrentController
         // Loads the asked movie
         $movie = $repository->findOneBy(['torrentLink' => $torrentLink]);
         // If unknown id, returns
-        if (!$movie) return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 204);
+        if (!$movie) return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 404);
         $infos = $transmission->get($movie->getTorrentId())['torrents'];
         if (sizeof($infos) === 1) {
             $infos = $infos[0];
