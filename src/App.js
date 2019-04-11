@@ -14,6 +14,7 @@ import LoggedRoute from './utils/jsx/LoggedRoute'
 import { getCurrentUser } from './redux/auth/actions'
 import OAuth from './components/oauth/OAuth'
 import Stream from './components/stream/Stream'
+import ResetPassword from './components/reset/ResetPassword'
 import Movies from './components/movies/Movies'
 
 const theme = createMuiTheme({
@@ -55,6 +56,7 @@ class App extends Component {
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
             <Route path="/oauth/:name" component={OAuth} />
+            <Route path="/reset/:token" component={ResetPassword} />
             <LoggedRoute path="/movie/:id" component={Movie} />
             <LoggedRoute path="/movies" component={Movies} />
             <LoggedRoute path="/user/:id" component={Profile} />

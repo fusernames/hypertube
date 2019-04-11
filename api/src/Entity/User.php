@@ -11,6 +11,7 @@ use FOS\UserBundle\Model\GroupInterface;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Controller\Lang\GetLangController;
 use App\Controller\Lang\SetLangController;
+use App\Controller\ResetPasswordController;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -97,6 +98,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *              "controller"=ResettingPasswordSendEmailController::class,
  *              "denormalization_context"={
  *                  "groups"={"rest-password-send-email"}
+ *              }
+ *          },
+ *          "rest-password"={
+ *              "method"="POST",
+ *              "path"="/users/reset-password/{token}",
+ *              "controller"=ResettingPassword::class,
+ *              "denormalization_context"={
+ *                  "groups"={"rest-password"}
  *              }
  *          },
  *          "set-lang"={
