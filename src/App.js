@@ -56,7 +56,7 @@ class App extends Component {
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
             <Route path="/oauth/:name" component={OAuth} />
-            <Route path="/reset/:token" component={ResetPassword} />
+            <Route path="/reset_pw/:token" component={ResetPassword} />
             <LoggedRoute path="/movie/:id" component={Movie} />
             <LoggedRoute path="/movies" component={Movies} />
             <LoggedRoute path="/user/:id" component={Profile} />
