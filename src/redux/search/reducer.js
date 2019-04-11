@@ -1,7 +1,7 @@
 const initialState = {
   word: '',
   movies: [],
-  page: '',
+  page: 1,
   genre: '',
   sort: '',
   api: 'yts',

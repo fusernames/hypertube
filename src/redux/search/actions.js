@@ -23,6 +23,12 @@ export function exists(code, list, set = false) {
       }
     }
   }
+  for (let i in list) {
+    if (list[i]) {
+      if (list[i].code === code)
+        return true
+    }
+  }
   return false
 }
 
@@ -77,6 +83,7 @@ export function fetchMovies(options = {}) {
       if (word) url += '&keywords=' + word
       if (genre) url += '&genre=' + genre
       if (sort) url += '&sort=' + sort
+      if (sort === 'title') url += '&order=1'
       dispatch(fetching())
       req(url).then(res => {
         console.log(res)
@@ -84,14 +91,14 @@ export function fetchMovies(options = {}) {
           dispatch(setMovies(movies))
         }, true)
       }).catch(err => {
-        if (err._status < 500)
-          dispatch(alert('API_ERROR', 'error'))
+        dispatch(alert('API_ERROR', 'error'))
       })
     } else if (api === 'yts') {
-      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=30'
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40'
       if (word) url += '&query_term=' + word
       if (genre) url += '&genre=' + translateGenre(genre)
       if (sort) url += '&sort_by=' + sort
+      if (sort === 'title') url += '&order_by=asc'
       dispatch(fetching())
       req(url).then(res => {
         if (res.data.movies)
@@ -100,8 +107,7 @@ export function fetchMovies(options = {}) {
           dispatch(setMovies(movies))
         }, true)
       }).catch(err => {
-        if (err._status < 500)
-          dispatch(alert('API_ERROR', 'error'))
+        dispatch(alert('API_ERROR', 'error'))
       })
     }
   }
@@ -118,20 +124,21 @@ export function fetchAddMovies() {
       if (search.word) url += '&keywords=' + search.word
       if (search.genre) url += '&genre=' + search.genre
       if (search.sort) url += '&sort=' + search.sort
+      if (search.sort === 'title') url += '&order=1'
       dispatch(fetching())
       req(url).then(res => {
         formatMovies(res, (movies) => {
           dispatch(addMovies(movies))
         })
       }).catch(err => {
-        if (err._status < 500)
-          dispatch(alert('API_ERROR', 'error'))
+        dispatch(alert('API_ERROR', 'error'))
       })
     } else if (search.api === 'yts') {
-      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=50&page=' + search.page
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page + 1
       if (search.word) url += '&query_term=' + search.word
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
       if (search.sort) url += '&sort_by=' + search.sort
+      if (search.sort === 'title') url += '&order_by=asc'
       dispatch(fetching())
       req(url).then(res => {
         if (res.data.movies)
@@ -140,8 +147,7 @@ export function fetchAddMovies() {
           dispatch(addMovies(movies))
         })
       }).catch(err => {
-        if (err._status < 500)
-          dispatch(alert('API_ERROR', 'error'))
+        dispatch(alert('API_ERROR', 'error'))
       })
     }
   }
