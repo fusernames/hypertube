@@ -23,6 +23,12 @@ export function exists(code, list, set = false) {
       }
     }
   }
+  for (let i in list) {
+    if (list[i]) {
+      if (list[i].code === code)
+        return true
+    }
+  }
   return false
 }
 
