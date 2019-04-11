@@ -37,18 +37,21 @@ class Register extends React.Component {
         })
         .then(() => {
           dispatch(login({username: body.username, password: body.plainPassword}, () => {
-            const data = new FormData();
-            data.append('file', this.state.file)
-            req(host + '/api/media_objects/avatar/create', {
-              method: 'post',
-              body: data,
-              useToken: true,
-              contentType: false
-            }).catch(err => {
-              if (err._status >= 400 && err._status < 500) {
-                dispatch(alert('REGISTER_BAD_PICTURE', 'error'))
-              }
-            })
+            // if there is a file, upload
+            if (this.state.file) {
+              const data = new FormData();
+              data.append('file', this.state.file)
+              req(host + '/api/media_objects/avatar/create', {
+                method: 'post',
+                body: data,
+                useToken: true,
+                contentType: false
+              }).catch(err => {
+                if (err._status >= 400 && err._status < 500) {
+                  dispatch(alert('REGISTER_BAD_PICTURE', 'error'))
+                }
+              })
+            }
           }))
           dispatch(alert('REGISTER_SUCCESS', 'success'))
         })
