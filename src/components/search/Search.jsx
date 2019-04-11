@@ -12,6 +12,7 @@ class Search extends Component {
   _isMounted = false
 
   componentWillMount() {
+    this._isMounted = true
     const { search, dispatch } = this.props
     if (search.movies.length === 0 && search.word === '')
       dispatch(fetchMovies())
@@ -19,7 +20,6 @@ class Search extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props
-    this._isMounted = true
     window.onscroll = () => {
       if (this._isMounted === true) {
         if (window.innerHeight + document.documentElement.scrollTop > document.documentElement.offsetHeight - 200)

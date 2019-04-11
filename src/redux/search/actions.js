@@ -128,7 +128,7 @@ export function fetchAddMovies() {
           dispatch(alert('API_ERROR', 'error'))
       })
     } else if (search.api === 'yts') {
-      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page + 1
       if (search.word) url += '&query_term=' + search.word
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
       if (search.sort) url += '&sort_by=' + search.sort
