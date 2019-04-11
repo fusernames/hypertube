@@ -36,10 +36,9 @@ class Torrents extends Component {
       } else if (res._status === 200) {
         torrent.download = undefined
         torrent.downloading = res.success
+      } else if (res._status === 204) {
+        torrent.download = false
       }
-      if (callback) callback()
-    }).catch((err) => {
-      torrent.download = false
       if (callback) callback()
     })
   }

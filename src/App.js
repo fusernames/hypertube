@@ -11,6 +11,7 @@ import Movie from './components/movie/Movie'
 import Account from './components/account/Account'
 import Profile from './components/profile/Profile'
 import LoggedRoute from './utils/jsx/LoggedRoute'
+import UnloggedRoute from './utils/jsx/UnloggedRoute'
 import { getCurrentUser } from './redux/auth/actions'
 import OAuth from './components/oauth/OAuth'
 import Stream from './components/stream/Stream'
@@ -56,7 +57,7 @@ class App extends Component {
           <Grid item xs={11} md={10} lg={8} xl={7}>
             <Route exact path="/" component={Home} />
             <Route path="/oauth/:name" component={OAuth} />
-            <Route path="/reset/:token" component={ResetPassword} />
+            <UnloggedRoute path="/reset_pw/:token" component={ResetPassword} />
             <LoggedRoute path="/movie/:id" component={Movie} />
             <LoggedRoute path="/movies" component={Movies} />
             <LoggedRoute path="/user/:id" component={Profile} />

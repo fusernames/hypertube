@@ -12,6 +12,7 @@ class IndexController extends AbstractController
 {
     /**
      * @Route("/", name="index")
+     * @Route("/reset_pw/{token}", name="reset_pw")
      * @Route("/movie/{id}", name="movie")
      * @Route("/movies", name="movies")
      * @Route("/stream/{id}", name="stream")

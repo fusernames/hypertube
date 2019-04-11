@@ -59,7 +59,6 @@ class ResetPassword extends Component {
         }
         req(host + '/api/users/reset-password/' + params.token, {
           method: 'post',
-          useToken: true,
           body: body
         }).then(() => {
           dispatch(alert('USER_EDIT_PASSWORD_SUCCESS', 'success'))
@@ -74,6 +73,7 @@ class ResetPassword extends Component {
   render() {
     const { formErrors } = this.state
     const { locale } = this.props.locales
+    console.log('Test')
 
     return (
       <div>

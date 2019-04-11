@@ -68,7 +68,7 @@ class ResettingPasswordSendEmailController extends AbstractController
     {
         $newLine = $this->getNewLine($user->getEmail());
         $boundary = $this->getBoundary();
-        $url = $this->router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->router->generate('reset_pw', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
         $msgTextRendered = $this->templating->render('@FOSUser/Resetting/email.txt.twig', [
             'user' => $user,
             'confirmationUrl' => $url
