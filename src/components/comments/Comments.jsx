@@ -91,7 +91,6 @@ class Comments extends React.Component {
   render() {
     const { isFetching, comments} = this.state
     const { time_display } = this.props.locales.locale.movie
-    console.log(comments)
 
     return (
       <div>

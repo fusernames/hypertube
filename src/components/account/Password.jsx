@@ -57,7 +57,8 @@ class Password extends Component {
       if (!nbErrors) {
         body = {
           current_password: body.password,
-          new_password: body.newpassword
+          new_password: body.newpassword,
+          re_password: body.repassword
         }
         req(host + '/api/users/me/change-password', {
           method: 'post',

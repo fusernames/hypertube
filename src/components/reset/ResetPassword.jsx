@@ -54,9 +54,10 @@ class ResetPassword extends Component {
       this.setState({...this.state, formErrors: errors})
       if (!nbErrors) {
         body = {
-          new_password: body.newpassword
+          new_password: body.newpassword,
+          re_password: body.repassword
         }
-        req(host + '/api/users/me/reset-password/' + params.token, {
+        req(host + '/api/users/reset-password/' + params.token, {
           method: 'post',
           useToken: true,
           body: body

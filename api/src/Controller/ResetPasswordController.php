@@ -25,17 +25,25 @@ class ResetPasswordController extends AbstractController
      * @param ObjectManager $manager
      * @return JsonResponse
      */
-    public function __invoke(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager)
+    public function __invoke(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager, $token)
     {
 
         $requestContent = json_decode($request->getContent());
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(User::class);
+        $user = $repository->findOneBy(["confirmationToken" => $token]);
+
+        if (!$user) {
+            return new JsonResponse(["error" => "TOKEN_INVALID"]);
+        }
 
         /**
-         * Verification of the new password
+         * Verification of both password
          */
-        if (isset($requestContent->new_password)) {
+        if (isset($requestContent->re_password) && isset($requestContent->new_password)) {
+            if ($requestContent->new_password != $requestContent->re_password) {
+                return new JsonResponse(["error" => "PASSWORDS_DIFFER"]);
+            }
             if (!$this->setNewPassword($requestContent->new_password)) {
                 return new JsonResponse(['message' => 'New password is invalid'], 403);
             }
@@ -46,9 +54,7 @@ class ResetPasswordController extends AbstractController
         $manager->flush();
         return new JsonResponse(['message' => 'Successfully changed password'], 200);
 
-        /**
-         * Verification of token
-         */
+        
        
     }
 
