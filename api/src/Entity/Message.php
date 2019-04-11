@@ -103,6 +103,11 @@ class Message
      * @ORM\Column(type="text")
      * @Assert\NotNull(message="Message cannot be null")
      * @Assert\NotBlank(message="Message cannot be blank")
+     * @Assert\Regex(
+     *     pattern="/^\s+$/",
+     *     match=false,
+     *     message="This message {{ value }} is not readable"
+     * )
      * @Groups({"message"})
      */
     private $message;
