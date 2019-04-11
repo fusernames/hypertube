@@ -186,7 +186,7 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"message"})
+     * @Groups({"user:read", "me:read", "message"})
      */
     protected $id;
 
