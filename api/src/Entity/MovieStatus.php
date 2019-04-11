@@ -48,8 +48,6 @@ class MovieStatus
     /**
      * @ORM\Column(type="integer")
      * @Groups({"movie_statuses"})
-     * @Assert\NotNull(message="Time cannot be null")
-     * @Assert\NotBlank(message="Time cannot be blank")
      */
     private $time;
 
