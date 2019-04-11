@@ -82,6 +82,7 @@ class MovieStatus
      */
     public function onCreate() {
         !$this->getUpdatedAt() ? $this->setUpdatedAt(new \DateTime()) : 0;
+        !$this->getTime() ? $this->setTime(0) : 0;
     }
 
     /**
