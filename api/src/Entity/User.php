@@ -403,7 +403,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"user:read", "me:read", "message"})
+     * @Groups({"user:read", "me:read"})
      */
     private $oAuthAccess;
 
