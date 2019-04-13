@@ -45,19 +45,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          }
  *      },
  *      itemOperations={
- *          "me"={
- *              "method"="GET",
- *              "path"="users/me",
- *              "access_control"="is_granted('ROLE_USER')",
- *              "denormalization_context"={
- *                  "groups"={"me"}
- *              },
- *              "normalization_context"={
- *                  "groups"={"me", "user:read"}
- *              },
- *              "controller"=GetMeController::class,
- *              "defaults"={"_api_receive"=false}
- *          },
  *          "get",
  *          "put"={
  *              "method"="PUT",
@@ -79,6 +66,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          }
  *      },
  *      collectionOperations={
+ *          "me"={
+ *              "method"="GET",
+ *              "path"="users/me",
+ *              "access_control"="is_granted('ROLE_USER')",
+ *              "denormalization_context"={
+ *                  "groups"={"me"}
+ *              },
+ *              "normalization_context"={
+ *                  "groups"={"me", "user:read"}
+ *              },
+ *              "controller"=GetMeController::class,
+ *              "defaults"={"_api_receive"=false}
+ *          },
  *          "change-password"={
  *              "method"="POST",
  *              "access_control"="is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')",
