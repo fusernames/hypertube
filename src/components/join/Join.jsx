@@ -7,12 +7,12 @@ class Join extends React.Component {
   render() {
     return (
       <Grid container spacing={16}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} lg={6}>
           <Paper style={{padding:'20px'}}>
             <Login />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} lg={6}>
           <Paper style={{padding:'20px'}}>
             <Register />
           </Paper>

@@ -68,7 +68,7 @@ export function fetchMovies(options = {}) {
 
     let { word, genre, sort, api } = options
     let search = getState().search
-    if (sort === undefined && word !== undefined) sort = 'title'
+    if (sort === undefined && (word !== undefined || genre !== undefined)) sort = 'title'
     if (word === undefined) word = search.word
     if (genre === undefined) genre = search.genre
     if (sort === undefined) sort = search.sort
