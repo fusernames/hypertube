@@ -382,6 +382,7 @@ class User extends BaseUser
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MovieStatus", mappedBy="user", orphanRemoval=true)
+     * @ApiSubresource(maxDepth=1)
      */
     private $movieStatuses;
 
