@@ -68,7 +68,7 @@ export function fetchMovies(options = {}) {
 
     let { word, genre, sort, api } = options
     let search = getState().search
-    if (sort === undefined && word !== undefined) sort = 'title'
+    if (sort === undefined && (word !== undefined || genre !== undefined)) sort = 'title'
     if (word === undefined) word = search.word
     if (genre === undefined) genre = search.genre
     if (sort === undefined) sort = search.sort
@@ -120,7 +120,7 @@ export function fetchAddMovies() {
     if (search.isFetching || search.finished) return
 
     if (search.api === 'popcorntime') {
-      let url = 'https://tv-v2.api-fetch.website/movies/' + search.page + 1 + '?'
+      let url = 'https://tv-v2.api-fetch.website/movies/' + (search.page + 1) + '?'
       if (search.word) url += '&keywords=' + search.word
       if (search.genre) url += '&genre=' + search.genre
       if (search.sort) url += '&sort=' + search.sort
@@ -134,7 +134,7 @@ export function fetchAddMovies() {
         dispatch(alert('API_ERROR', 'error'))
       })
     } else if (search.api === 'yts') {
-      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + search.page + 1
+      let url = 'https://yts.am/api/v2/list_movies.json?sort_by=like_count&limit=40&page=' + (search.page + 1)
       if (search.word) url += '&query_term=' + search.word
       if (search.genre) url += '&genre=' + translateGenre(search.genre)
       if (search.sort) url += '&sort_by=' + search.sort
