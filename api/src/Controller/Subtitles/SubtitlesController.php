@@ -139,7 +139,6 @@ class SubtitlesController extends AbstractController
         if ($this->_token === null) {
             return new JsonResponse(['error' => 'SUBTITLES_ERROR'], 404);
         }
-        dump($movie);die;
 
         $subtitles = $this->_utf8_convert(
             $this->_xmlRequest("SearchSubtitles", [$this->_token,
