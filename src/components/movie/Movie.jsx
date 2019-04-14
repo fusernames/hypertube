@@ -195,7 +195,7 @@ class Movie extends React.Component {
               }
               <Grid item xs={12}>
                 <div className={classes.paper}>
-                  <Torrents torrents={movie.torrents} onChange={this.getViewed}/>
+                  <Torrents torrents={movie.torrents} onChange={this.getViewed} apiId={this.props.match.params.id} />
                 </div>
               </Grid>
             </Grid>
