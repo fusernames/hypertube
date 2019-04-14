@@ -52,6 +52,12 @@ class StatusTorrentController extends TorrentController
             }
             // Set movie file name
             if (!$movie->getFileName()) {
+                $movieFile = $infos['files'][0];
+                foreach ($infos['files'] as $file) {
+                    if ($file['length'] > $movieFile['length']) {
+                        $movieFile = $file;
+                    }
+                }
                 $movie->setFileName($movieFile['name']);
                 $entityManager->persist($movie);
                 $entityManager->flush();
