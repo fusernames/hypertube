@@ -56,11 +56,18 @@ class GetMovieController extends TorrentController
         } else {
             $transmission = new Transmission($this->transmissionConfig);
             $infos = $transmission->get($movie->getTorrentId())['torrents'];
-            if (sizeof($infos) !== 1)
+            if (sizeof($infos) !== 1 && $infos['isFinished'] !== true) {
                 return new JsonResponse(['error' => 'UNKNOWN_TORRENT'], 404);
-            $infos = $infos[0];
-            $movieFile = $this->getMovieFile($infos);
-            $fileSize = $movieFile['bytesCompleted'];
+            } else if ($infos['isFinished'] === true) {
+                $movie->setFinished(true);
+                $entityManager->persist($movie);
+                $entityManager->flush();
+                $fileSize = $file->getSize();
+            } else {
+                $infos = $infos[0];
+                $movieFile = $this->getMovieFile($infos);
+                $fileSize = $movieFile['bytesCompleted'];
+            }
         }
     
         $response->headers->set('Accept-Ranges', 'bytes');
