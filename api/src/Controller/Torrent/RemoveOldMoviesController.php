@@ -2,6 +2,7 @@
 
 namespace App\Controller\Torrent;
 
+use App\Entity\Movie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RemoveOldMoviesController extends AbstractController
