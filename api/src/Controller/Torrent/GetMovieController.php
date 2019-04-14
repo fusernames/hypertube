@@ -64,7 +64,7 @@ class GetMovieController extends TorrentController
         }
     
         $response->headers->set('Accept-Ranges', 'bytes');
-        $response->headers->set('Content-Type', 'video/' . $fileExt);
+        $response->headers->set('Content-Type', 'video/' . ($fileExt === "mkv" ? "x-matroska" : $fileExt));
     
         // Initialise range variables, default to the whole file size
         $rangeMin = 0;
@@ -137,7 +137,7 @@ class GetMovieController extends TorrentController
                 if ($offset + $buffer > $rangeEnd) {
                     $buffer = $rangeEnd + 1 - $offset;
                 }
-    
+
                 echo $file->fread($buffer);
             }
             $file = null;
