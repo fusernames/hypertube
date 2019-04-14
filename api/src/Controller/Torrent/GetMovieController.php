@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Torrent;
 
 use SplFileObject;
 use App\Entity\Movie;
+use App\Controller\Torrent\TorrentController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Stream;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class GetMovieController extends AbstractController
+use Vohof\Transmission;
+
+class GetMovieController extends TorrentController
 {
 
     /**
@@ -35,6 +37,10 @@ class GetMovieController extends AbstractController
 
         $totalPath = $this->_downloadPath . $movie->getFileName();
 
+        if (!file_exists($totalPath)) {
+            return new JsonResponse(['error' => 'MOVIE_FILE_NULL'], 404);
+        }
+
         // Create the StreamedResponse object
         $response = new StreamedResponse();
     
@@ -49,7 +55,15 @@ class GetMovieController extends AbstractController
         $fileName = $file->getBasename();
         $fileExt  = $file->getExtension();
         $filePath = $file->getRealPath();
-        $fileSize = $file->getSize();
+        
+        if ($movie->getFinished()) {
+            $fileSize = $file->getSize();
+        } else {
+            $transmission = new Transmission($this->transmissionConfig);
+            $infos = $transmission->get($movie->getTorrentId())['torrents'];
+            return new JsonResponse($infos[0]);
+            $fileSize = 0;
+        }
     
         $response->headers->set('Accept-Ranges', 'bytes');
         $response->headers->set('Content-Type', 'video/' . $fileExt);
