@@ -176,6 +176,7 @@ class Movie
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"movie_statuses"})
      */
     private $APIId;
 
