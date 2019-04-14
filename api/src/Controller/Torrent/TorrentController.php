@@ -23,6 +23,11 @@ class TorrentController extends AbstractController
     ];
 
     /**
+     * @var string
+     */
+    protected $_downloadPath = "/var/lib/transmission-daemon/complete/";
+
+    /**
      * Adds a movie to the db
      */
     public function addMovie($torrent, $torrentLink) {
