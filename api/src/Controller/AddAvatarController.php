@@ -50,6 +50,7 @@ final class AddAvatarController extends AbstractController
      */
     public function __invoke(Request $request): User
     {
+        ini_set('upload_max_filesize', '1M');
         $mediaObject = new MediaObject();
 
         $form = $this->factory->create(MediaObjectType::class, $mediaObject);
