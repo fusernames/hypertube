@@ -34,8 +34,8 @@ class Torrents extends Component {
         torrent.movieId = res.movieId
         torrent.downloading = undefined
       } else if (res._status === 200) {
-        torrent.download = res.success >= 100
-        torrent.download = undefined
+        torrent.download = res.success >= 100 ? true : undefined
+        torrent.movieId = res.movieId
         torrent.downloading = res.success >= 100 ? undefined : res.success
       }
       if (callback) callback()
