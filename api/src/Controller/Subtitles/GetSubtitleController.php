@@ -27,7 +27,6 @@ class GetSubtitleController extends AbstractController
         }
         
         $fileName = getcwd() . '/subtitles/' . $id . '/' . $lang . '.vtt';
-        dump($fileName);die;
         if (file_exists($fileName)) {
             $response = new BinaryFileResponse($fileName);
             $response->headers->set('Content-Type', "text/vtt; charset='utf-8'");
