@@ -32,6 +32,7 @@ class Stream extends Component {
       isFetching: true
     })
     let userId = this.props.auth.user.id
+    console.log(this.props.auth.user)
     req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + userId, {
       useToken: true
     }).then(res => {
@@ -115,9 +116,6 @@ class Stream extends Component {
     const { dispatch } = this.props
     req(host + '/api/movies/' + id, { useToken: true })
     .then(res => {
-      if (!res.finished) {
-        window.location = host
-      }
       this.fetchStream(id)
       this.fetchSubtitles(id)
     }).catch(err => {
@@ -153,7 +151,7 @@ class Stream extends Component {
           </IconButton>
           <Typography variant="h5" inline>{name}</Typography>
         </div>
-        <Player mediaUrl={"https://hypertube.barthonet.ovh/api/movies/file/" + params.id}
+        <Player mediaUrl={host + "/api/movies/file/" + params.id}
             startTime={startTime}
             onChange={this.updateMovieStatus}
             movieId={params.id}

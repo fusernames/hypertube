@@ -103,7 +103,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          "rest-password"={
  *              "method"="POST",
  *              "path"="/users/reset-password/{token}",
- *              "controller"=ResettingPassword::class,
+ *              "controller"=ResetPasswordController::class,
  *              "denormalization_context"={
  *                  "groups"={"rest-password"}
  *              }

@@ -22,6 +22,14 @@ class TorrentController extends AbstractController
         'password' => '12345678'
     ];
 
+    /**
+     * @var string
+     */
+    protected $_downloadPath = "/var/lib/transmission-daemon/complete/";
+
+    /**
+     * Adds a movie to the db
+     */
     public function addMovie($torrent, $torrentLink) {
         $transmission = new Transmission($this->transmissionConfig);
         $entityManager = $this->getDoctrine()->getManager();
@@ -38,5 +46,18 @@ class TorrentController extends AbstractController
             $entityManager->persist($movie);
             $entityManager->flush();
         }
+    }
+
+    /**
+     * Parse all files downloaded by torrent to get the biggest -> the movie
+     */
+    public function getMovieFile($infos) {
+        $movieFile = $infos['files'][0];
+        foreach ($infos['files'] as $file) {
+            if ($file['length'] > $movieFile['length']) {
+                $movieFile = $file;
+            }
+        }
+        return $movieFile;
     }
 }

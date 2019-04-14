@@ -40,6 +40,9 @@ class SubtitlesController extends AbstractController
         }
     }
 
+    /**
+     * If array or object in param not utf8 -> convert it
+     */
     private function _utf8_convert($dat)
     {
         if (is_string($dat)) {
@@ -106,10 +109,12 @@ class SubtitlesController extends AbstractController
         $repository = $entityManager->getRepository(Movie::class);
         $movie = $repository->find($id);
 
+        // Unknown movie ?
         if (!$movie) {
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
 
+        // Subtitles already dl
         if (file_exists('./subtitles/' . $movie->getId() . '/fre.vtt') && file_exists('./subtitles/' . $movie->getId() . '/eng.vtt')) {
             return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
         }

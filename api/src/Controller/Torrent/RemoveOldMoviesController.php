@@ -2,9 +2,10 @@
 
 namespace App\Controller\Torrent;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Movie;
+use App\Controller\Torrent\TorrentController;
 
-class RemoveOldMoviesController extends AbstractController
+class RemoveOldMoviesController extends TorrentController
 {
     public function check()
     {
@@ -23,6 +24,7 @@ class RemoveOldMoviesController extends AbstractController
                 }
             }
             if ($toRemove) {
+                unlink($this->_downloadPath . $movie->getName());
                 $entityManager->remove($movie);
                 $entityManager->flush();
             }
