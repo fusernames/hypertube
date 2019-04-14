@@ -53,15 +53,15 @@ final class AddAvatarController extends AbstractController
         ini_set( 'post_max_size', '8M' );
         ini_set('upload_max_filesize', '2M');
         $mediaObject = new MediaObject();
+        $em = $this->doctrine->getManager();
+        $user = $this->getUser();
 
         $form = $this->factory->create(MediaObjectType::class, $mediaObject);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
             $user->setAvatar($mediaObject);
             $mediaObject->setOwner($this->getUser());
 
-            $em = $this->doctrine->getManager();
             $em->persist($mediaObject);
             $em->flush();
             
@@ -72,6 +72,10 @@ final class AddAvatarController extends AbstractController
             $em->flush();
 
             return $user;
+        }
+        if (!$user->getAvatarUrl() && !$user->getAvatar()) {
+            $em->remove($user);
+            $em->flush();
         }
 
         // This will be handled by API Platform and returns a validation error.
