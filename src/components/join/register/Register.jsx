@@ -31,7 +31,7 @@ class Register extends React.Component {
     checkForm(body, this.validate, (errors, nbErrors) => {
       this.setState({...this.state, formErrors: errors})
       body = {...body, plainPassword: body.password}
-      if (!nbErrors) {
+      if (!nbErrors && this.state.file) {
         req(host + '/api/users', {
           method: 'post', body: body
         })
@@ -64,6 +64,9 @@ class Register extends React.Component {
             }
           }
         })
+      }
+      else if (!this.state.file) {
+        dispatch(alert('REGISTER_EMPTY_PICTURE', 'error'))
       }
     })
   }
