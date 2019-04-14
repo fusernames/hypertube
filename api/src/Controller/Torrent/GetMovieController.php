@@ -56,9 +56,9 @@ class GetMovieController extends TorrentController
         } else {
             $transmission = new Transmission($this->transmissionConfig);
             $infos = $transmission->get($movie->getTorrentId())['torrents'];
-            if (sizeof($infos) !== 1 && $infos['isFinished'] !== true) {
+            if (sizeof($infos) !== 1) {
                 return new JsonResponse(['error' => 'UNKNOWN_TORRENT'], 404);
-            } else if ($infos['isFinished'] === true) {
+            } else if ($infos[0]['isFinished'] === true) {
                 $movie->setFinished(true);
                 $entityManager->persist($movie);
                 $entityManager->flush();
