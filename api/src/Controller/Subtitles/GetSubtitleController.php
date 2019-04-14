@@ -23,7 +23,7 @@ class GetSubtitleController extends AbstractController
         $movie = $repository->find($id);
         
         if (!$movie) {
-            return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 400);
+            return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 404);
         }
         
         $fileName = getcwd() . '/subtitles/' . $id . '/' . $lang . '.vtt';
