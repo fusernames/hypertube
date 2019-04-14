@@ -34,8 +34,9 @@ class Torrents extends Component {
         torrent.movieId = res.movieId
         torrent.downloading = undefined
       } else if (res._status === 200) {
+        torrent.download = res.success >= 100
         torrent.download = undefined
-        torrent.downloading = res.success
+        torrent.downloading = res.success >= 100 ? undefined : res.success
       }
       if (callback) callback()
     }).catch(err => {
@@ -60,7 +61,7 @@ class Torrents extends Component {
 
   fetchTorrentsStatus = (torrents) => {
     let cpy = [...torrents]
-    cpy.forEach((torrent, i) => {
+    cpy.forEach(torrent => {
       this.fetchStatus(torrent, () => {
         this.setStatus(cpy)
       })

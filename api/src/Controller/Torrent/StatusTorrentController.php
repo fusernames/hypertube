@@ -49,7 +49,7 @@ class StatusTorrentController extends TorrentController
                 return new JsonResponse(['success' => 'DOWNLOAD_ENDED', 'movieId' => $movie->getId()], 201);
             }
             // Download percentage
-            return new JsonResponse(['success' => ($percentDone * 100)], 200);
+            return new JsonResponse(['success' => ($percentDone * 100 * 20), 'movieId' => $movie->getId()], 200);
         } else {
             // Film might be download then
             return new JsonResponse(['success' => 'DOWNLOAD_ENDED', 'movieId' => $movie->getId()], 201);
