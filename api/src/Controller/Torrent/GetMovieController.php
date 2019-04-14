@@ -61,8 +61,11 @@ class GetMovieController extends TorrentController
         } else {
             $transmission = new Transmission($this->transmissionConfig);
             $infos = $transmission->get($movie->getTorrentId())['torrents'];
-            return new JsonResponse($infos[0]);
-            $fileSize = 0;
+            if (sizeof($infos) !== 1)
+                return new JsonResponse(['error' => 'UNKNOWN_TORRENT'], 404);
+            $infos = $infos[0];
+            $movieFile = $this->getMovieFile($infos);
+            $fileSize = $movieFile['bytesCompleted'];
         }
     
         $response->headers->set('Accept-Ranges', 'bytes');

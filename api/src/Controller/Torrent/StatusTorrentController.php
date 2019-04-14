@@ -37,12 +37,7 @@ class StatusTorrentController extends TorrentController
                 $transmission->remove($movie->getTorrentId());
                 // Movie set as finished
                 $movie->setFinished(true);
-                $movieFile = $infos['files'][0];
-                foreach ($infos['files'] as $file) {
-                    if ($file['length'] > $movieFile['length']) {
-                        $movieFile = $file;
-                    }
-                }
+                $movieFile = $this->getMovieFile($infos);
                 // Set file name if not set
                 !$movie->getFileName() ? $movie->setFileName($movieFile['name']) : 0;
                 $entityManager->persist($movie);
@@ -52,12 +47,7 @@ class StatusTorrentController extends TorrentController
             }
             // Set movie file name
             if (!$movie->getFileName()) {
-                $movieFile = $infos['files'][0];
-                foreach ($infos['files'] as $file) {
-                    if ($file['length'] > $movieFile['length']) {
-                        $movieFile = $file;
-                    }
-                }
+                $movieFile = $this->getMovieFile($infos);
                 $movie->setFileName($movieFile['name']);
                 $entityManager->persist($movie);
                 $entityManager->flush();
