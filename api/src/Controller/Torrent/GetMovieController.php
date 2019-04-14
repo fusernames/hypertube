@@ -17,11 +17,6 @@ class GetMovieController extends TorrentController
 {
 
     /**
-     * @var string
-     */
-    private $_downloadPath = "/var/lib/transmission-daemon/complete/";
-
-    /**
      * @param Request $request
      * @param [type] $id
      * @return void
