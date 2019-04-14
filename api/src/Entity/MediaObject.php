@@ -88,7 +88,7 @@ class MediaObject
      *          "image/jpeg",
      *          "image/jpg"
      *      },
-     *      mimeTypesMessage="Please upload a valid format: png, jpeg, jpg",
+     *      mimeTypesMessage="Accepted formats are: png, jpeg, jpg",
      *      maxSizeMessage="The maximum size allowed is 1024KB"
      * )
      * @Vich\UploadableField(
