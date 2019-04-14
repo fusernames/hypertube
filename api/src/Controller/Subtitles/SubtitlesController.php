@@ -124,7 +124,6 @@ class SubtitlesController extends AbstractController
             return new JsonResponse(["code" => 404, "error" => "This movie does not exist"], 404);
         }
         $file = new SplFileObject($filePath);
-        dump($file);die;
 
         // Check file existence
         if (!($file->isFile())) {
