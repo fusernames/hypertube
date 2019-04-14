@@ -90,6 +90,7 @@ class Torrents extends Component {
     const torrent = torrents[i]
     const { url, magnet } = torrent
     let body = (magnet ? {torrent_magnet: magnet} : {torrent_url: url})
+    body.apiid = this.props.match.params.id
     req(host + '/api/movies/torrent/download', {
       useToken: true,
       body: body,

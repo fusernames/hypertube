@@ -22,13 +22,15 @@ class DownloadTorrentController extends TorrentController
         // Decodes post json
         $data = $request->getContent();
         $data = json_decode($data, true);
+        if (!isset($data['apiid'])) return new JsonResponse(['error' => 'NULL_APIID']);
         if (isset($data['torrent_magnet'])) {
             $movie = $repository->findOneBy(['torrentLink' => $data['torrent_magnet']]);
             if ($movie) return new JsonResponse(['success' => 'ALREADY_DOWNLOADED']);
             $torrent = $transmission->add($data['torrent_magnet']);
             $this->addMovie(
                 isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
-                $data['torrent_magnet']
+                $data['torrent_magnet'],
+                $data['apiid']
             );
         } else if (isset($data['torrent_url'])) {
             $movie = $repository->findOneBy(['torrentLink' => $data['torrent_url']]);
@@ -36,7 +38,8 @@ class DownloadTorrentController extends TorrentController
             $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_url'])), true);
             $this->addMovie(
                 isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
-                $data['torrent_url']
+                $data['torrent_url'],
+                $data['apiid']
             );
         } else {
             // Torrent might be already downloaded

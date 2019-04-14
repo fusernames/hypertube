@@ -30,7 +30,7 @@ class TorrentController extends AbstractController
     /**
      * Adds a movie to the db
      */
-    public function addMovie($torrent, $torrentLink) {
+    public function addMovie($torrent, $torrentLink, $apiid) {
         $transmission = new Transmission($this->transmissionConfig);
         $entityManager = $this->getDoctrine()->getManager();
         $searched = $entityManager->getRepository(Movie::class)->findOneBy(['torrentLink' => $torrentLink]);
@@ -42,6 +42,7 @@ class TorrentController extends AbstractController
                 ->setTorrentLink($torrentLink)
                 ->setTorrentId($torrent['id'])
                 ->setFinished(false)
+                ->setAPIId($apiid)
             ;
             $entityManager->persist($movie);
             $entityManager->flush();
