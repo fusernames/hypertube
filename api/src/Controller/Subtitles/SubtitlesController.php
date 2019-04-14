@@ -140,6 +140,9 @@ class SubtitlesController extends AbstractController
             return new JsonResponse(['error' => 'SUBTITLES_ERROR'], 404);
         }
 
+        if (!$movie->getName()) {
+            return new JsonResponse(["code" => 404, "message" => "Invalid file"], 404);
+        }
         $subtitles = $this->_utf8_convert(
             $this->_xmlRequest("SearchSubtitles", [$this->_token,
                 [
