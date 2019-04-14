@@ -32,6 +32,7 @@ class DownloadTorrentController extends TorrentController
                 $data['torrent_magnet'],
                 $data['apiid']
             );
+            exec("transmission-remote --auth " . $this->transmissionConfig['username'] . ":" . $this->transmissionConfig['password'] . " -t " . $data['torrent_magnet'] . " -seq");
         } else if (isset($data['torrent_url'])) {
             $movie = $repository->findOneBy(['torrentLink' => $data['torrent_url']]);
             if ($movie) return new JsonResponse(['success' => 'ALREADY_DOWNLOADED']);
@@ -41,6 +42,7 @@ class DownloadTorrentController extends TorrentController
                 $data['torrent_url'],
                 $data['apiid']
             );
+            exec("transmission-remote --auth " . $this->transmissionConfig['username'] . ":" . $this->transmissionConfig['password'] . " -t " . $data['torrent_url'] . " -seq");
         } else {
             // Torrent might be already downloaded
             return new JsonResponse(['error' => 'WRONG_DATA'], 403);
