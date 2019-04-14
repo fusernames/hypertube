@@ -52,7 +52,7 @@ export function getCurrentUser() {
     if (Cookies.get('jwt')) {
       req(host + '/api/users/me', {useToken: true})
       .then(res => {
-        let id = res['@id'].split('/api/users')
+        let id = res['@id'].split('/api/users/')
         console.log(id);
         res.id = id[1]
         dispatch(setCurrentUser(res))
