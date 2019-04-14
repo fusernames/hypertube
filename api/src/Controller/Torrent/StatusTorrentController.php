@@ -35,6 +35,7 @@ class StatusTorrentController extends TorrentController
             // If download is finished, put movie as finished.
             if (($percentDone === 1 || $infos['isFinished'] === true || $infos['leftUntilDone'] === 0) && $infos['status'] !== 4) {
                 $transmission->remove($movie->getTorrentId());
+                // Movie set as finished
                 $movie->setFinished(true);
                 $movieFile = $infos['files'][0];
                 foreach ($infos['files'] as $file) {
@@ -42,11 +43,18 @@ class StatusTorrentController extends TorrentController
                         $movieFile = $file;
                     }
                 }
-                $movie->setFileName($movieFile['name']);
+                // Set file name if not set
+                !$movie->getFileName() ? $movie->setFileName($movieFile['name']) : 0;
                 $entityManager->persist($movie);
                 $entityManager->flush();
                 $this->forward('App\Controller\Torrent\RemoveOldMoviesController::check');
                 return new JsonResponse(['success' => 'DOWNLOAD_ENDED', 'movieId' => $movie->getId()], 201);
+            }
+            // Set movie file name
+            if (!$movie->getFileName()) {
+                $movie->setFileName($movieFile['name']);
+                $entityManager->persist($movie);
+                $entityManager->flush();
             }
             // Download percentage
             return new JsonResponse(['success' => ($percentDone * 100 * 20), 'movieId' => $movie->getId()], 200);
