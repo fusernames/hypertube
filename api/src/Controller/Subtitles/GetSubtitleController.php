@@ -21,6 +21,7 @@ class GetSubtitleController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
         $movie = $repository->find($id);
+        dump($movie);die;
 
         if (!$movie) {
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
