@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import req from '../../utils/req'
 import host from '../../config'
+import { alert } from '../../redux/snackbars/actions'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Link } from 'react-router-dom'
 
@@ -90,11 +91,13 @@ class Torrents extends Component {
     const torrent = torrents[i]
     const { url, magnet } = torrent
     let body = (magnet ? {torrent_magnet: magnet} : {torrent_url: url})
-    body.apiid = this.props.match.params.id
+    body.apiid = this.props.apiId
     req(host + '/api/movies/torrent/download', {
       useToken: true,
       body: body,
       method: 'post'
+    }).catch(err => {
+      dispatch(alert(err))
     })
   }
 

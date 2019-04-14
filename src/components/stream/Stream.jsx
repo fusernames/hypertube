@@ -107,15 +107,13 @@ class Stream extends Component {
 
   fetchSubtitles = id => {
     req(host + '/api/movies/subtitles/' + id)
-    .catch(err => {
-      // Handle error
-    })
+    .catch(ignored => {})
   }
 
   fetchMovie = id => {
     const { dispatch } = this.props
     req(host + '/api/movies/' + id, { useToken: true })
-    .then(res => {
+    .then(() => {
       this.fetchStream(id)
       this.fetchSubtitles(id)
     }).catch(err => {
