@@ -6,6 +6,7 @@ import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
 import host from '../../config'
 import Torrents from './Torrents'
+import { fetchMyMovies } from '../../redux/search/actions'
 
 class Movie extends React.Component {
 
@@ -96,23 +97,25 @@ class Movie extends React.Component {
     }
   }
 
-  getViewed = (id) => {
-    this.setStateCheck({...this.state, isFetching: true})
-    req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + this.props.auth.user.id, {useToken: true})
-    .then(res => {
-      let viewed = ((res[0] && res[0].time > 0) ? true : false)
-      this.setStateCheck({
-        ...this.state,
-        viewed: viewed,
-        isFetching: false
-      })
-    })
+  isViewed = () => {
+    const { myMovies } = this.props.search
+    const { id } = this.props.match.params
+    for (let i in myMovies) {
+      if (myMovies[i].movie) {
+        if (myMovies[i].movie.APIId === parseInt(id)) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   componentWillMount() {
+    const { dispatch } = this.props
     this._isMounted = true
     const id = this.props.match.params.id
     this.fetchMovie(id)
+    dispatch(fetchMyMovies())
   }
 
   componentWillUnmount() {
@@ -140,7 +143,7 @@ class Movie extends React.Component {
             <Typography variant="h5" inline>{movie.title}</Typography>
           </Grid>
           <Grid item xs={12} sm={5} md={5} style={{position:'relative'}}>
-            {viewed && <Icon color="primary" style={{position:'absolute', top:'15px', left:'15px'}}>visibility</Icon>}
+            {this.isViewed() && <Icon color="primary" style={{position:'absolute', top:'15px', left:'15px'}}>visibility</Icon>}
             <img className={classes.img} src={movie.image} alt={movie.title} width="100%"/>
           </Grid>
           <Grid item xs={12} sm={7} md={7}>

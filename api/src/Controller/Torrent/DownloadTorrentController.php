@@ -27,22 +27,24 @@ class DownloadTorrentController extends TorrentController
             $movie = $repository->findOneBy(['torrentLink' => $data['torrent_magnet']]);
             if ($movie) return new JsonResponse(['success' => 'ALREADY_DOWNLOADED']);
             $torrent = $transmission->add($data['torrent_magnet']);
+            $torrent = isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'];
             $this->addMovie(
-                isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
+                $torrent,
                 $data['torrent_magnet'],
                 $data['apiid']
             );
-            exec("transmission-remote --auth " . $this->transmissionConfig['username'] . ":" . $this->transmissionConfig['password'] . " -t " . $data['torrent_magnet'] . " -seq");
+            exec("transmission-remote --auth " . $this->transmissionConfig['username'] . ":" . $this->transmissionConfig['password'] . " -t " . $torrent['id'] . " -seq");
         } else if (isset($data['torrent_url'])) {
             $movie = $repository->findOneBy(['torrentLink' => $data['torrent_url']]);
             if ($movie) return new JsonResponse(['success' => 'ALREADY_DOWNLOADED']);
             $torrent = $transmission->add(base64_encode(file_get_contents($data['torrent_url'])), true);
+            $torrent = isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'];
             $this->addMovie(
-                isset($torrent['torrent-added']) ? $torrent['torrent-added'] : $torrent['torrent-duplicate'],
+                $torrent,
                 $data['torrent_url'],
                 $data['apiid']
             );
-            exec("transmission-remote --auth " . $this->transmissionConfig['username'] . ":" . $this->transmissionConfig['password'] . " -t " . $data['torrent_url'] . " -seq");
+            exec("transmission-remote --auth " . $this->transmissionConfig['username'] . ":" . $this->transmissionConfig['password'] . " -t " . $torrent['id'] . " -seq");
         } else {
             // Torrent might be already downloaded
             return new JsonResponse(['error' => 'WRONG_DATA'], 403);

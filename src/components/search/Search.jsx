@@ -1,21 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid, Icon } from '@material-ui/core'
 import Loading from '../../utils/jsx/Loading'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchMovies, fetchAddMovies } from '../../redux/search/actions'
 import { Link } from 'react-router-dom'
 import Sort from './Sort'
+import { fetchMyMovies } from '../../redux/search/actions'
 
 class Search extends Component {
+
+  state = {
+    movies: []
+  }
 
   _isMounted = false
 
   componentWillMount() {
     this._isMounted = true
     const { search, dispatch } = this.props
-    if (search.movies.length === 0 && search.word === '')
+    if (search.movies.length === 0 && search.word === '') {
+      dispatch(fetchMyMovies())
       dispatch(fetchMovies())
+    }
   }
 
   componentDidMount() {
@@ -26,6 +33,18 @@ class Search extends Component {
           dispatch(fetchAddMovies())
       }
     }
+  }
+
+  isViewed = (id) => {
+    const { myMovies } = this.props.search
+    for (let i in myMovies) {
+      if (myMovies[i].movie) {
+        if (myMovies[i].movie.APIId === id) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   componentWillUnmount() {
@@ -41,9 +60,10 @@ class Search extends Component {
   }
 
   render() {
-    const { movies, isFetching } = this.props.search
+    const { movies, isFetching, myMovies } = this.props.search
     const { classes } = this.props
     const { locale } = this.props.locales
+    console.log(myMovies)
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -61,6 +81,8 @@ class Search extends Component {
                       onMouseLeave={() => this.hideInformations(movie.id)}
                     >
                       <img src={movie.image} alt={movie.title} width="100%" style={{textAlign:'center'}}/>
+                      {this.isViewed(movie.id) && <Icon color="primary" style={{position:'absolute', top:'15px', left:'15px'}}>visibility</Icon>}
+                      <div></div>
                       <div id={movie.id} className={classes.informations}>
                         <Typography variant="button">{movie.title}</Typography>
                         <Typography variant="caption">{locale.movie.production + ': ' + movie.year}</Typography>
