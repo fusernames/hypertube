@@ -6,7 +6,8 @@ const initialState = {
   sort: '',
   api: 'yts',
   isFetching: false,
-  finished: false
+  finished: false,
+  myMovies: []
 }
 
 function searchReducer(state = initialState, action) {
@@ -41,6 +42,11 @@ function searchReducer(state = initialState, action) {
       page: state.page + 1,
       isFetching: false,
       finished: action.finished
+    }
+  } else if (action.type === 'SET_MY_MOVIES') {
+    return {
+      ...state,
+      myMovies: action.myMovies
     }
   } else {
     return state

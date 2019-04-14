@@ -5,38 +5,16 @@ import { Icon, IconButton, ListItem, ListItemText, ListItemSecondaryAction, List
 import host from '../../config'
 import { Link } from 'react-router-dom'
 import { blue } from '@material-ui/core/colors'
+import { fetchMyMovies } from '../../redux/search/actions'
 
 class Movies extends Component {
 
   _isMounted = false
-  setStateCheck = (state, callback) => {
-    if (this._isMounted === true) {
-      this.setState(state, () => {
-        if (callback) callback()
-      })
-    }
-  }
-
-  state = {
-    movies: []
-  }
-
-  fetchMovies = () => {
-    const { auth } = this.props
-    req(host + '/api/movie_statuses.json?&user.id=' + auth.user.id, {
-      useToken: true
-    }).then(res => {
-      console.log(res)
-      this.setStateCheck({
-        ...this.state,
-        movies: res
-      })
-    })
-  }
 
   componentWillMount() {
+    const { dispatch } = this.props
     this._isMounted = true
-    this.fetchMovies()
+    dispatch(fetchMyMovies())
   }
 
   componentWillUnmount() {
@@ -44,14 +22,14 @@ class Movies extends Component {
   }
 
   render() {
-    const { movies } = this.state
+    const { myMovies } = this.props.search
     return (
       <div>
         <IconButton style={{marginRight:'5px'}} onClick={() => this.props.history.goBack()} >
           <Icon color="primary">keyboard_arrow_left</Icon>
         </IconButton>
         <List>
-          {movies.map((movie, i) => {
+          {myMovies.map((movie, i) => {
             return (
               <ListItem divider key={movie.id}>
                 <ListItemAvatar>
