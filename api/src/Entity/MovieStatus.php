@@ -30,7 +30,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      properties={
  *          "id": "exact",
  *          "user.id": "exact",
- *          "movie.id": "exact"
+ *          "movie.id": "exact",
+ *          "movie.APIId": "exact"
  *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MovieStatusRepository")
