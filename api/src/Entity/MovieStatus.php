@@ -11,6 +11,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
+ *      attributes={"pagination_items_per_page"=50},
  *      normalizationContext={
  *          "groups"={"movie_statuses"}
  *      },
