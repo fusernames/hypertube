@@ -15,7 +15,8 @@ class SubtitlesController extends AbstractController
     private $_downloadPath = "/var/lib/transmission-daemon/complete/";
     private $_token = null;
 
-    private function _xmlRequest($request, $args) {
+    private function _xmlRequest($request, $args)
+    {
         $request = xmlrpc_encode_request($request, $args);
         $context = stream_context_create(['http' =>
             [
@@ -33,16 +34,14 @@ class SubtitlesController extends AbstractController
         }
     }
 
-    private function _setXmlToken() {
+    private function _setXmlToken()
+    {
         $response = $this->_xmlRequest("LogIn", ['hypertube2019', 'hypertube2019', 'fr', 'TemporaryUserAgent']);
         if ($response) {
             $this->_token = $response['token'];
         }
     }
 
-    /**
-     * If array or object in param not utf8 -> convert it
-     */
     private function _utf8_convert($dat)
     {
         if (is_string($dat)) {
@@ -62,7 +61,8 @@ class SubtitlesController extends AbstractController
         return $dat;
     }
 
-    private function _unzip($fileName) {
+    private function _unzip($fileName)
+    {
         $buffSize = 4096;
         $outputName = str_replace('.gz', '', $fileName);
         // Opening files
@@ -75,7 +75,8 @@ class SubtitlesController extends AbstractController
         gzclose($file);
     }
 
-    private function _vttConvert($fileName) {
+    private function _vttConvert($fileName)
+    {
         $output = explode('.srt', $fileName)[0] . '.vtt';
         // Opening file
         $fileHandle = fopen($fileName, 'r');
@@ -104,22 +105,24 @@ class SubtitlesController extends AbstractController
         file_put_contents($output, "WEBVTT\n\n" . implode('', $lines));
     }
 
-    public function __invoke($id) {
+    public function __invoke($id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
         $movie = $repository->find($id);
 
-        // Unknown movie ?
         if (!$movie) {
             return new JsonResponse(['error' => 'UNKNOWN_MOVIE'], 401);
         }
 
-        // Subtitles already dl
         if (file_exists('./subtitles/' . $movie->getId() . '/fre.vtt') && file_exists('./subtitles/' . $movie->getId() . '/eng.vtt')) {
             return new JsonResponse(['success' => 'SUBTITLES_PRESENT']);
         }
 
         $filePath = $this->_downloadPath . $movie->getFileName();
+        if (!file_exists($filePath)) {
+            return new JsonResponse(["code" => 404, "error" => "This movie does not exist"], 404);
+        }
         $file = new SplFileObject($filePath);
 
         // Check file existence

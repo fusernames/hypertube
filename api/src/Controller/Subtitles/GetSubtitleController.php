@@ -13,7 +13,8 @@ class GetSubtitleController extends AbstractController
 {
     private $langs = ["fre", "eng"];
 
-    public function __invoke($id, $lang) {
+    public function __invoke($id, $lang)
+    {
         if (!in_array($lang, $this->langs)) {
             return new JsonResponse(['error' => 'UNKNOWN_LANG'], 401);
         }
