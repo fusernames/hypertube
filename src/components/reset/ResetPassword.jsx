@@ -73,7 +73,6 @@ class ResetPassword extends Component {
   render() {
     const { formErrors } = this.state
     const { locale } = this.props.locales
-    console.log('Test')
 
     return (
       <div>
