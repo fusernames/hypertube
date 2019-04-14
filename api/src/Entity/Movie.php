@@ -173,6 +173,11 @@ class Movie
      */
     private $movieStatuses;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $APIId;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -341,6 +346,18 @@ class Movie
                 $movieStatus->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAPIId(): ?int
+    {
+        return $this->APIId;
+    }
+
+    public function setAPIId(int $APIId): self
+    {
+        $this->APIId = $APIId;
 
         return $this;
     }
