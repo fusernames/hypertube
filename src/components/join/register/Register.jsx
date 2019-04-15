@@ -4,7 +4,7 @@ import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { req, validator, checkForm } from '../../../utils'
 import { alert } from '../../../redux/snackbars/actions'
-import { login } from '../../../redux/auth/actions'
+import { login, logout } from '../../../redux/auth/actions'
 import host from '../../../config'
 
 class Register extends React.Component {
@@ -49,6 +49,7 @@ class Register extends React.Component {
               }).catch(err => {
                 if (err._status >= 400 && err._status < 500) {
                   dispatch(alert('REGISTER_BAD_PICTURE', 'error'))
+                  dispatch(logout())
                 }
               })
             }
