@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="retour"></ion-back-button>
+    </ion-buttons>
+    <ion-title>movie-player</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="onCreateMessage()" translucent="true">
+      <ion-icon name="create"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <video #player
+        controls
+        width="100%">
+    <source src="{{ movieUrl }}">
+    Sorry, your browser doesn't support embedded videos.
+  </video>
+
+  <ion-card color="dark">
+    <ion-card-header color="dark">
+      <ion-card-title>
+        Commentaires
+      </ion-card-title>
+    </ion-card-header>
+
+    <app-movie-message *ngFor="let message of messages"
+                      [message]="message"
+                      [today]="today"></app-movie-message>
+
+    <ion-infinite-scroll (ionInfinite)="getMessages($event)">
+      <ion-infinite-scroll-content loadingSpinner="dots" color="light">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-card>
+
+</ion-content>

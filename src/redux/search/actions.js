@@ -1,6 +1,24 @@
 import store from '../store'
 import req from '../../utils/req'
 import { alert } from '../snackbars/actions'
+import host from '../../config'
+
+export function fetchMyMovies() {
+  return (dispatch, getState) => {
+    const { auth } = getState()
+    req(host + '/api/movie_statuses.json?&user.id=' + auth.user.id, {
+      useToken: true
+    }).then(res => {
+      dispatch(setMyMovies(res))
+    })
+  }
+  function setMyMovies(myMovies) {
+    return {
+      type: 'SET_MY_MOVIES',
+      myMovies: myMovies
+    }
+  }
+}
 
 function translateGenre(genre) {
   switch(genre) {
@@ -86,7 +104,6 @@ export function fetchMovies(options = {}) {
       if (sort === 'title') url += '&order=1'
       dispatch(fetching())
       req(url).then(res => {
-        console.log(res)
         formatMovies(res, (movies) => {
           dispatch(setMovies(movies))
         }, true)

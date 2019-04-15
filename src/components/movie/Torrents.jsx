@@ -48,39 +48,37 @@ class Torrents extends Component {
     })
   }
 
-  setStatus = (t) => {
+  setStatus = (t, refresh = false) => {
     this.setStateCheck({
       ...this.state,
       torrents: t
     })
-    for (let torrent of this.state.torrents) {
-      if (torrent.movieId) {
-        this.props.onChange(torrent.movieId)
-      }
-    }
   }
 
   fetchTorrentsStatus = (torrents) => {
     let cpy = [...torrents]
     cpy.forEach(torrent => {
       this.fetchStatus(torrent, () => {
-        this.setStatus(cpy)
+        this.setStatus(cpy, true)
       })
     })
   }
 
   refreshStatus = () => {
-    let cpy = [...this.state.torrents]
-    for (let i in cpy) {
-      if (cpy[i].downloading !== undefined) {
-        this.fetchStatus(cpy[i], () => {
-          this.setStatus(cpy)
-        })
+    if (this._isMounted) {
+      let cpy = [...this.state.torrents]
+      for (let i in cpy) {
+        if (cpy[i].downloading !== undefined) {
+          this.fetchStatus(cpy[i], () => {
+            this.setStatus(cpy)
+          })
+        }
       }
     }
   }
 
   handleDownload = (i) => {
+    const { dispatch } = this.props
     const torrents = [...this.state.torrents]
     torrents[i].downloading = 0
     torrents[i].download = undefined
@@ -97,7 +95,7 @@ class Torrents extends Component {
       body: body,
       method: 'post'
     }).catch(err => {
-      dispatch(alert(err))
+      dispatch(alert(err, 'error'))
     })
   }
 

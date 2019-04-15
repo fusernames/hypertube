@@ -1,0 +1,7 @@
+{
+  "name": "hypertube-mobile",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

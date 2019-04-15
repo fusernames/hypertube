@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mon compte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark" padding>
+  <ion-list color="dark" lines="none">
+    <ion-item color="dark" routerLink="profile" routerDirection="forward">
+      <ion-button expand="full" color="dark">
+        <ion-icon name="person" slot="start"></ion-icon>
+        Profile
+      </ion-button>
+    </ion-item>
+    <ion-item color="dark" routerLink="account" routerDirection="forward">
+      <ion-button color="dark" expand="full">
+        <ion-icon name="information-circle" slot="start"></ion-icon>
+        Mes infos
+      </ion-button>
+    </ion-item>
+    <ion-item color="dark" routerLink="security" routerDirection="forward">
+      <ion-button expand="full" color="dark">
+        <ion-icon name="lock" slot="start"></ion-icon>
+        Sécurité
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  <ion-button (click)="onLogout()" expand="block">Logout</ion-button>
+</ion-content>

@@ -22,7 +22,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *      attributes={"pagination_items_per_page"=5},
+ *      attributes={
+ *          "pagination_client_enabled"=true,
+ *          "pagination_client_items_per_page"=true,
+ *          "pagination_items_per_page"=20,
+ *          "maximum_items_per_page"=50
+ *      },
  *      itemOperations={
  *          "get"={
  *              "access_control"="is_granted('ROLE_USER')"
@@ -90,7 +95,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "name": "ipartial",
  *          "finished": "exact",
  *          "torrentLink": "ipartial",
- *          "APIId": "exact"
+ *          "APIId": "exact",
+ *          "movieStatuses.user": "exact"
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
@@ -171,13 +177,45 @@ class Movie
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MovieStatus", mappedBy="movie", orphanRemoval=true)
+     * @ApiSubresource(maxDepth=1)
      */
     private $movieStatuses;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"movie_statuses"})
      */
     private $APIId;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"movie_statuses"})
+     */
+    private $image;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"movie_statuses"})
+     */
+    private $rating;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"movie_statuses"})
+     */
+    private $year;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"movie_statuses"})
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"movie_statuses"})
+     */
+    private $description;
 
     public function __construct()
     {
@@ -359,6 +397,66 @@ class Movie
     public function setAPIId(int $APIId): self
     {
         $this->APIId = $APIId;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
