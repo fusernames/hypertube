@@ -70,8 +70,8 @@ class GetMovieController extends TorrentController
             }
         }
 
-        if ($fileExt === "mkv") {
-            return $this->redirect('http://hypertube.barthonet.ovh:8080/mkv?path=' . $totalPath . '&header=' . $request->headers->get('User-Agent'));
+        if ($fileExt === "mkv" && !strpos($request->headers->get('User-Agent'), 'Chrome')) {
+            return $this->redirect('http://hypertube.barthonet.ovh:8080/mkv?path=' . $totalPath);
         }
     
         $response->headers->set('Accept-Ranges', 'bytes');
