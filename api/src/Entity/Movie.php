@@ -171,6 +171,7 @@ class Movie
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MovieStatus", mappedBy="movie", orphanRemoval=true)
+     * @ApiSubresource(maxDepth=1)
      */
     private $movieStatuses;
 
