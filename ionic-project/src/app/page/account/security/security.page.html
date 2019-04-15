@@ -10,13 +10,13 @@
 <ion-content color="dark" padding>
   <ion-card color="medium">
     <ion-card-header>
-      <ion-card-subtitle>
+      <ion-card-subtitle color="danger">
         Changer de mot de passe
       </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <form [formGroup]="passwordForm" (ngSubmit)="onWantChangePassword()">
-        <ion-list color="medium">
+        <ion-list color="medium" lines="none">
           <ion-item color="medium">
             <ion-label position="floating">Mot de passe actuel</ion-label>
             <ion-input formControlName="current_password" type="password"></ion-input>
@@ -47,7 +47,7 @@
             <ion-button color="primary"
                         type="submit"
                         expand="block"
-                        [disabled]="passwordForm.invalid">
+                        [disabled]="passwordForm.invalid || requesting">
               Changer de mot de passe
             </ion-button>
           </ion-col>
@@ -55,12 +55,9 @@
       </form>
     </ion-card-content>
   </ion-card>
-  <ion-card color="danger">
-    <ion-card-header>
-      <ion-card-subtitle>
-        Supprimer mon compte
-      </ion-card-subtitle>
-    </ion-card-header>
-  </ion-card>
+  <ion-button expand="block" color="danger" fill="outline" (click)="onDeleteAccount()">
+    <ion-icon slot="start" name="trash"></ion-icon>
+    Supprimer mon compte
+  </ion-button>
 
 </ion-content>

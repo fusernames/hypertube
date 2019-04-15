@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:28:52 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/15 07:15:31 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 10:46:04 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ import { MovieDetailPage } from '../page/movie-detail/movie-detail.page';
 import { MoviePlayerPage } from '../page/movie-player/movie-player.page';
 import { SecurityPage } from '../page/account/security/security.page';
 import { ProfilePage } from '../page/account/profile/profile.page';
-import { DataPage } from '../page/account/data/data.page';
 import { SecurityPageModule } from '../page/account/security/security.module';
 import { ProfilePageModule } from '../page/account/profile/profile.module';
-import { DataPageModule } from '../page/account/data/data.module';
 
 const routes: Routes = [
   {
@@ -86,11 +84,6 @@ const routes: Routes = [
             canActivate: [AppGuardGuard],
             path: 'profile',
             component: ProfilePage
-          },
-          {
-            canActivate: [AppGuardGuard],
-            path: 'account',
-            component: DataPage
           }
         ]
       },
@@ -114,8 +107,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     SecurityPageModule,
-    ProfilePageModule,
-    DataPageModule
+    ProfilePageModule
   ],
   exports: [RouterModule]
 })
