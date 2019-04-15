@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import host from '../../config'
-import ReactPlayer from 'react-player';
 
 /**
  * Component takes 2 props =>
@@ -128,20 +127,14 @@ class Player extends Component {
     const { fre, eng } = this.state.subtitles
     if (!mediaUrl) return null
     return (
-      <ReactPlayer
-        id="player"
-        controls={true}
-        style={{width: '100%'}}
-        url={mediaUrl}
-        config={{
-          file: {
-            tracks: [
-              {kind: 'subtitles', src: host + '/api/movies/subtitles/' + movieId + '/eng', srcLang: 'en', label: 'English'},
-              {kind: 'subtitles', src: host + '/api/movies/subtitles/' + movieId + '/fre', srcLang: 'fr', label: 'Français', default: locales.code === "fr"}
-            ]
-          }
-        }}
-      />
+      <video id="player" controls style={{width: '100%'}}
+          onTimeUpdate={this.handleTimeChange}
+          onMouseEnter={() => this.enableEvent = true}
+          onMouseLeave={() => this.enableEvent = false}>
+        <source src={mediaUrl} />
+        {eng && <track label="English" kind="subtitles" srcLang="en" src={host + '/api/movies/subtitles/' + movieId + '/eng'} />}
+        {fre && <track label="Français" kind="subtitles" srcLang="fr" src={host + '/api/movies/subtitles/' + movieId + '/fre'} default={locales.code === "fr"}/>}
+      </video>
     );
   }
 

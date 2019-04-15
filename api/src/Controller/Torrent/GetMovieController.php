@@ -34,10 +34,13 @@ class GetMovieController extends TorrentController
 
         if (!file_exists($totalPath)) {
             return new JsonResponse(['error' => 'MOVIE_FILE_NULL'], 404);
-	}
+        }
 
+        // Create the StreamedResponse object
+        $response = new StreamedResponse();
     
         $file = new SplFileObject($totalPath);
+    
         // Check file existence
         if (!($file->isFile())) {
             throw $this->createNotFoundException('Error getting movie at path ' . $totalPath);
@@ -47,7 +50,7 @@ class GetMovieController extends TorrentController
         $fileName = $file->getBasename();
         $fileExt  = $file->getExtension();
         $filePath = $file->getRealPath();
-
+        
         if ($movie->getFinished()) {
             $fileSize = $file->getSize();
         } else {
@@ -67,16 +70,8 @@ class GetMovieController extends TorrentController
                 $fileSize = $movieFile['bytesCompleted'];
             }
         }
-	
-	if ($fileExt === "mkv") {
-		$response = new BinaryFileResponse($totalPath);
-		return $response;
-	}
-
-        // Create the StreamedResponse object
-        $response = new StreamedResponse();
-	
-	$response->headers->set('Accept-Ranges', 'bytes');
+    
+        $response->headers->set('Accept-Ranges', 'bytes');
         $response->headers->set('Content-Type', 'video/' . ($fileExt === "mkv" ? "x-matroska" : $fileExt));
     
         // Initialise range variables, default to the whole file size
@@ -125,7 +120,6 @@ class GetMovieController extends TorrentController
             } else {
                 // Fseek error -> wrong range -> error
                 $response = new Response();
-
                 $response->setStatusCode(StreamedResponse::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
                 $response->headers->set('Content-Range', sprintf('bytes */%d', $fileSize));
     
@@ -144,7 +138,6 @@ class GetMovieController extends TorrentController
         $response->setCallback(function () use ($file, $rangeEnd, $fileExt, $totalPath) {
             $buffer = 1024 * 8;
 
-            $offset = 0;
             while (!($file->eof()) && (($offset = $file->ftell()) < $rangeEnd)) {
                 set_time_limit(0);
     
@@ -153,9 +146,9 @@ class GetMovieController extends TorrentController
                 }
 
                 echo $file->fread($buffer);
-
-                $file = null;
             }
+            
+            $file = null;
         });
     
         // Then everything should be ready, we can send the Response content.
