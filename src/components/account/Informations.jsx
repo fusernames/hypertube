@@ -73,7 +73,7 @@ class Informations extends React.Component {
             }
           }
         })
-        if (this.state.file) {
+        if (this.state.file && this.state.file.size <= 10000) {
           const data = new FormData();
           data.append('file', this.state.file)
           req(host + '/api/media_objects/avatar/create', {
@@ -86,6 +86,9 @@ class Informations extends React.Component {
               dispatch(alert('REGISTER_BAD_PICTURE', 'error'))
             }
           })
+        }
+        else if (this.state.file && this.state.file.size > 10000) {
+          dispatch(alert('REGISTER_TOO_BIG_PICTURE', 'error'))
         }
       }
     })

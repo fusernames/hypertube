@@ -34,13 +34,8 @@ class GetMovieController extends TorrentController
 
         if (!file_exists($totalPath)) {
             return new JsonResponse(['error' => 'MOVIE_FILE_NULL'], 404);
-        }
-
-        // Check file existence
-        if (!($file->isFile())) {
-            throw $this->createNotFoundException('Error getting movie at path ' . $totalPath);
-        }
-
+    	}
+    
         if (!$movie->getFinished()) {
             $transmission = new Transmission($this->transmissionConfig);
             $infos = $transmission->get($movie->getTorrentId())['torrents'];
