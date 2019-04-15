@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:28:52 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/14 14:56:20 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 07:15:31 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ import { TabsPage } from './tabs.page';
 import { AppGuardGuard } from '../guard/app-guard.guard';
 import { MovieDetailPage } from '../page/movie-detail/movie-detail.page';
 import { MoviePlayerPage } from '../page/movie-player/movie-player.page';
+import { SecurityPage } from '../page/account/security/security.page';
+import { ProfilePage } from '../page/account/profile/profile.page';
+import { DataPage } from '../page/account/data/data.page';
+import { SecurityPageModule } from '../page/account/security/security.module';
+import { ProfilePageModule } from '../page/account/profile/profile.module';
+import { DataPageModule } from '../page/account/data/data.module';
 
 const routes: Routes = [
   {
@@ -70,6 +76,21 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: '../tabs4/tabs4.module#Tabs4PageModule'
+          },
+          {
+            canActivate: [AppGuardGuard],
+            path: 'security',
+            component: SecurityPage
+          },
+          {
+            canActivate: [AppGuardGuard],
+            path: 'profile',
+            component: ProfilePage
+          },
+          {
+            canActivate: [AppGuardGuard],
+            path: 'account',
+            component: DataPage
           }
         ]
       },
@@ -91,7 +112,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SecurityPageModule,
+    ProfilePageModule,
+    DataPageModule
   ],
   exports: [RouterModule]
 })

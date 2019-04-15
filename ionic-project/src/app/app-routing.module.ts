@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:23:11 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/11 14:55:07 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 07:09:39 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: './page/login/login.module#LoginPageModule'
+    loadChildren: './page/account/login/login.module#LoginPageModule'
   },
   {
     path: 'signup',
-    loadChildren: './page/signup/signup.module#SignupPageModule'
-  }
+    loadChildren: './page/account/signup/signup.module#SignupPageModule'
+  },
+  { path: 'profile', loadChildren: './page/account/profile/profile.module#ProfilePageModule' },
+  { path: 'data', loadChildren: './page/account/data/data.module#DataPageModule' },
+  { path: 'security', loadChildren: './page/account/security/security.module#SecurityPageModule' }
 ];
 @NgModule({
   imports: [

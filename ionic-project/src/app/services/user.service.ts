@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 18:29:28 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/14 14:11:07 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 08:29:25 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,25 @@ export class UserService extends CoreService {
       return this.user;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async changePassword({current_password, new_password, confirm_new_password}: {current_password: string, new_password: string, confirm_new_password: string}) {
+    const params = {
+      method: 'post',
+      url: '/api/users/me/change-password',
+      data: {
+        current_password,
+        new_password,
+        confirm_new_password
+      },
+      toastMsg: 'Changement du mot de passe en cours ...'
+    };
+
+    try {
+      return await this.request(params);
+    } catch (err) {
+      throw err;
     }
   }
 

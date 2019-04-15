@@ -1,0 +1,66 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-back-button text="retour"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Sécurité</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content color="dark" padding>
+  <ion-card color="medium">
+    <ion-card-header>
+      <ion-card-subtitle>
+        Changer de mot de passe
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="passwordForm" (ngSubmit)="onWantChangePassword()">
+        <ion-list color="medium">
+          <ion-item color="medium">
+            <ion-label position="floating">Mot de passe actuel</ion-label>
+            <ion-input formControlName="current_password" type="password"></ion-input>
+            <div style="color: red; padding-top: 0.2rem"
+                *ngIf="!passwordForm.controls.current_password.valid && passwordForm.controls.current_password.dirty && !passwordForm.controls.current_password.touch">
+              Le mot de passe doit avoir plus de 7 caractères dont obligatoirement 1 chiffre et 1 majuscule.
+            </div>
+          </ion-item>
+          <ion-item color="medium">
+            <ion-label position="floating">Nouveau mot de passe</ion-label>
+            <ion-input formControlName="new_password" type="password"></ion-input>
+            <div style="color: red; padding-top: 0.2rem"
+                *ngIf="!passwordForm.controls.new_password.valid && passwordForm.controls.new_password.dirty && !passwordForm.controls.new_password.touch">
+              Le nouveau mot de passe doit avoir plus de 7 caractères dont obligatoirement 1 chiffre et 1 majuscule.
+            </div>
+          </ion-item>
+          <ion-item color="medium">
+            <ion-label position="floating">Confirmation mot de passe</ion-label>
+            <ion-input formControlName="confirm_new_password" type="password"></ion-input>
+            <div style="color: red; padding-top: 0.2rem"
+                *ngIf="!passwordForm.controls.confirm_new_password.valid && passwordForm.controls.confirm_new_password.dirty && !passwordForm.controls.confirm_new_password.touch">
+              La confirmation du mot de passe doit avoir plus de 7 caractères dont obligatoirement 1 chiffre et 1 majuscule.
+            </div>
+          </ion-item>
+        </ion-list>
+        <ion-row class="signin">
+          <ion-col>
+            <ion-button color="primary"
+                        type="submit"
+                        expand="block"
+                        [disabled]="passwordForm.invalid">
+              Changer de mot de passe
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <ion-card color="danger">
+    <ion-card-header>
+      <ion-card-subtitle>
+        Supprimer mon compte
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+</ion-content>

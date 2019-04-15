@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tabs4.module.ts                                    :+:      :+:    :+:   */
+/*   security.module.ts                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/15 07:47:06 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/15 07:49:09 by dlavaury         ###   ########.fr       */
+/*   Created: 2019/04/15 07:50:51 by dlavaury          #+#    #+#             */
+/*   Updated: 2019/04/15 07:50:51 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Routes, RouterModule } from '@angular/router';
+
 import { IonicModule } from '@ionic/angular';
-import { Tabs4Page } from './tabs4.page';
+
+import { SecurityPage } from './security.page';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: SecurityPage
+  }
+];
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{path: '', component: Tabs4Page}])
+    ReactiveFormsModule,
+    RouterModule.forChild(routes)
   ],
-  declarations: [Tabs4Page]
+  declarations: [SecurityPage]
 })
-export class Tabs4PageModule {}
+export class SecurityPageModule {}
