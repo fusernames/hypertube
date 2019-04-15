@@ -211,6 +211,12 @@ class Movie
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"movie_statuses"})
+     */
+    private $description;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -439,6 +445,18 @@ class Movie
     public function setTitle(?string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
