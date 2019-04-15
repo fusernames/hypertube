@@ -53,8 +53,8 @@ class ChangePasswordController extends AbstractController
         /**
          * Verification of the new password
          */
-        if (isset($requestContent->new_password) && isset($requestContent->re_password)) {
-            if ($requestContent->new_password != $requestContent->re_password) {
+        if (isset($requestContent->new_password) && isset($requestContent->confirm_new_password)) {
+            if ($requestContent->new_password !== $requestContent->confirm_new_password) {
                 return new JsonResponse(["error" => "PASSWORDS_DIFFER"]);
             }
             if (!$this->setNewPassword($requestContent->new_password)) {

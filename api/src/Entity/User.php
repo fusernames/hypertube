@@ -223,6 +223,22 @@ class User extends BaseUser
     protected $new_password;
 
     /**
+     * @Groups({"change-password"})
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage="The password must be at least {{ limit }} characters long",
+     *      maxMessage="The password cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\Type(
+     *     type="string",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     * @Assert\Regex("/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/")
+     */
+    protected $confirm_new_password;
+
+    /**
      * @Groups({"user:write", "me", "rest-password-send-email"})
      * @Assert\Email(message = "The email '{{ value }}' is not a valid email.")
      * @Assert\Type(
