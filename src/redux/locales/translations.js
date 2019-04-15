@@ -76,6 +76,7 @@ const translations = {
     REGISTER_EMAIL_TOOK: ["This email is already took", "Cet email existe déjà"],
     REGISTER_BAD_PICTURE: ["You can't upload this file", "Vous ne pouvez pas importer ce fichier"],
     REGISTER_EMPTY_PICTURE: ["You need to upload an avatar", "Vous devez ajouter un avatar"],
+    REGISTER_TOO_BIG_PICTURE: ["Your avatar is too big, must be 1Mb max", "Votre avatar est trop lourd, 1Mb maximum"],
     // reset
     RESET_SENT: ["We successfully sent a reset link, check your mails", "Nous avons bien envoyé un lien de réinitialisation, regardez vos mails"],
     // user
