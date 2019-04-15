@@ -12,11 +12,13 @@ app.get("/mkv", (req, res) => {
             ffmpeg()
                 .input(stream)
                 .outputFormat('mp4')
-                .on('error', console.error)
-                .inputFormat('mkv')
+                .on('error', ignored => {})
                 .audioCodec('aac')
                 .videoCodec('libx264')
                 .pipe(res)
+            res.on('close', () => {
+                stream.destroy()
+            })
         } else {
             res.status(404).send();
         }
