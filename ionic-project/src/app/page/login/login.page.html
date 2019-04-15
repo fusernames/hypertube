@@ -1,0 +1,36 @@
+<ion-content padding color="dark">
+  <div class="d-flex flex-column justify-content-between h-100">
+    <div class="d-flex flex-column justify-content-center h-100">
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <ion-card color="medium">
+          <ion-card-content>
+            <ion-list color="medium">
+              <ion-item color="medium">
+                <ion-label position="floating">Login ou email</ion-label>
+                <ion-input formControlName="email" type="text"></ion-input>
+              </ion-item>
+              <ion-item color="medium">
+                <ion-label position="floating">Mot de passe</ion-label>
+                <ion-input formControlName="password" type="password"></ion-input>
+              </ion-item>
+            </ion-list>
+            <ion-row class="signin">
+              <ion-col>
+                <ion-button color="primary"
+                            type="submit"
+                            expand="block"
+                            [disabled]="loginForm.invalid || requesting">
+                  Se connecter
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </form>
+    </div>
+    <ion-button expand="block"
+      color="secondary"
+      routerLink="/signup"
+      routerDirection="forward">S'inscrire</ion-button>
+  </div>
+</ion-content>

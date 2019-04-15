@@ -1,0 +1,14 @@
+<ion-card color="medium">
+  <ion-img src="{{ movie.image }}"
+          alt="movie.background_image_original"
+          (click)="onOpenMovie()">
+  </ion-img>
+  <ion-card-header>
+    <ion-card-subtitle>Noté: {{ movie.rating }}/10</ion-card-subtitle>
+    <ion-card-title (click)="onOpenMovie()"
+                    class="text-warning">
+      {{ movie.title }}
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>{{ movie. description }}</ion-card-content>
+</ion-card>

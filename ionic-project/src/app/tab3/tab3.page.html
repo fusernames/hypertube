@@ -1,0 +1,17 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-title>
+      Mes films
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark" padding>
+
+  <app-movie-item *ngFor="let movie of movieService.movies$ | async" [movie]="movie"></app-movie-item>
+
+  <ion-infinite-scroll (ionInfinite)="getMovies($event)" threshold="15%" padding>
+    <ion-infinite-scroll-content loadingSpinner="dots" color="light">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

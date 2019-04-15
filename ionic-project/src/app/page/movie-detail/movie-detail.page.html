@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="retour"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ movie.title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark" padding>
+  <ion-card>
+    <ion-img src="{{ movie.image }}"
+            alt="movie.background_image_original">
+    </ion-img>
+  </ion-card>
+  <div class="d-flex justify-content-between">
+    <ion-card color="medium" class="w-50 my-0" padding>
+      <ion-card-subtitle class="text-warning">
+        Note
+        <ion-icon name="star"></ion-icon>
+      </ion-card-subtitle>
+      <ion-card-title>{{ movie.rating }}</ion-card-title>
+    </ion-card>
+    <ion-card color="medium" class="w-50 my-0" padding>
+      <ion-card-subtitle class="text-warning">
+        Année
+        <ion-icon name="videocam"></ion-icon>
+      </ion-card-subtitle>
+      <ion-card-title>{{ movie.year }}</ion-card-title>
+    </ion-card>
+  </div>
+  <ion-card color="medium" padding>
+      <ion-card-subtitle class="text-warning">
+        Genre
+        <ion-icon name="film"></ion-icon>
+      </ion-card-subtitle>
+      <ion-chip *ngFor="let genre of movie.genre"
+                class="m-1"
+                color="dark"
+                outline="true">
+        <ion-label>{{ genre }}</ion-label>
+      </ion-chip>
+  </ion-card>
+  <ion-card color="medium">
+    <ion-card-header>
+      <ion-card-subtitle class="text-warning">
+        Bande annonce
+        <ion-icon name="play-circle"></ion-icon>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <iframe [src]="trustedVideoUrl"
+              frameborder="0"
+              allowfullscreen
+              width="100%"
+              height="auto"></iframe>
+    </ion-card-content>
+  </ion-card>
+  <ion-card color="medium" padding>
+    <ion-card-subtitle class="text-warning">
+      Synopsis
+      <ion-icon name="list"></ion-icon>
+    </ion-card-subtitle>
+    {{ movie.description }}
+  </ion-card>
+  <ion-card color="medium">
+    <ion-card-header>
+      <ion-card-subtitle class="text-warning">
+        Torrents
+        <ion-icon name="link"></ion-icon>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list color="medium" lines="none">
+        <app-torrent-status *ngFor="let torrent of movie.torrent"
+                            [torrent]="torrent">
+        </app-torrent-status>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,23 @@
+<ion-item color="medium"
+          class="d-flex justify-content-around">
+
+  <ion-chip color="light" outline="true">
+    <ion-label>{{ torrent.quality }}</ion-label>
+  </ion-chip>
+
+  {{ torrent.size }}
+
+  <ion-button size="small"
+              fill="outline"
+              color="light"
+              shape="round"
+              slot="end"
+              (click)="onWantWatch()"
+              [disabled]="downloading"
+              *ngIf="!downloading">
+    <ion-ripple-effect></ion-ripple-effect>
+    <ion-icon [name]="play ? 'play' : 'download'"></ion-icon>
+  </ion-button>
+  
+</ion-item>
+<ion-progress-bar *ngIf="downloading" [value]="status.success"></ion-progress-bar>

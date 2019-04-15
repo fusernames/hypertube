@@ -1,0 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   app-routing.module.ts                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/11 13:23:11 by dlavaury          #+#    #+#             */
+/*   Updated: 2019/04/11 14:55:07 by dlavaury         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+import { NgModule } from '@angular/core';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AppGuardGuard } from './guard/app-guard.guard';
+
+const routes: Routes = [
+  {
+    path: '',
+    canActivate: [AppGuardGuard],
+    loadChildren: './tabs/tabs.module#TabsPageModule'
+  },
+  {
+    path: 'login',
+    loadChildren: './page/login/login.module#LoginPageModule'
+  },
+  {
+    path: 'signup',
+    loadChildren: './page/signup/signup.module#SignupPageModule'
+  }
+];
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}

@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Les films
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark" [ngStyle]="{'margin-bottom': '200px'}" padding>
+  <ion-card color="medium">
+    <ion-card-header>
+      <ion-card-subtitle class="text-warning">
+        Vos critères {{ movies && movies.nbMovies ? ' (' + movies.nbMovies + ' résultats)' : ''}}
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content color="medium">
+      <ion-list color="medium">
+        <ion-item color="medium">
+          <ion-label>Genre</ion-label>
+          <ion-select value="{{ GENDERS[genderIndex].value }}"
+                      (ionChange)="onChangeGender($event)">
+            <ion-select-option *ngFor="let gender of GENDERS; let i=index"
+                              value="{{ gender.value }}">
+              {{ gender.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item color="medium">
+          <ion-label>Trier par</ion-label>
+          <ion-select value="{{ SORTS[sortIndex].value }}"
+                      okText="OK"
+                      cancelText="Fermer"
+                      (ionChange)="onChangeSort($event)">
+            <ion-select-option *ngFor="let sort of SORTS; let i=index"
+                              value="{{ sort.value }}">
+              {{ sort.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item color="medium">
+          <ion-label>API</ion-label>
+          <ion-select value="{{ APIS[ApiIndex].value }}"
+                      okText="OK"
+                      cancelText="Fermer"
+                      (ionChange)="onChangeApi($event)">
+            <ion-select-option *ngFor="let api of APIS; let i=index"
+                              value="{{ api.value }}">
+              {{ api.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Component movie-item -->
+  <app-movie-item *ngFor="let movie of movies.movies" [movie]="movie"></app-movie-item>
+
+  <ion-infinite-scroll (ionInfinite)="loadData($event)" padding>
+    <ion-infinite-scroll-content loadingSpinner="dots"
+                                color="light">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

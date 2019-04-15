@@ -1,0 +1,12 @@
+<ion-card color="medium" class="w-100 mx-0">
+  <ion-item color="medium" class="w-100">
+    <ion-avatar slot="start">
+      <img src="{{ getAvatar(message.owner.avatarUrl) }}">
+    </ion-avatar>
+    <ion-label>{{ message.owner.username }}</ion-label>
+    <ion-label>{{ timeDifference }}</ion-label>
+  </ion-item>
+  <ion-card-content>
+    {{ message.message }}
+  </ion-card-content>
+</ion-card>
