@@ -44,10 +44,10 @@ class ChangePasswordController extends AbstractController
          */
         if (isset($requestContent->current_password)) {
             if (!$this->setCurrentPassword($requestContent->current_password, $encoder, $user)) {
-                return new JsonResponse(['message' => 'Invalid password'], 401);
+                return new JsonResponse(['message' => 'Invalid password', "code" => 401], 401);
             }
         } else {
-            return new JsonResponse(['message' => 'Missing current password'], 403);
+            return new JsonResponse(['message' => 'Missing current password', "code" => 403], 403);
         }
 
         /**
@@ -55,17 +55,17 @@ class ChangePasswordController extends AbstractController
          */
         if (isset($requestContent->new_password) && isset($requestContent->confirm_new_password)) {
             if ($requestContent->new_password !== $requestContent->confirm_new_password) {
-                return new JsonResponse(["error" => "PASSWORDS_DIFFER"]);
+                return new JsonResponse(["error" => "PASSWORDS_DIFFER", "code" => 404], 404);
             }
             if (!$this->setNewPassword($requestContent->new_password)) {
-                return new JsonResponse(['message' => 'New password is invalid'], 403);
+                return new JsonResponse(['message' => 'New password is invalid', "code" => 403], 403);
             }
         } else {
-            return new JsonResponse(['message' => 'New password is missing'], 403);
+            return new JsonResponse(['message' => 'New password is missing', "code" => 403], 403);
         }
         $user->setPassword($encoder->encodePassword($user, $this->newPassword));
         $manager->flush();
-        return new JsonResponse(['message' => 'Successfully changed password'], 200);
+        return new JsonResponse(['message' => 'Successfully changed password', "code" => 200], 200);
     }
 
     /**
