@@ -13,10 +13,10 @@ class CommentsBox extends React.Component {
   }
 
   handleSubmit = (e) => {
+    const { dispatch } = this.props
     e.preventDefault()
     document.querySelector("#message").value = '';
     if (this.state.isFetching) {
-      // Alert that already fetching ?
       return;
     }
     this.setState({
@@ -33,14 +33,13 @@ class CommentsBox extends React.Component {
           movie: '/api/movies/' + this.props.id,
         }
       }).then(res => {
-        // Handle api response
         this.setState({
           comment: '',
           isFetching: false
         });
         this.props.addComment(this.props.id)
-      }).catch(err => {
-        // Handle errors
+      }).catch(() => {
+        dispatch(alert('INVALID_MESSAGE', 'error'))
       })
     } else {
       this.setState({

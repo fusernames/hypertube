@@ -4,7 +4,7 @@ import { TextField, Button, Grid, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import { req, validator, checkForm } from '../../../utils'
 import { alert } from '../../../redux/snackbars/actions'
-import { login } from '../../../redux/auth/actions'
+import { login, logout } from '../../../redux/auth/actions'
 import host from '../../../config'
 
 class Register extends React.Component {
@@ -31,7 +31,8 @@ class Register extends React.Component {
     checkForm(body, this.validate, (errors, nbErrors) => {
       this.setState({...this.state, formErrors: errors})
       body = {...body, plainPassword: body.password}
-      if (!nbErrors && this.state.file && this.state.file.size <= 10000) {
+      console.log(this.state.file.size)
+      if (!nbErrors && this.state.file && this.state.file.size <= 100000) {
         req(host + '/api/users', {
           method: 'post', body: body
         })
@@ -49,6 +50,7 @@ class Register extends React.Component {
               }).catch(err => {
                 if (err._status >= 400 && err._status < 500) {
                   dispatch(alert('REGISTER_BAD_PICTURE', 'error'))
+                  dispatch(logout())
                 }
               })
             }
@@ -68,7 +70,7 @@ class Register extends React.Component {
       else if (!this.state.file) {
         dispatch(alert('REGISTER_EMPTY_PICTURE', 'error'))
       }
-      else if (this.state.file && this.state.file.size > 10000) {
+      else if (this.state.file && this.state.file.size > 100000) {
         dispatch(alert('REGISTER_TOO_BIG_PICTURE', 'error'))
       }
     })
