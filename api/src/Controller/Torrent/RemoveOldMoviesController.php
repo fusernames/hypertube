@@ -23,7 +23,7 @@ class RemoveOldMoviesController extends TorrentController
                 }
             }
             if ($toRemove) {
-                unlink($this->_downloadPath . $movie->getName());
+                unlink($this->_downloadPath . $movie->getFileName());
                 $entityManager->remove($movie);
                 $entityManager->flush();
             }
