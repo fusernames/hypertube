@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import Loading from '../../utils/jsx/Loading'
 import req from '../../utils/req'
-import host from '../../config'
 import Torrents from './Torrents'
 import { fetchMyMovies } from '../../redux/search/actions'
 
@@ -127,7 +126,7 @@ class Movie extends React.Component {
   }
 
   render() {
-    const { movie, isFetching, viewed } = this.state
+    const { movie, isFetching } = this.state
     const { classes } = this.props
     const { locale } = this.props.locales
 

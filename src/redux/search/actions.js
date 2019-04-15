@@ -2,6 +2,7 @@ import store from '../store'
 import req from '../../utils/req'
 import { alert } from '../snackbars/actions'
 import host from '../../config'
+import urlencode from 'urlencode'
 
 export function fetchMyMovies() {
   return (dispatch, getState) => {
@@ -91,6 +92,7 @@ export function fetchMovies(options = {}) {
     if (genre === undefined) genre = search.genre
     if (sort === undefined) sort = search.sort
     if (api === undefined) api = search.api
+    word = urlencode(word)
     let list = []
 
     if (api === 'popcorntime' || api === 'yts') {

@@ -79,7 +79,6 @@ class Stream extends Component {
   }
 
   updateMovieStatus = newTime => {
-    const { dispatch } = this.props
     const { statusId, isFetching } = this.state
     if (statusId === -1 || isFetching) return
     this.setStateCheck({
