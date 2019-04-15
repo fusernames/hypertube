@@ -34,13 +34,10 @@ class GetMovieController extends TorrentController
 
         if (!file_exists($totalPath)) {
             return new JsonResponse(['error' => 'MOVIE_FILE_NULL'], 404);
-        }
+	}
 
-        // Create the StreamedResponse object
-        $response = new StreamedResponse();
     
         $file = new SplFileObject($totalPath);
-    
         // Check file existence
         if (!($file->isFile())) {
             throw $this->createNotFoundException('Error getting movie at path ' . $totalPath);
@@ -50,7 +47,7 @@ class GetMovieController extends TorrentController
         $fileName = $file->getBasename();
         $fileExt  = $file->getExtension();
         $filePath = $file->getRealPath();
-        
+
         if ($movie->getFinished()) {
             $fileSize = $file->getSize();
         } else {
@@ -70,8 +67,16 @@ class GetMovieController extends TorrentController
                 $fileSize = $movieFile['bytesCompleted'];
             }
         }
-    
-        $response->headers->set('Accept-Ranges', 'bytes');
+	
+	if ($fileExt === "mkv") {
+		$response = new BinaryFileResponse($totalPath);
+		return $response;
+	}
+
+        // Create the StreamedResponse object
+        $response = new StreamedResponse();
+	
+	$response->headers->set('Accept-Ranges', 'bytes');
         $response->headers->set('Content-Type', 'video/' . ($fileExt === "mkv" ? "x-matroska" : $fileExt));
     
         // Initialise range variables, default to the whole file size
