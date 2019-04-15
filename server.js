@@ -17,6 +17,8 @@ app.get("mkv", (req, res) => {
                 .audioCodec('aac')
                 .videoCodec('libx264')
                 .pipe(res)
+        } else {
+            res.status(404).send();
         }
     } catch (err) {
         console.log("Error, unknown file");
