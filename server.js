@@ -9,7 +9,7 @@ app.get("/mkv", (req, res) => {
     try {
         if (fs.existsSync(videoPath)) {
             var stream = fs.createReadStream(videoPath);
-            ffmpeg
+            ffmpeg()
                 .input(stream)
                 .outputFormat('mp4')
                 .on('error', console.error)
