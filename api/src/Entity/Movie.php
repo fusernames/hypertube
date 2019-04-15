@@ -182,7 +182,7 @@ class Movie
     private $movieStatuses;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      * @Groups({"movie_statuses"})
      */
     private $APIId;
@@ -389,12 +389,12 @@ class Movie
         return $this;
     }
 
-    public function getAPIId(): ?int
+    public function getAPIId(): ?string
     {
         return $this->APIId;
     }
 
-    public function setAPIId(int $APIId): self
+    public function setAPIId(string $APIId): self
     {
         $this->APIId = $APIId;
 
