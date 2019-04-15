@@ -66,9 +66,7 @@ class Player extends Component {
         }
       })
     })
-    .catch(err => {
-      // Handle err
-    })
+    .catch(ignored => {})
     fetch(host + '/api/movies/subtitles/' + movieId + '/fre')
     .then(res => {
       this.setStateCheck({
@@ -79,9 +77,7 @@ class Player extends Component {
         }
       })
     })
-    .catch(err => {
-      // Handle err
-    })
+    .catch(ignored => {})
     if (!fre && !eng && redo) {
       setTimeout(() => this.fetchSubtitles(false), 2500);
     }

@@ -28,6 +28,8 @@ const req = (url, options) => {
         response.json().then(json => {
           json._status = response.status
           resolve(json)
+        }).catch(err => {
+          store.dispatch(enqueueSnackbar('AJAX_ERROR', 'error'))
         })
       } else {
         if (response.status >= 500) {
@@ -38,6 +40,8 @@ const req = (url, options) => {
           console.log(json)
           json._status = response.status
           reject(json)
+        }).catch(err => {
+          store.dispatch(enqueueSnackbar('AJAX_ERROR', 'error'))
         })
       }
     })
