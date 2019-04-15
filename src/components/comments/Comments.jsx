@@ -59,8 +59,7 @@ class Comments extends React.Component {
             display: false
           })
         }
-    }).catch(err => {
-    })
+    }).catch(ignored => {})
   }
 
   componentWillMount() {

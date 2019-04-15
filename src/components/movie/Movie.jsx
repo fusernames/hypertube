@@ -71,7 +71,7 @@ class Movie extends React.Component {
             torrents: this.parseTorrents(res.torrents.en)
           }
         })
-      })
+      }).catch(ignored => {})
     } else {
       this.setStateCheck({...this.state, isFetching: true})
       req('https://yts.am/api/v2/movie_details.json?movie_id=' + id)
@@ -92,7 +92,7 @@ class Movie extends React.Component {
             torrents: res.torrents.reverse()
           }
         })
-      })
+      }).catch(ignored => {})
     }
   }
 

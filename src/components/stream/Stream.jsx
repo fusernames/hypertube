@@ -69,7 +69,7 @@ class Stream extends Component {
           })
         })
       }
-    }).catch(err => {
+    }).catch(() => {
       this.setStateCheck({
         ...this.state,
         isFetching: false,

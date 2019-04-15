@@ -61,7 +61,7 @@ class Informations extends React.Component {
           body: body,
           useToken: true,
         })
-        .then(res => {
+        .then(() => {
           dispatch(alert('USER_EDIT_SUCCESS', 'success'))
         })
         .catch(err => {

@@ -38,19 +38,17 @@ class OAuth extends React.Component {
     }
     if (token !== undefined && token !== null) {
       req(host + "/api/users/oauth", {
-      method: "POST",
-      body: {
-        api: name,
-        token: token
-      }
+        method: "POST",
+        body: {
+          api: name,
+          token: token
+        }
       }).then(res => {
-        // Handle api response
-        console.log(res)
         auth.token = res.token
         Cookies.set('jwt', auth.token)
         this.props.dispatch(getCurrentUser())
         this.setState({
-            component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
+          component: <Redirect to={{pathname: '/', state: {from: this.props.location}}} />
         });
       }).catch(err => {
         if (err._status === 403)
