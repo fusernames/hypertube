@@ -25,7 +25,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      attributes={
  *          "pagination_client_enabled"=true,
  *          "pagination_client_items_per_page"=true,
- *          "pagination_items_per_page"=5
+ *          "pagination_items_per_page"=20,
+ *          "maximum_items_per_page"=50
  *      },
  *      itemOperations={
  *          "get"={
@@ -203,6 +204,11 @@ class Movie
      * @Groups({"movie_statuses"})
      */
     private $year;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $title;
 
     public function __construct()
     {
@@ -420,6 +426,18 @@ class Movie
     public function setYear(?int $year): self
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
