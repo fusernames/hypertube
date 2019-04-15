@@ -43,7 +43,8 @@ class StatusTorrentController extends TorrentController
                 !$movie->getFileName() ? $movie->setFileName($movieFile['name']) : 0;
                 $entityManager->persist($movie);
                 $entityManager->flush();
-                RemoveOldMoviesController::check($entityManager);
+                $remover = new RemoveOldMoviesController();
+                $remover->check($entityManager);
                 return new JsonResponse(['success' => 'DOWNLOAD_ENDED', 'movieId' => $movie->getId()], 201);
             }
             // Set movie file name
