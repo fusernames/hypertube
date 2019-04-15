@@ -5,6 +5,7 @@ namespace App\Controller\Torrent;
 use SplFileObject;
 use App\Entity\Movie;
 use App\Controller\Torrent\TorrentController;
+use App\Controller\Torrent\RemoveOldMoviesController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Stream;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -62,6 +63,8 @@ class GetMovieController extends TorrentController
                 $movie->setFinished(true);
                 $entityManager->persist($movie);
                 $entityManager->flush();
+                $remover = new RemoveOldMoviesController();
+                $remover->check($entityManager);
                 $fileSize = $file->getSize();
             } else {
                 $infos = $infos[0];
