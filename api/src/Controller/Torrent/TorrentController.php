@@ -53,6 +53,7 @@ class TorrentController extends AbstractController
      * Parse all files downloaded by torrent to get the biggest -> the movie
      */
     public function getMovieFile($infos) {
+        if (sizeof($infos['files']) === 0) return null;
         $movieFile = $infos['files'][0];
         foreach ($infos['files'] as $file) {
             if ($file['length'] > $movieFile['length']) {

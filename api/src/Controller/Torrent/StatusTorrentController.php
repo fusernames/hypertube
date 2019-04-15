@@ -50,9 +50,11 @@ class StatusTorrentController extends TorrentController
             // Set movie file name
             if (!$movie->getFileName()) {
                 $movieFile = $this->getMovieFile($infos);
-                $movie->setFileName($movieFile['name']);
-                $entityManager->persist($movie);
-                $entityManager->flush();
+                if ($movieFile !== null) {
+                    $movie->setFileName($movieFile['name']);
+                    $entityManager->persist($movie);
+                    $entityManager->flush();
+                }
             }
             // Download percentage
             return new JsonResponse(['success' => ($percentDone * 100 * 20), 'movieId' => $movie->getId()], 200);
