@@ -120,7 +120,6 @@ class GetMovieController extends TorrentController
             } else {
                 // Fseek error -> wrong range -> error
                 $response = new Response();
-
                 $response->setStatusCode(StreamedResponse::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
                 $response->headers->set('Content-Range', sprintf('bytes */%d', $fileSize));
     
@@ -139,7 +138,6 @@ class GetMovieController extends TorrentController
         $response->setCallback(function () use ($file, $rangeEnd, $fileExt, $totalPath) {
             $buffer = 1024 * 8;
 
-            $offset = 0;
             while (!($file->eof()) && (($offset = $file->ftell()) < $rangeEnd)) {
                 set_time_limit(0);
     
@@ -148,9 +146,9 @@ class GetMovieController extends TorrentController
                 }
 
                 echo $file->fread($buffer);
-
-                $file = null;
             }
+            
+            $file = null;
         });
     
         // Then everything should be ready, we can send the Response content.
