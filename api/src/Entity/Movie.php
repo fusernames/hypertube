@@ -186,6 +186,16 @@ class Movie
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $rating;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $year;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -378,6 +388,30 @@ class Movie
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(?int $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }
