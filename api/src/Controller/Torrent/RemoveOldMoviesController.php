@@ -7,9 +7,8 @@ use App\Controller\Torrent\TorrentController;
 
 class RemoveOldMoviesController extends TorrentController
 {
-    public function check()
+    public static function check($entityManager)
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $repository = $entityManager->getRepository(Movie::class);
         $now = new \DateTime();
         $movies = $repository->findAll();

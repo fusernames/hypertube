@@ -5,6 +5,7 @@ namespace App\Controller\Torrent;
 use App\Entity\Movie;
 use Vohof\Transmission;
 use App\Controller\Torrent\TorrentController;
+use App\Controller\Torrent\RemoveOldMoviesController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -42,7 +43,7 @@ class StatusTorrentController extends TorrentController
                 !$movie->getFileName() ? $movie->setFileName($movieFile['name']) : 0;
                 $entityManager->persist($movie);
                 $entityManager->flush();
-                $this->forward('App\Controller\Torrent\RemoveOldMoviesController::check');
+                RemoveOldMoviesController::check($entityManager);
                 return new JsonResponse(['success' => 'DOWNLOAD_ENDED', 'movieId' => $movie->getId()], 201);
             }
             // Set movie file name
