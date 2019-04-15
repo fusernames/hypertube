@@ -148,7 +148,7 @@ class GetMovieController extends TorrentController
                         $buffer = $rangeEnd + 1 - $offset;
                     }
                     
-                    echo shell_exec('dd if=' . $totalPath . 'skip=' . $offset . ' count=' . $buffer . '| ffmpeg -i pipe:0 2>&1');
+                    echo shell_exec('dd if=' . $totalPath . ' skip=' . $offset . ' count=' . $buffer . '| ffmpeg -i pipe:0 2>&1');
                     $offset += $buffer;
                 }
             } else {
