@@ -11,6 +11,7 @@ app.get("/mkv", (req, res) => {
             var stream = fs.createReadStream(videoPath);
             ffmpeg()
                 .input(stream)
+                .outputOptions('-movflags frag_keyframe+empty_moov')
                 .outputFormat('mp4')
                 .on('error', ignored => {})
                 .audioCodec('aac')
