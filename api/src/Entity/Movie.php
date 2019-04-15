@@ -207,6 +207,7 @@ class Movie
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"movie_statuses"})
      */
     private $title;
 
