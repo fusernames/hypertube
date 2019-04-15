@@ -4,7 +4,7 @@ const express = require('express');
 
 var app = express();
 
-app.get("mkv", (req, res) => {
+app.get("/mkv", (req, res) => {
     var videoPath = req.query.path;
     try {
         if (fs.existsSync(videoPath)) {
