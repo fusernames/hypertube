@@ -136,17 +136,30 @@ class GetMovieController extends TorrentController
         $response->sendHeaders();
     
         // Read the file and send it
-        $response->setCallback(function () use ($file, $rangeEnd) {
+        $response->setCallback(function () use ($file, $rangeEnd, $fileExt, $totalPath) {
             $buffer = 1024 * 8;
 
-            while (!($file->eof()) && (($offset = $file->ftell()) < $rangeEnd)) {
-                set_time_limit(0);
-    
-                if ($offset + $buffer > $rangeEnd) {
-                    $buffer = $rangeEnd + 1 - $offset;
+            if ($fileExt === "mkv") {
+                while (!($file->eof()) && $offset < $rangeEnd) {
+                    set_time_limit(0);
+                    
+                    if ($offset + $buffer > $rangeEnd) {
+                        $buffer = $rangeEnd + 1 - $offset;
+                    }
+                    
+                    echo shell_exec('dd if=' . $totalPath . 'skip=' . $offset . ' count=' . $buffer . '| ffmpeg -i pipe:0 2>&1');
+                    $offset += $buffer;
                 }
+            } else {
+                while (!($file->eof()) && (($offset = $file->ftell()) < $rangeEnd)) {
+                    set_time_limit(0);
+        
+                    if ($offset + $buffer > $rangeEnd) {
+                        $buffer = $rangeEnd + 1 - $offset;
+                    }
 
-                echo $file->fread($buffer);
+                    echo $file->fread($buffer);
+                }
             }
             $file = null;
         });
