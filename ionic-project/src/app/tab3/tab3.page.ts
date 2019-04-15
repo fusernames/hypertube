@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/13 19:04:03 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/15 03:35:27 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 09:35:08 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,13 @@ export class Tab3Page implements OnInit, OnDestroy {
   }
 
   async getMovies(event?) {
+    const params = {
+      userId: this.userService.id,
+      page: this.page
+    };
+
     try {
-      await this.movieService.getMyMovies({ userId: this.userService.id, page: this.page });
+      await this.movieService.getMyMovies(params);
       this.page++;
     } catch (err) {
       console.log(err);

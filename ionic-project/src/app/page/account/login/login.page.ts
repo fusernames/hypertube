@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 18:59:05 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/13 18:32:01 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 10:22:47 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ export class LoginPage {
 
   async successHandle() {
     const toast = await this.toastCtrl.create({
-      message: `Bienvenu ${this.userService.username}, pleins de nouveaux films vous attendent 🤗`,
+      message: `Bienvenue ${this.userService.username}, pleins de nouveaux films vous attendent 🤗`,
       duration: 3500,
       position: 'bottom',
       color: 'success'

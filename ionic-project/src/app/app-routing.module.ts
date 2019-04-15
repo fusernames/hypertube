@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:23:11 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/15 07:09:39 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 10:44:47 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ const routes: Routes = [
     loadChildren: './page/account/signup/signup.module#SignupPageModule'
   },
   { path: 'profile', loadChildren: './page/account/profile/profile.module#ProfilePageModule' },
-  { path: 'data', loadChildren: './page/account/data/data.module#DataPageModule' },
   { path: 'security', loadChildren: './page/account/security/security.module#SecurityPageModule' }
 ];
 @NgModule({

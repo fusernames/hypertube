@@ -6,7 +6,7 @@
 /*   By: dlavaury <dlavaury@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 16:57:31 by dlavaury          #+#    #+#             */
-/*   Updated: 2019/04/15 05:40:46 by dlavaury         ###   ########.fr       */
+/*   Updated: 2019/04/15 09:52:08 by dlavaury         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ export class MovieDetailPage implements OnInit {
 
     try {
       const savedMovies = await this.movieService.get(params);
+      // console.log(savedMovies);
       savedMovies['hydra:member'].forEach(async (movie: MovieEntity) => {
         if (!movie.image || !movie.year || !movie.rating || !movie.title || !movie.description) {
           const updatedParams = {
