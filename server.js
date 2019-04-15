@@ -21,7 +21,7 @@ app.get("/mkv", (req, res) => {
             res.status(404).send();
         }
     } catch (err) {
-        console.log("Error, unknown file");
+        console.log("Error, unknown file -> " + videoPath);
     }
 })
 
