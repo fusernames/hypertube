@@ -101,7 +101,7 @@ class Movie extends React.Component {
     const { id } = this.props.match.params
     for (let i in myMovies) {
       if (myMovies[i].movie) {
-        if (myMovies[i].movie.APIId === parseInt(id)) {
+        if (myMovies[i].movie.APIId === id) {
           return true
         }
       }

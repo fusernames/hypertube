@@ -70,7 +70,7 @@ export function formatMovies(list, callback, set = false) {
         image: list[i].medium_cover_image,
         title: list[i].title,
         code: list[i].imdb_code,
-        id: list[i].id,
+        id: list[i].id.toString(),
         year: list[i].year,
         rating: list[i].rating,
       }
