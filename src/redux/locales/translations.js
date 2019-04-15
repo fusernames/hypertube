@@ -89,7 +89,8 @@ const translations = {
     // other
     API_ERROR: ["Error while fetching extern API", "Erreur pendant le chagrement de l'api externe"],
     AJAX_ERROR: ["Error while fetching datas", "Erreur lors de chargement des donnees"],
-    MOVIE_NOT_FOUND: ["This movie does not exists", "Ce film n'éxiste pas"]
+    MOVIE_NOT_FOUND: ["This movie does not exists", "Ce film n'éxiste pas"],
+    INVALID_MESSAGE: ["Error adding the comment", "une erreur est survenue lors du post de votre commentaire"]
   },
   validator: {
     TOO_SHORT: ["Too short", "Trop court"],
