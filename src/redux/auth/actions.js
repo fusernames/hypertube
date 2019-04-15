@@ -23,7 +23,6 @@ export function login(data, callback) {
         if (callback) callback()
       })
       .catch(err => {
-        console.log('ERRR', err)
         dispatch(fetching(false))
         if (err._status === 401) {
           dispatch(alert('LOGIN_ERROR', 'error'))
@@ -53,7 +52,6 @@ export function getCurrentUser() {
       req(host + '/api/users/me', {useToken: true})
       .then(res => {
         let id = res['@id'].split('/api/users/')
-        console.log(id);
         res.id = id[1]
         dispatch(setCurrentUser(res))
       })

@@ -32,7 +32,6 @@ class Stream extends Component {
       isFetching: true
     })
     let userId = this.props.auth.user.id
-    console.log(this.props.auth.user)
     req(host + '/api/movie_statuses.json?movie.id=' + id + "&user.id=" + userId, {
       useToken: true
     }).then(res => {

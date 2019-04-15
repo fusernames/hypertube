@@ -37,7 +37,6 @@ const req = (url, options) => {
           reject({_status: response.status})
         }
         response.json().then(json => {
-          console.log(json)
           json._status = response.status
           reject(json)
         }).catch(err => {

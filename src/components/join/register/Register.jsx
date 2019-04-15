@@ -31,7 +31,6 @@ class Register extends React.Component {
     checkForm(body, this.validate, (errors, nbErrors) => {
       this.setState({...this.state, formErrors: errors})
       body = {...body, plainPassword: body.password}
-      console.log(this.state.file.size)
       if (!nbErrors && this.state.file && this.state.file.size <= 100000) {
         req(host + '/api/users', {
           method: 'post', body: body

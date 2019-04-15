@@ -60,10 +60,9 @@ class Search extends Component {
   }
 
   render() {
-    const { movies, isFetching, myMovies } = this.props.search
+    const { movies, isFetching } = this.props.search
     const { classes } = this.props
     const { locale } = this.props.locales
-    console.log(myMovies)
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
