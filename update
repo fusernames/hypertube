@@ -30,6 +30,7 @@ pullAndRun() {
 
     echo -e "\n\n$(tput setaf 2)ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod$(tput sgr 0)"
     ssh -i hypertube.pem -t root@hypertube.barthonet.ovh npm run --prefix /var/www/hypertube/ build-prod
+    ssh -i hypertube.pem -t root@hypertube.barthonet.ovh chown -R www-data: /var/www/
 
     echo -e "\n\n$(tput setaf 2)################################################################
 #                                                              #
