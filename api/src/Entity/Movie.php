@@ -188,11 +188,13 @@ class Movie
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"movie_statuses"})
      */
     private $rating;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"movie_statuses"})
      */
     private $year;
 
