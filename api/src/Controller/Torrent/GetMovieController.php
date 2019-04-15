@@ -139,6 +139,7 @@ class GetMovieController extends TorrentController
         $response->setCallback(function () use ($file, $rangeEnd, $fileExt, $totalPath) {
             $buffer = 1024 * 8;
 
+            $offset = 0;
             if ($fileExt === "mkv") {
                 while (!($file->eof()) && $offset < $rangeEnd) {
                     set_time_limit(0);
