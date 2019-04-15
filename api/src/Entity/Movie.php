@@ -90,7 +90,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "name": "ipartial",
  *          "finished": "exact",
  *          "torrentLink": "ipartial",
- *          "APIId": "exact"
+ *          "APIId": "exact",
+ *          "movieStatuses.user": "exact"
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
