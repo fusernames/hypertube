@@ -180,6 +180,11 @@ class Movie
      */
     private $APIId;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $image;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -360,6 +365,18 @@ class Movie
     public function setAPIId(int $APIId): self
     {
         $this->APIId = $APIId;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
