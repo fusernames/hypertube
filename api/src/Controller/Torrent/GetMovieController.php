@@ -49,7 +49,6 @@ class GetMovieController extends TorrentController
         // Retrieve file informations
         $fileName = $file->getBasename();
         $fileExt  = $file->getExtension();
-        $filePath = $file->getRealPath();
         
         if ($movie->getFinished()) {
             $fileSize = $file->getSize();
@@ -69,6 +68,10 @@ class GetMovieController extends TorrentController
                 $movieFile = $this->getMovieFile($infos);
                 $fileSize = $movieFile['bytesCompleted'];
             }
+        }
+
+        if ($fileExt === "mkv") {
+            return $this->redirectTo('http://hypertube.barthonet.ovh:8080/mkv?path=' . $totalPath);
         }
     
         $response->headers->set('Accept-Ranges', 'bytes');
