@@ -140,29 +140,17 @@ class GetMovieController extends TorrentController
             $buffer = 1024 * 8;
 
             $offset = 0;
-            if ($fileExt === "mkv") {
-                while (!($file->eof()) && $offset < $rangeEnd) {
-                    set_time_limit(0);
-                    
-                    if ($offset + $buffer > $rangeEnd) {
-                        $buffer = $rangeEnd + 1 - $offset;
-                    }
-                    
-                    echo shell_exec('dd if=' . $totalPath . ' skip=' . $offset . ' count=' . $buffer . '| ffmpeg -i pipe:0 2>&1');
-                    $offset += $buffer;
+            while (!($file->eof()) && (($offset = $file->ftell()) < $rangeEnd)) {
+                set_time_limit(0);
+    
+                if ($offset + $buffer > $rangeEnd) {
+                    $buffer = $rangeEnd + 1 - $offset;
                 }
-            } else {
-                while (!($file->eof()) && (($offset = $file->ftell()) < $rangeEnd)) {
-                    set_time_limit(0);
-        
-                    if ($offset + $buffer > $rangeEnd) {
-                        $buffer = $rangeEnd + 1 - $offset;
-                    }
 
-                    echo $file->fread($buffer);
-                }
+                echo $file->fread($buffer);
+
+                $file = null;
             }
-            $file = null;
         });
     
         // Then everything should be ready, we can send the Response content.
