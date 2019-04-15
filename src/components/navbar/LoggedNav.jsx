@@ -1,8 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { IconButton, Badge, Tooltip, Menu, MenuItem, Paper, Popper, Typography, Icon } from '@material-ui/core'
-import { Notifications as NotificationsIcon } from '@material-ui/icons'
+import { IconButton, Tooltip, Menu, MenuItem, Icon } from '@material-ui/core'
 import { Cancel as CancelIcon } from '@material-ui/icons'
 import { Person as PersonIcon } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles'
@@ -34,7 +33,7 @@ class LoggedNav extends React.Component {
   render () {
     const { locale } = this.props.locales
     const { dispatch } = this.props
-    const { anchorSubMenu, anchorPopper, openPopper } = this.state
+    const { anchorSubMenu } = this.state
     const isMenuOpen = Boolean(anchorSubMenu)
     const SubMenu = () => {
       return (

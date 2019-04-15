@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import req from '../../utils/req'
 import { Icon, IconButton, ListItem, ListItemText, ListItemSecondaryAction, List, ListItemAvatar, Avatar } from '@material-ui/core'
-import host from '../../config'
 import { Link } from 'react-router-dom'
 import { blue } from '@material-ui/core/colors'
 import { fetchMyMovies } from '../../redux/search/actions'
