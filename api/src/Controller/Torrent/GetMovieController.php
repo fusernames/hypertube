@@ -71,7 +71,7 @@ class GetMovieController extends TorrentController
         }
 
         if ($fileExt === "mkv") {
-            return $this->redirectTo('http://hypertube.barthonet.ovh:8080/mkv?path=' . $totalPath);
+            return $this->redirect('http://hypertube.barthonet.ovh:8080/mkv?path=' . $totalPath);
         }
     
         $response->headers->set('Accept-Ranges', 'bytes');
